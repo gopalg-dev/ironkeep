@@ -160,7 +160,7 @@ export function SessionsPanel({ data }: { data: StatsData }) {
                 <View className="w-30 flex-row items-center gap-2">
                   <View
                     className={cn('size-2.5 rounded-full', familyColourClass(MUSCLE_FAMILY[r.muscle]))}
-                    accessibilityElementsHidden
+                    aria-hidden
                   />
                   <Text className={cn(SECONDARY, 'shrink', on && 'text-foreground')} numberOfLines={1}>
                     {r.label}

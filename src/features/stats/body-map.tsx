@@ -75,7 +75,7 @@ export function BodyMap({
             <View
               className={cn('size-3 rounded-sm', swatchClass(l.state))}
               style={l.state === 'partly' ? { opacity: PARTLY } : undefined}
-              accessibilityElementsHidden
+              aria-hidden
             />
             <Text className={CAPTION}>{l.label}</Text>
           </View>

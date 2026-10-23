@@ -1,5 +1,5 @@
 import { Minus, Plus } from 'lucide-react-native'
-import { View } from 'react-native'
+import { type AccessibilityActionEvent, View } from 'react-native'
 
 import { IconButton } from '@/components/icon-button'
 import { BIG_NUMBER, CAPTION } from '@/components/typography'
@@ -36,26 +36,33 @@ export function SetPad({
   className,
 }: SetPadProps) {
   const round = (n: number) => Number(Math.max(min, n).toFixed(2))
+  const less = () => onChange(round(value - step))
+  const more = () => onChange(round(value + step))
+  // One adjustable control for a screen reader: it reads "<label>, <value> <unit>" and takes a swipe
+  // up or down to step, so the pad does not need its two buttons focused one by one. The buttons stay
+  // for touch. The parent is `accessible`, so its label and value are what TalkBack announces.
+  const onAction = (e: AccessibilityActionEvent) => {
+    if (e.nativeEvent.actionName === 'increment') more()
+    else if (e.nativeEvent.actionName === 'decrement') less()
+  }
   return (
-    <View className={cn('flex-1 items-center gap-2 rounded-xl bg-background px-2 py-3', className)}>
+    <View
+      accessible
+      accessibilityRole="adjustable"
+      accessibilityLabel={label}
+      accessibilityValue={{ text: `${fmt(value)}${unit ? ` ${unit}` : ''}` }}
+      accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
+      onAccessibilityAction={onAction}
+      className={cn('flex-1 items-center gap-2 rounded-xl bg-background px-2 py-3', className)}
+    >
       <Text className={CAPTION}>{label}</Text>
       <View className="flex-row items-baseline">
         <Text className={cn(BIG_NUMBER, 'text-5xl', muted && 'text-muted-foreground')}>{fmt(value)}</Text>
         {unit ? <Text className="ml-1 text-lg font-semibold text-muted-foreground">{unit}</Text> : null}
       </View>
       <View className="flex-row gap-3">
-        <IconButton
-          as={Minus}
-          tone="surface"
-          accessibilityLabel={lessLabel}
-          onPress={() => onChange(round(value - step))}
-        />
-        <IconButton
-          as={Plus}
-          tone="surface"
-          accessibilityLabel={moreLabel}
-          onPress={() => onChange(round(value + step))}
-        />
+        <IconButton as={Minus} tone="surface" accessibilityLabel={lessLabel} onPress={less} />
+        <IconButton as={Plus} tone="surface" accessibilityLabel={moreLabel} onPress={more} />
       </View>
     </View>
   )

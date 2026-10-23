@@ -213,7 +213,9 @@ export function TodayScreen() {
             <Text className={SECONDARY}>{weekdayDate(now)}</Text>
             {view.doneToday.length > 0 ? (
               <View className="flex-row items-center gap-1">
-                <Text className={SECONDARY}>·</Text>
+                <Text aria-hidden className={SECONDARY}>
+                  ·
+                </Text>
                 <FillIcon
                   as={CircleCheck}
                   className="size-4.5 text-primary-foreground"

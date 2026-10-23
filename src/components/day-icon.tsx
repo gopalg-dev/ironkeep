@@ -117,10 +117,7 @@ const SIZE: Record<Size, { tile: string; icon: string }> = {
  */
 export function DayIcon({ type, size = 'md', className }: { type: DayType; size?: Size; className?: string }) {
   return (
-    <View
-      accessibilityElementsHidden
-      className={cn('items-center justify-center', dayColourClass(type), SIZE[size].tile, className)}
-    >
+    <View aria-hidden className={cn('items-center justify-center', dayColourClass(type), SIZE[size].tile, className)}>
       <Icon as={icon[type]} strokeWidth={2} className={cn(dayInkClass(type), SIZE[size].icon)} />
     </View>
   )

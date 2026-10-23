@@ -90,7 +90,7 @@ export function AlertDeck({ alerts, onDismiss, onAction, className }: AlertDeckP
                     {count > 1 ? (
                       <View className="flex-row items-center gap-2">
                         <Text className={cn(CAPTION, NUMBER)}>{`${at + 1} of ${count}`}</Text>
-                        <View className="flex-row gap-1" accessibilityElementsHidden>
+                        <View className="flex-row gap-1" aria-hidden>
                           {alerts.map((d, i) => (
                             <View
                               key={d.key}
