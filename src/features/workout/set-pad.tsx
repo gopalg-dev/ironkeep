@@ -2,7 +2,7 @@ import { Minus, Plus } from 'lucide-react-native'
 import { type AccessibilityActionEvent, View } from 'react-native'
 
 import { IconButton } from '@/components/icon-button'
-import { BIG_NUMBER, CAPTION } from '@/components/typography'
+import { BIG_NUMBER, CAPTION, HERO_FONT_CAP } from '@/components/typography'
 import { Text } from '@/components/ui/text'
 import { cn } from '@/lib/utils'
 
@@ -57,7 +57,12 @@ export function SetPad({
     >
       <Text className={CAPTION}>{label}</Text>
       <View className="flex-row items-baseline">
-        <Text className={cn(BIG_NUMBER, 'text-5xl', muted && 'text-muted-foreground')}>{fmt(value)}</Text>
+        <Text
+          maxFontSizeMultiplier={HERO_FONT_CAP}
+          className={cn(BIG_NUMBER, 'text-5xl', muted && 'text-muted-foreground')}
+        >
+          {fmt(value)}
+        </Text>
         {unit ? <Text className="ml-1 text-lg font-semibold text-muted-foreground">{unit}</Text> : null}
       </View>
       <View className="flex-row gap-3">

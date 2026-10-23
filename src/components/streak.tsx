@@ -2,7 +2,7 @@ import { Flame } from 'lucide-react-native'
 import { View } from 'react-native'
 
 import { FillIcon } from '@/components/fill-icon'
-import { MID_NUMBER, SECONDARY } from '@/components/typography'
+import { HERO_FONT_CAP, MID_NUMBER, SECONDARY } from '@/components/typography'
 import { Text } from '@/components/ui/text'
 import { cn } from '@/lib/utils'
 
@@ -26,7 +26,9 @@ export function Streak({ weeks }: { weeks: number }) {
         <FillIcon as={Flame} className="size-8 text-muted-foreground" />
       )}
       <View className="items-center">
-        <Text className={cn(MID_NUMBER, !on && 'text-muted-foreground')}>{weeks}</Text>
+        <Text maxFontSizeMultiplier={HERO_FONT_CAP} className={cn(MID_NUMBER, !on && 'text-muted-foreground')}>
+          {weeks}
+        </Text>
         <Text className={cn(SECONDARY, 'mt-1 leading-4')}>{unit}</Text>
       </View>
     </View>

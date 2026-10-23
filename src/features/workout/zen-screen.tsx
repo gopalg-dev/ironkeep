@@ -9,7 +9,7 @@ import { ExerciseThumb } from '@/components/exercise-thumb'
 import { IconButton } from '@/components/icon-button'
 import { Screen } from '@/components/screen'
 import { Segmented } from '@/components/segmented'
-import { BIG_NUMBER, CAPTION, H3, NUMBER, SECONDARY } from '@/components/typography'
+import { BIG_NUMBER, CAPTION, H3, HERO_FONT_CAP, NUMBER, SECONDARY } from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
@@ -314,7 +314,9 @@ function Pad({
     <View className={cn('items-center gap-2 rounded-xl bg-card px-4 pt-4 pb-3.5', className)}>
       <Text className={CAPTION}>{label}</Text>
       <View className="flex-row items-baseline">
-        <Text className={cn(BIG_NUMBER, muted && 'text-muted-foreground')}>{fmt(value)}</Text>
+        <Text maxFontSizeMultiplier={HERO_FONT_CAP} className={cn(BIG_NUMBER, muted && 'text-muted-foreground')}>
+          {fmt(value)}
+        </Text>
         {unit ? <Text className="ml-1 text-xl font-semibold text-muted-foreground">{unit}</Text> : null}
       </View>
       {/* Two buttons across the whole pad, a centimetre high (NN/g's comfortable target): a thumb mid-set should not have to aim. */}

@@ -24,3 +24,10 @@ export const NUMBER = 'tabular-nums'
 export const BIG_NUMBER = 'text-6xl font-condensed-semibold leading-none tabular-nums text-foreground'
 export const MID_NUMBER = 'text-4xl font-condensed-semibold leading-none tabular-nums text-foreground'
 export const ROW_VALUE = 'text-base font-semibold leading-6 tabular-nums text-muted-foreground'
+
+/*
+ * The most a hero number may grow with the system font scale: body text scales freely for
+ * accessibility, but a six- or four-xl figure at 2x would overflow its pad or tile, so the big and
+ * mid number roles are capped here (step 5 of docs/research/accessibility.md).
+ */
+export const HERO_FONT_CAP = 1.4

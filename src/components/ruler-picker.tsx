@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import { FlatList, type NativeScrollEvent, type NativeSyntheticEvent, View } from 'react-native'
 import { useResolveClassNames } from 'uniwind'
 
-import { BIG_NUMBER } from '@/components/typography'
+import { BIG_NUMBER, HERO_FONT_CAP } from '@/components/typography'
 import { Text } from '@/components/ui/text'
 import { cn } from '@/lib/utils'
 
@@ -87,7 +87,12 @@ export function RulerPicker({
   return (
     <View className={cn('items-center gap-4 overflow-hidden rounded-xl bg-card pt-7 pb-5', className)}>
       <View className="flex-row items-baseline">
-        <Text className={cn(BIG_NUMBER, 'text-7xl', muted && 'text-muted-foreground')}>{shown}</Text>
+        <Text
+          maxFontSizeMultiplier={HERO_FONT_CAP}
+          className={cn(BIG_NUMBER, 'text-7xl', muted && 'text-muted-foreground')}
+        >
+          {shown}
+        </Text>
         {unit ? <Text className="ml-1 text-2xl font-semibold leading-8 text-muted-foreground">{unit}</Text> : null}
       </View>
       <View

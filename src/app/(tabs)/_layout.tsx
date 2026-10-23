@@ -1,7 +1,7 @@
 import { Redirect, useRouter } from 'expo-router'
 import { Tabs } from 'expo-router/js-tabs'
 import { BicepsFlexed, ChartNoAxesColumn, LayoutGrid, ListTodo, type LucideIcon } from 'lucide-react-native'
-import { Pressable } from 'react-native'
+import { Pressable, Text } from 'react-native'
 import { useResolveClassNames } from 'uniwind'
 
 import { useSettings } from '@/db/hooks'
@@ -41,6 +41,13 @@ export default function TabsLayout() {
         tabBarInactiveTintColor: asColor(inactive.color),
         tabBarStyle: { ...bar, borderTopWidth: 0, elevation: 0 },
         tabBarLabelStyle: label,
+        // Cap the label's growth with the system font scale: the bar height is fixed, so a 2x label would
+        // clip. The icon and the label's own scaling up to here keep it legible.
+        tabBarLabel: ({ color, children }) => (
+          <Text numberOfLines={1} maxFontSizeMultiplier={1.2} style={[label, { color }]}>
+            {children}
+          </Text>
+        ),
         tabBarItemStyle: { gap: 4 },
       }}
     >

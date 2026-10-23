@@ -6,7 +6,7 @@ import { BTN_SM2, BTN_SM2_TEXT } from '@/components/button-styles'
 import { instantOf } from '@/components/day-field'
 import { LineChart } from '@/components/line-chart'
 import { Segmented } from '@/components/segmented'
-import { BIG_NUMBER, CAPTION, MID_NUMBER, NUMBER, SECONDARY } from '@/components/typography'
+import { BIG_NUMBER, CAPTION, HERO_FONT_CAP, MID_NUMBER, NUMBER, SECONDARY } from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
@@ -64,7 +64,9 @@ export function BodyPanel({ data, onChanged }: { data: StatsData; onChanged: () 
             <Text className={SECONDARY}>Bodyweight</Text>
             {trend.latest !== undefined ? (
               <View className="flex-row items-baseline">
-                <Text className={BIG_NUMBER}>{fmtWeight(trend.latest)}</Text>
+                <Text maxFontSizeMultiplier={HERO_FONT_CAP} className={BIG_NUMBER}>
+                  {fmtWeight(trend.latest)}
+                </Text>
                 <Text className="ml-1 text-lg font-semibold text-muted-foreground">{units}</Text>
               </View>
             ) : null}
@@ -112,7 +114,7 @@ export function BodyPanel({ data, onChanged }: { data: StatsData; onChanged: () 
               {TAPES.map((t) => (
                 <View key={t} className="flex-1 gap-1">
                   <View className="flex-row items-baseline">
-                    <Text className={cn(MID_NUMBER, 'text-3xl')}>
+                    <Text maxFontSizeMultiplier={HERO_FONT_CAP} className={cn(MID_NUMBER, 'text-3xl')}>
                       {latest[t] !== undefined ? fmtWeight(latest[t]) : '–'}
                     </Text>
                     {latest[t] !== undefined ? (

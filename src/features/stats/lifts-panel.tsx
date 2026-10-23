@@ -7,7 +7,7 @@ import { Chip, Chips } from '@/components/chip'
 import { DayIcon, dayAccentClass, dayColourClass, dayInkClass } from '@/components/day-icon'
 import { LineChart } from '@/components/line-chart'
 import { Group, Row, RowBody, RowSub, RowTitle, RowValue } from '@/components/row'
-import { BIG_NUMBER, CAPTION, H2, NUMBER, SECONDARY } from '@/components/typography'
+import { BIG_NUMBER, CAPTION, H2, HERO_FONT_CAP, NUMBER, SECONDARY } from '@/components/typography'
 import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
 import type { StatsData } from '@/db/repo'
@@ -91,7 +91,9 @@ export function LiftsPanel({ data }: { data: StatsData }) {
             <View className="flex-row items-end justify-between gap-3">
               <View className="shrink">
                 <View className="flex-row items-baseline">
-                  <Text className={BIG_NUMBER}>{big.value}</Text>
+                  <Text maxFontSizeMultiplier={HERO_FONT_CAP} className={BIG_NUMBER}>
+                    {big.value}
+                  </Text>
                   <Text className="ml-1 text-lg font-semibold text-muted-foreground">{big.unit}</Text>
                 </View>
                 <Text className={cn(SECONDARY, NUMBER, 'mt-2')}>{big.line}</Text>

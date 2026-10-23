@@ -6,7 +6,7 @@ import { Pressable, View } from 'react-native'
 import { dayColourClass, dayInkClass, familyColourClass } from '@/components/day-icon'
 import { IconButton } from '@/components/icon-button'
 import { Stat } from '@/components/stat-tile'
-import { BIG_NUMBER, CAPTION, H2, NUMBER, SECONDARY } from '@/components/typography'
+import { BIG_NUMBER, CAPTION, H2, HERO_FONT_CAP, NUMBER, SECONDARY } from '@/components/typography'
 import { Text } from '@/components/ui/text'
 import type { StatsData } from '@/db/repo'
 import { monthYear } from '@/lib/format'
@@ -75,7 +75,9 @@ export function SessionsPanel({ data }: { data: StatsData }) {
       <View className="mt-4 rounded-xl bg-card px-4 pt-5 pb-4">
         <Text className={SECONDARY}>This week</Text>
         <View className="flex-row items-baseline">
-          <Text className={BIG_NUMBER}>{done}</Text>
+          <Text maxFontSizeMultiplier={HERO_FONT_CAP} className={BIG_NUMBER}>
+            {done}
+          </Text>
           <Text className={cn('ml-1 text-xl font-semibold text-muted-foreground', NUMBER)}>
             {`of ${planned} ${planned === 1 ? 'session' : 'sessions'}`}
           </Text>

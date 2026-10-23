@@ -10,7 +10,7 @@ import { useBigTitle } from '@/components/page-bar'
 import { Group, Row, RowBody, RowSub, RowTitle, RowValue } from '@/components/row'
 import { Screen } from '@/components/screen'
 import { Segmented } from '@/components/segmented'
-import { BIG_NUMBER, CAPTION, H2, MID_NUMBER, NUMBER, SECONDARY } from '@/components/typography'
+import { BIG_NUMBER, CAPTION, H2, HERO_FONT_CAP, MID_NUMBER, NUMBER, SECONDARY } from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
@@ -165,7 +165,9 @@ export function ReportScreen() {
         <>
           <View className="mt-4 rounded-xl bg-card px-4 pt-5 pb-4">
             <View className="flex-row items-baseline">
-              <Text className={BIG_NUMBER}>{report.sessions.done}</Text>
+              <Text maxFontSizeMultiplier={HERO_FONT_CAP} className={BIG_NUMBER}>
+                {report.sessions.done}
+              </Text>
               <Text className={cn('ml-1 text-xl font-semibold text-muted-foreground', NUMBER)}>
                 {`of ${report.sessions.planned} ${report.sessions.planned === 1 ? 'session' : 'sessions'}`}
               </Text>
@@ -265,7 +267,9 @@ function Tile({ icon, value, label }: { icon: typeof Dumbbell; value: string; la
   return (
     <View className="flex-1 gap-1 rounded-xl bg-card px-3.5 pt-3.5 pb-3">
       <Icon as={icon} strokeWidth={1.75} className="size-4.5 text-muted-foreground" />
-      <Text className={cn(MID_NUMBER, 'text-3xl')}>{value}</Text>
+      <Text maxFontSizeMultiplier={HERO_FONT_CAP} className={cn(MID_NUMBER, 'text-3xl')}>
+        {value}
+      </Text>
       <Text className={CAPTION}>{label}</Text>
     </View>
   )
