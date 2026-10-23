@@ -97,7 +97,7 @@ export function SwapScreen() {
   return (
     <SheetBody>
       <View className="flex-row items-center justify-between gap-3">
-        <Text className={cn(H2, 'shrink')} numberOfLines={1}>
+        <Text accessibilityRole="header" className={cn(H2, 'shrink')} numberOfLines={1}>
           {entry ? `Swap ${entry.name}` : 'Swap'}
         </Text>
         <IconButton as={X} accessibilityLabel="Close" onPress={() => router.back()} />

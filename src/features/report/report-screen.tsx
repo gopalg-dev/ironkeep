@@ -192,7 +192,9 @@ export function ReportScreen() {
             <Tile icon={Scale} value={bw ? fmtWeight(bw.to) : '–'} label={bodyweightCaption(report, units)} />
           </View>
 
-          <Text className={cn(H2, 'mt-6')}>Went well</Text>
+          <Text accessibilityRole="header" className={cn(H2, 'mt-6')}>
+            Went well
+          </Text>
           {report.bests.length === 0 && report.movers.length === 0 ? (
             <Text className={cn(SECONDARY, 'mt-3')}>{`No new bests this ${unit}.`}</Text>
           ) : (
@@ -228,7 +230,9 @@ export function ReportScreen() {
 
           {attention.length > 0 ? (
             <>
-              <Text className={cn(H2, 'mt-6')}>Needs attention</Text>
+              <Text accessibilityRole="header" className={cn(H2, 'mt-6')}>
+                Needs attention
+              </Text>
               <Group className="mt-3">
                 {attention.map((r) => (
                   <Row key={r.key} tall>

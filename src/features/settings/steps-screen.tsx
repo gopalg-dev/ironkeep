@@ -66,7 +66,9 @@ export function StepsScreen() {
 
   return (
     <SheetBody>
-      <Text className={H2}>Smallest steps</Text>
+      <Text accessibilityRole="header" className={H2}>
+        Smallest steps
+      </Text>
       {KINDS.filter((k) => k === 'plates' || !same).map((k) => (
         <View key={k} className="gap-2">
           <Text className={cn(CAPTION, 'px-1')}>{KIND_LABEL[k]}</Text>

@@ -36,7 +36,9 @@ export function LogWeightDialog({ open, onClose, units, initial, onSave }: LogWe
   }, [open, start])
   return (
     <Dialog open={open} onClose={onClose}>
-      <Text className={H2}>Bodyweight</Text>
+      <Text accessibilityRole="header" className={H2}>
+        Bodyweight
+      </Text>
       <RulerPicker
         value={weight}
         unit={units}

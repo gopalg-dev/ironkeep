@@ -46,7 +46,7 @@ export function GuideChapterScreen() {
       }}
     >
       <View className="min-h-11" />
-      <Text className={cn(TITLE, 'mt-4')} onLayout={(e) => measure(e.nativeEvent.layout)}>
+      <Text accessibilityRole="header" className={cn(TITLE, 'mt-4')} onLayout={(e) => measure(e.nativeEvent.layout)}>
         {chapter.title}
       </Text>
       <View className="mt-4 gap-4">

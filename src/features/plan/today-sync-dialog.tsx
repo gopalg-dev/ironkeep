@@ -41,7 +41,7 @@ export function TodaySyncDialog({ ask, onClose }: TodaySyncDialogProps) {
   return (
     <Dialog open={ask !== null} onClose={onClose}>
       <View className="gap-2">
-        <Text className={H2}>{`${ask?.dayName ?? ''} is running right now`}</Text>
+        <Text accessibilityRole="header" className={H2}>{`${ask?.dayName ?? ''} is running right now`}</Text>
         <Text className={cn(BODY, 'text-muted-foreground')}>
           {ask?.exerciseName
             ? `The session on Today still has ${ask.exerciseName}. Change it there too?`

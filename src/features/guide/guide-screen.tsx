@@ -25,7 +25,9 @@ export function GuideScreen() {
     >
       <View className="min-h-11" />
       <View className="mt-4" onLayout={(e) => measure(e.nativeEvent.layout)}>
-        <Text className={TITLE}>Guide</Text>
+        <Text accessibilityRole="header" className={TITLE}>
+          Guide
+        </Text>
       </View>
       {PARTS.map((part) => (
         <View key={part}>

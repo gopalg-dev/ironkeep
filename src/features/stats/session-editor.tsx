@@ -128,7 +128,9 @@ function SessionCards({
         <View className="min-w-0 flex-1 flex-row items-center gap-3">
           <DayIcon type={workout.dayType} />
           <View className="min-w-0 flex-1">
-            <Text className={H2}>{workout.dayName}</Text>
+            <Text accessibilityRole="header" className={H2}>
+              {workout.dayName}
+            </Text>
             <Text className={cn(CAPTION, NUMBER)}>{line}</Text>
           </View>
         </View>

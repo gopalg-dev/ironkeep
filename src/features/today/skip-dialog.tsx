@@ -26,7 +26,9 @@ export function SkipDialog({ open, onClose, day, next, onSkip, onLog }: SkipDial
   return (
     <Dialog open={open} onClose={onClose}>
       <View className="gap-1">
-        <Text className={H2}>{day.name}</Text>
+        <Text accessibilityRole="header" className={H2}>
+          {day.name}
+        </Text>
         <Text className={cn(BODY, 'text-muted-foreground')}>
           {next
             ? `Nothing is logged for it yet. Next up moves to ${next.name} either way.`

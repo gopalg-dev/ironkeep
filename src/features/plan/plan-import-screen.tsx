@@ -171,7 +171,9 @@ export function PlanImportScreen() {
     >
       <View className="min-h-11" />
       <View className="mt-4" onLayout={(e) => measure(e.nativeEvent.layout)}>
-        <Text className={cn(TITLE, 'text-3xl leading-10')}>Bring your own plan</Text>
+        <Text accessibilityRole="header" className={cn(TITLE, 'text-3xl leading-10')}>
+          Bring your own plan
+        </Text>
       </View>
 
       <Group className="mt-6">
@@ -198,7 +200,7 @@ export function PlanImportScreen() {
       {parsed ? (
         <>
           <View className="mt-8 flex-row items-center justify-between gap-3">
-            <Text className={cn(H2, 'shrink')} numberOfLines={1}>
+            <Text accessibilityRole="header" className={cn(H2, 'shrink')} numberOfLines={1}>
               {fileName}
             </Text>
             <Text className={cn(SECONDARY, NUMBER)}>{countLine}</Text>

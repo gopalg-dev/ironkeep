@@ -37,7 +37,9 @@ export function LogTapeDialog({ open, onClose, unit, initial, onSave }: LogTapeD
   const any = TAPES.some((t) => measures[t] !== undefined)
   return (
     <Dialog open={open} onClose={onClose}>
-      <Text className={H2}>Measurements</Text>
+      <Text accessibilityRole="header" className={H2}>
+        Measurements
+      </Text>
       <View className="gap-2">
         {TAPES.map((t) => (
           <View key={t} className="min-h-14 flex-row items-center justify-between gap-3 rounded-xl bg-background px-4">

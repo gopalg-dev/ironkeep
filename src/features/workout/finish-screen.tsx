@@ -63,7 +63,9 @@ export function FinishScreen() {
 
   return (
     <SheetBody>
-      <Text className={H2}>How did it go?</Text>
+      <Text accessibilityRole="header" className={H2}>
+        How did it go?
+      </Text>
       <View className="flex-row gap-2" accessibilityRole="radiogroup" accessibilityLabel="Effort">
         {EFFORTS.map((e) => {
           const on = e === effort

@@ -175,7 +175,9 @@ export function DataScreen() {
     <Screen bar={bar}>
       <View className="min-h-11" />
       <View className="mt-4" onLayout={(e) => measure(e.nativeEvent.layout)}>
-        <Text className={TITLE}>Your data</Text>
+        <Text accessibilityRole="header" className={TITLE}>
+          Your data
+        </Text>
       </View>
 
       <Group className="mt-4 p-4">
@@ -262,7 +264,9 @@ export function DataScreen() {
       </Group>
 
       <Dialog open={askEmail} onClose={() => setAskEmail(false)}>
-        <Text className={H2}>{EMAIL}</Text>
+        <Text accessibilityRole="header" className={H2}>
+          {EMAIL}
+        </Text>
         <TextInput
           value={email}
           onChangeText={setEmail}

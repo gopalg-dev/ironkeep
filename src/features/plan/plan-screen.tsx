@@ -87,7 +87,9 @@ export function PlanScreen() {
       }}
     >
       <View className="min-h-11 flex-row items-center" onLayout={(e) => measure(e.nativeEvent.layout)}>
-        <Text className={TITLE}>Plan</Text>
+        <Text accessibilityRole="header" className={TITLE}>
+          Plan
+        </Text>
       </View>
       <Text className={cn(SECONDARY, NUMBER, 'mt-1')}>{subtitle}</Text>
       {plan.days.map((day, i) => {
@@ -187,7 +189,9 @@ export function PlanScreen() {
       </Group>
       <Dialog open={resetOpen} onClose={() => setResetOpen(false)}>
         <View className="gap-1">
-          <Text className={H2}>Reset the plan?</Text>
+          <Text accessibilityRole="header" className={H2}>
+            Reset the plan?
+          </Text>
           <Text
             className={cn(BODY, 'text-muted-foreground')}
           >{`Every edit and swap goes back to the ${split.name} template. Logged workouts stay.`}</Text>

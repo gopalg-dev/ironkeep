@@ -72,7 +72,7 @@ export function SessionEditorScreen() {
       />
       <Dialog open={askDelete} onClose={() => setAskDelete(false)}>
         <View className="gap-1">
-          <Text className={H2}>{`Delete this ${workout?.dayName ?? 'session'}?`}</Text>
+          <Text accessibilityRole="header" className={H2}>{`Delete this ${workout?.dayName ?? 'session'}?`}</Text>
           <Text className={cn(BODY, 'text-muted-foreground')}>Its sets leave your stats. The plan is not touched.</Text>
         </View>
         <View className="gap-2">

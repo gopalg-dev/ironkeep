@@ -76,7 +76,9 @@ export function SplitScreen() {
         </View>
       }
     >
-      <Text className={H2}>Split</Text>
+      <Text accessibilityRole="header" className={H2}>
+        Split
+      </Text>
       <SplitPicker
         splits={BUNDLED_SPLITS}
         value={split}

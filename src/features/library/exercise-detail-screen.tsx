@@ -67,7 +67,9 @@ export function ExerciseDetailScreen() {
     >
       <View className="flex-row items-start justify-between gap-3">
         <View className="min-w-0 flex-1 gap-1">
-          <Text className={H2}>{exercise.name}</Text>
+          <Text accessibilityRole="header" className={H2}>
+            {exercise.name}
+          </Text>
           <Text className={cn(CAPTION, NUMBER)}>{`${at + 1} of ${LIBRARY.length}`}</Text>
         </View>
         <IconButton as={X} accessibilityLabel="Close" onPress={() => router.back()} />

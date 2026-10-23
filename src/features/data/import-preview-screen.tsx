@@ -129,7 +129,7 @@ export function ImportPreviewScreen() {
     >
       <View className="min-h-11" />
       <View className="mt-4" onLayout={(e) => measure(e.nativeEvent.layout)}>
-        <Text className={cn(TITLE, 'text-3xl leading-10')} numberOfLines={2}>
+        <Text accessibilityRole="header" className={cn(TITLE, 'text-3xl leading-10')} numberOfLines={2}>
           {pending.name}
         </Text>
       </View>

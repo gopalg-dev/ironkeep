@@ -52,7 +52,9 @@ export function PickDayScreen() {
 
   return (
     <SheetBody>
-      <Text className={H2}>Pick session</Text>
+      <Text accessibilityRole="header" className={H2}>
+        Pick session
+      </Text>
       {data?.active ? (
         <Text className={SECONDARY}>
           {logged > 0

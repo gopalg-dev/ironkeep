@@ -89,7 +89,9 @@ export function SessionsPanel({ data }: { data: StatsData }) {
       </View>
 
       <View className="mt-6 flex-row items-center justify-between gap-3">
-        <Text className={H2}>{monthYear(month)}</Text>
+        <Text accessibilityRole="header" className={H2}>
+          {monthYear(month)}
+        </Text>
         <View className="flex-row gap-2">
           <IconButton
             as={ChevronLeft}
@@ -135,7 +137,9 @@ export function SessionsPanel({ data }: { data: StatsData }) {
       </View>
 
       <View className="mt-8 flex-row items-center justify-between gap-3">
-        <Text className={H2}>Hard sets this week</Text>
+        <Text accessibilityRole="header" className={H2}>
+          Hard sets this week
+        </Text>
         <Text className={cn(SECONDARY, NUMBER)}>{hardSetsTotal(rows)}</Text>
       </View>
       <BodyMap rows={rows} picked={picked} onPick={pick} className="mt-3" />

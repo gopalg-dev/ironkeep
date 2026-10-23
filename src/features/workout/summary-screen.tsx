@@ -25,7 +25,9 @@ export function SummaryScreen() {
   return (
     <SheetBody>
       <View className="gap-1">
-        <Text className={H2}>Workout saved</Text>
+        <Text accessibilityRole="header" className={H2}>
+          Workout saved
+        </Text>
         {last ? (
           <Text className={cn(SECONDARY, NUMBER)}>
             {`${last.summary.week.done} of ${last.summary.week.planned} sessions this week, ${last.minutes} min`}

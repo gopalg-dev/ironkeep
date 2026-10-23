@@ -17,7 +17,9 @@ export function PickScreen() {
   if (!pick) return <SheetBody>{null}</SheetBody>
   return (
     <SheetBody>
-      <Text className={H2}>{pick.title}</Text>
+      <Text accessibilityRole="header" className={H2}>
+        {pick.title}
+      </Text>
       <ScrollView className="max-h-96" nestedScrollEnabled>
         <Group>
           {pick.options.map((o) => {

@@ -146,7 +146,9 @@ export function SettingsScreen() {
     <Screen bar={bar}>
       <View className="min-h-11" />
       <View className="mt-4" onLayout={(e) => measure(e.nativeEvent.layout)}>
-        <Text className={TITLE}>Settings</Text>
+        <Text accessibilityRole="header" className={TITLE}>
+          Settings
+        </Text>
       </View>
       <Group className="mt-6">
         <Row tall accessibilityLabel={YOUR_DATA} onPress={() => router.push('/data')}>
@@ -289,7 +291,9 @@ export function SettingsScreen() {
 
       <Dialog open={askDelete} onClose={() => setAskDelete(false)}>
         <View className="gap-2">
-          <Text className={H2}>Delete everything?</Text>
+          <Text accessibilityRole="header" className={H2}>
+            Delete everything?
+          </Text>
           <Text className={cn(BODY, 'text-muted-foreground')}>{DELETE_LINE}</Text>
         </View>
         <Button variant="secondary" className={cn(BTN, 'bg-background')} disabled={busy} onPress={backupFirst}>

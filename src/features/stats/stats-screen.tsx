@@ -44,7 +44,9 @@ export function StatsScreen() {
       }}
     >
       <View className="min-h-11 flex-row items-center" onLayout={(e) => measure(e.nativeEvent.layout)}>
-        <Text className={TITLE}>Stats</Text>
+        <Text accessibilityRole="header" className={TITLE}>
+          Stats
+        </Text>
       </View>
       <Segmented
         options={TAB_OPTIONS}

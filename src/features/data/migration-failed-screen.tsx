@@ -34,7 +34,9 @@ export function MigrationFailedScreen({ error, onRetry }: { error: Error; onRetr
     <SafeAreaView className="flex-1 bg-background">
       <View className="flex-1 justify-center px-5">
         <Icon as={AlertCircle} strokeWidth={1.75} className="size-11 text-destructive" />
-        <Text className={cn(TITLE, 'mt-6 text-3xl leading-10')}>The update could not open your data</Text>
+        <Text accessibilityRole="header" className={cn(TITLE, 'mt-6 text-3xl leading-10')}>
+          The update could not open your data
+        </Text>
         <Text className={cn(BODY, 'mt-3')}>
           Nothing was changed. Your sessions are still in the database file on this phone.
         </Text>

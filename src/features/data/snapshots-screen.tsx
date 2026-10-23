@@ -92,7 +92,9 @@ export function SnapshotsScreen() {
     <Screen bar={bar}>
       <View className="min-h-11" />
       <View className="mt-4" onLayout={(e) => measure(e.nativeEvent.layout)}>
-        <Text className={cn(TITLE, 'text-3xl leading-10')}>Snapshots on this phone</Text>
+        <Text accessibilityRole="header" className={cn(TITLE, 'text-3xl leading-10')}>
+          Snapshots on this phone
+        </Text>
       </View>
       <Text className={cn(SECONDARY, 'mt-2')}>{HOW}</Text>
       {snapshots.length > 0 ? (
@@ -147,7 +149,9 @@ export function SnapshotsScreen() {
 
       <Dialog open={ask !== null} onClose={() => setAsk(null)}>
         <View className="gap-1">
-          <Text className={H2}>Restore this snapshot?</Text>
+          <Text accessibilityRole="header" className={H2}>
+            Restore this snapshot?
+          </Text>
           <Text className={cn(BODY, NUMBER, 'text-muted-foreground')}>
             {ask
               ? `Everything on the phone becomes what it was on ${longDate(ask.at)}. A snapshot of today is written first.`

@@ -149,7 +149,9 @@ export function WorkoutScreen({ workout, settings, onChanged }: WorkoutScreenPro
       <View className="min-h-11" />
       <View className="mt-2 flex-row items-center gap-3" onLayout={(e) => measure(e.nativeEvent.layout)}>
         <DayIcon type={workout.dayType} size="lg" />
-        <Text className={cn(TITLE, 'shrink')}>{workout.dayName}</Text>
+        <Text accessibilityRole="header" className={cn(TITLE, 'shrink')}>
+          {workout.dayName}
+        </Text>
       </View>
       {sets.entries.map((entry, i) => (
         <View key={entry.exerciseId} className={i === 0 ? 'mt-6' : 'mt-2'}>

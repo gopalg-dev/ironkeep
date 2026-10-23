@@ -72,7 +72,9 @@ export function DayOptionsScreen() {
 
   return (
     <SheetBody>
-      <Text className={H2}>{day.name}</Text>
+      <Text accessibilityRole="header" className={H2}>
+        {day.name}
+      </Text>
       <Group>
         <Row
           tone="page"
@@ -157,7 +159,7 @@ export function DayOptionsScreen() {
       ) : null}
       <Dialog open={removeOpen} onClose={() => setRemoveOpen(false)}>
         <View className="gap-1">
-          <Text className={H2}>{`Remove ${day.name}?`}</Text>
+          <Text accessibilityRole="header" className={H2}>{`Remove ${day.name}?`}</Text>
           <Text className={cn(BODY, 'text-muted-foreground')}>Its exercises go with it. Logged sessions stay.</Text>
         </View>
         <View className="gap-2">

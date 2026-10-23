@@ -225,7 +225,9 @@ export function TodayScreen() {
           </View>
           <View className="mt-2 flex-row items-center gap-3" onLayout={(e) => measure(e.nativeEvent.layout)}>
             {view.markType ? <DayIcon type={view.markType} size="lg" /> : null}
-            <Text className={cn(TITLE, 'shrink')}>{view.title}</Text>
+            <Text accessibilityRole="header" className={cn(TITLE, 'shrink')}>
+              {view.title}
+            </Text>
           </View>
         </View>
         <Streak weeks={view.streakWeeks} />

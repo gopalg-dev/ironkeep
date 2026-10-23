@@ -131,7 +131,9 @@ export function LiftsPanel({ data }: { data: StatsData }) {
       ) : null}
       {prs.length > 0 ? (
         <>
-          <Text className={cn(H2, 'mt-8')}>Recent bests</Text>
+          <Text accessibilityRole="header" className={cn(H2, 'mt-8')}>
+            Recent bests
+          </Text>
           <Group className="mt-3">
             {prs.map((pr) => (
               <Row key={`${pr.exerciseId}-${pr.date}`} tall>

@@ -67,7 +67,7 @@ export function PageBar({ scrollY, bigTitle, title, left, right }: PageBarProps)
         {left}
         {title ? (
           <Animated.View pointerEvents="none" style={{ opacity: name, flex: 1 }}>
-            <Text className={cn(H3, left ? 'ml-3' : '')} numberOfLines={1}>
+            <Text accessibilityRole="header" className={cn(H3, left ? 'ml-3' : '')} numberOfLines={1}>
               {title}
             </Text>
           </Animated.View>

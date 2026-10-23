@@ -53,7 +53,9 @@ export function RestoreScreen() {
       <View className="min-h-11 flex-row items-center">
         <IconButton as={ArrowLeft} tone="surface" accessibilityLabel="Back" onPress={() => router.back()} />
       </View>
-      <Text className={cn(TITLE, 'mt-8')}>Restore from a file</Text>
+      <Text accessibilityRole="header" className={cn(TITLE, 'mt-8')}>
+        Restore from a file
+      </Text>
       <Text className={cn(BODY, 'mt-4')}>
         A backup file from this app or from the web app, or an Excel or CSV export of the logs.
       </Text>

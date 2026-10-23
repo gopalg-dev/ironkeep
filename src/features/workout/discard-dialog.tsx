@@ -22,7 +22,9 @@ export function DiscardDialog({ open, onClose, doneSets, busy, onDiscard }: Disc
   return (
     <Dialog open={open} onClose={onClose}>
       <View className="gap-1">
-        <Text className={H2}>Discard this workout?</Text>
+        <Text accessibilityRole="header" className={H2}>
+          Discard this workout?
+        </Text>
         <Text className={cn(BODY, 'text-muted-foreground')}>
           {doneSets > 0
             ? `The ${doneSets} ${doneSets === 1 ? 'set' : 'sets'} logged so far will be lost.`

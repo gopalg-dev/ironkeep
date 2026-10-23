@@ -55,7 +55,7 @@ export function ShareScreen() {
   return (
     <SheetBody>
       <View className="flex-row items-center justify-between gap-3">
-        <Text className={H2}>{`Share your ${unit}`}</Text>
+        <Text accessibilityRole="header" className={H2}>{`Share your ${unit}`}</Text>
         <IconButton as={X} accessibilityLabel="Close" onPress={() => router.back()} />
       </View>
       <View className="items-center">

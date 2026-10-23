@@ -179,7 +179,7 @@ function EditorForm({
   return (
     <SheetBody>
       <View className="flex-row items-center justify-between gap-3">
-        <Text className={cn(H2, 'shrink')} numberOfLines={1}>
+        <Text accessibilityRole="header" className={cn(H2, 'shrink')} numberOfLines={1}>
           {exercise ? exercise.name : 'New exercise'}
         </Text>
         <IconButton as={X} accessibilityLabel="Close" onPress={onDone} />
@@ -390,7 +390,7 @@ function EditorForm({
       {exercise ? (
         <Dialog open={removeOpen} onClose={() => setRemoveOpen(false)}>
           <View className="gap-1">
-            <Text className={H2}>{`Remove ${exercise.name} from ${day.name}?`}</Text>
+            <Text accessibilityRole="header" className={H2}>{`Remove ${exercise.name} from ${day.name}?`}</Text>
             <Text className={cn(BODY, 'text-muted-foreground')}>
               {`It leaves the plan from the next workout on. Sessions already logged keep it.${day.exercises.length <= 1 ? ` ${day.name} then has no lifts until you add one.` : ''}`}
             </Text>

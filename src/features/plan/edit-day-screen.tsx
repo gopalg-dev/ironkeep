@@ -51,7 +51,9 @@ export function EditDayScreen() {
 
   return (
     <SheetBody>
-      <Text className={H2}>{day?.name ?? ''}</Text>
+      <Text accessibilityRole="header" className={H2}>
+        {day?.name ?? ''}
+      </Text>
       <TextInput
         value={name}
         onChangeText={setName}

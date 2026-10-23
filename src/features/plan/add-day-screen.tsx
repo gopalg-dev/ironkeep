@@ -29,7 +29,9 @@ export function AddDayScreen() {
   return (
     <SheetBody>
       <View className="gap-1">
-        <Text className={H2}>What kind of day?</Text>
+        <Text accessibilityRole="header" className={H2}>
+          What kind of day?
+        </Text>
         <Text className={SECONDARY}>It starts with five lifts you can change.</Text>
       </View>
       <KindGrid onPick={add} disabled={busy} />

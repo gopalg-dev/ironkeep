@@ -48,7 +48,9 @@ export function LibraryScreen() {
     >
       <View className="min-h-11" />
       <View className="mt-4" onLayout={(e) => measure(e.nativeEvent.layout)}>
-        <Text className={TITLE}>Library</Text>
+        <Text accessibilityRole="header" className={TITLE}>
+          Library
+        </Text>
       </View>
       <View className="mt-4 min-h-14 flex-row items-center gap-3 rounded-xl bg-card px-4">
         <Icon as={Search} className="size-4.5 text-muted-foreground" />
