@@ -44,3 +44,8 @@ example
 
 # Salesforce tooling scratch folder (rewritten constantly; never ours)
 .sf/
+
+# Native module build output (Gradle), never committed
+modules/*/android/build/
+modules/*/android/.gradle/
+**/.gradle/
