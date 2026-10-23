@@ -170,6 +170,12 @@ assets/           fonts, icon, splash, library pictures
 - Repository: tests run against an in-memory SQLite.
 - Components: Testing Library for behaviour, never snapshots of markup.
 - E2E: one Maestro flow per user journey in the requirements, plus the upgrade test.
+
+## CI and EAS builds
+
+- `.github/workflows/ci.yml` runs `bun run check` and `bun run test --runInBand` on pull requests to `main` and pushes to `main`, using the Node.js and Bun versions in `eas.json`.
+- `.eas/workflows/android-main.yml` is manual-only. `.github/workflows/eas-after-ci.yml` dispatches it for the exact pushed commit only after the GitHub `CI` workflow succeeds on `main`; a failed check or test never starts an EAS build.
+- Add an Expo access token as the repository Actions secret `EXPO_TOKEN` (Settings → Secrets and variables → Actions). Use a scoped robot-user token when available. Expo's [programmatic access guide](https://docs.expo.dev/accounts/programmatic-access/) covers token creation and EAS CLI authentication.
 - Test names read as sentences: `it('carries last session's weight into an empty set')`.
 
 ## Git

@@ -29,6 +29,9 @@
   --radius-lg: 14px;
   --radius-xl: 16px;
   --radius-2xl: 24px;
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
 }
 
 /*
@@ -73,6 +76,9 @@
 @layer theme {
   :root {
     @variant light {
+      --chart-1: hsla(216, 72%, 44%, 1); /* #1f60c1 */
+      --chart-2: hsla(146, 65%, 34%, 1); /* #1e8f4f */
+      --chart-3: hsla(48, 96%, 45%, 1); /* #e1b505 */
       --color-background: oklch(0.973 0.003 106.4); /* #f6f6f4 */
       --color-logo-background: oklch(0 0 0); /* #000000 */
       --color-foreground: oklch(0.213 0.007 258.4); /* #17191c */
@@ -108,6 +114,9 @@
     }
 
     @variant dark {
+      --chart-1: hsla(216, 75%, 61%, 1); /* #518de6 */
+      --chart-2: hsla(145, 53%, 46%, 1); /* #37b36b */
+      --chart-3: hsla(47, 86%, 56%, 1); /* #efc52e */
       --color-background: oklch(0.186 0.004 264.5); /* #121315 */
       --color-logo-background: oklch(0 0 0); /* #000000 */
       --color-foreground: oklch(0.96 0.004 106.5); /* #f2f2ef */
@@ -147,6 +156,9 @@
      * because a theme must define them all; the values here are what shows before the palette lands.
      */
     @variant you-light {
+      --chart-1: hsla(216, 72%, 44%, 1); /* #1f60c1 */
+      --chart-2: hsla(146, 65%, 34%, 1); /* #1e8f4f */
+      --chart-3: hsla(48, 96%, 45%, 1); /* #e1b505 */
       --color-background: oklch(0.973 0.003 106.4); /* #f6f6f4 */
       --color-logo-background: oklch(0 0 0); /* #000000 */
       --color-foreground: oklch(0.213 0.007 258.4); /* #17191c */
@@ -181,6 +193,9 @@
       --color-success-foreground: oklch(1 0 0); /* #ffffff */
     }
     @variant you-dark {
+      --chart-1: hsla(216, 75%, 61%, 1); /* #518de6 */
+      --chart-2: hsla(145, 53%, 46%, 1); /* #37b36b */
+      --chart-3: hsla(47, 86%, 56%, 1); /* #efc52e */
       --color-background: oklch(0.186 0.004 264.5); /* #121315 */
       --color-logo-background: oklch(0 0 0); /* #000000 */
       --color-foreground: oklch(0.96 0.004 106.5); /* #f2f2ef */

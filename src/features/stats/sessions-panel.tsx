@@ -16,7 +16,6 @@ import { effortThisWeek } from '@/lib/logic/effort'
 import {
   type CalendarDay,
   dayKey,
-  finished,
   monthCalendar,
   plannedVolumeByMuscle,
   sessionsInWeek,
@@ -28,6 +27,8 @@ import { plannedPerWeek } from '@/lib/logic/summary'
 import type { Muscle } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { BodyMap } from './body-map'
+import { sessionsOnDay } from './day-sessions'
+import { DaySessionsDialog } from './day-sessions-dialog'
 import {
   hardSetRows,
   hardSetsTotal,
@@ -51,6 +52,7 @@ export function SessionsPanel({ data }: { data: StatsData }) {
   const { plan, workouts, settings } = data
   const [offset, setOffset] = useState(0)
   const [picked, setPicked] = useState<Muscle | null>(null)
+  const [dayOpen, setDayOpen] = useState<string | null>(null)
   const pick = (m: Muscle) => setPicked((cur) => (cur === m ? null : m))
   const month = new Date(now.getFullYear(), now.getMonth() + offset, 1)
   const { lowest, highest } = monthBounds(now, settings.joinedAt)
@@ -77,17 +79,25 @@ export function SessionsPanel({ data }: { data: StatsData }) {
   const rows = hardSetRows(volumeByMuscleInWeek(workouts, now), plannedVolumeByMuscle(plan, settings.trainingAge))
   const todayKey = dayKey(now)
 
-  /** A day with a session opens the latest one to edit; a past day without one logs one. */
+  const daySessions = dayOpen ? sessionsOnDay(workouts, dayOpen) : []
+  const openSession = (id: string) => {
+    setDayOpen(null)
+    router.push({ pathname: '/session-editor', params: { id } })
+  }
+
+  /** A single session opens directly; multiple sessions offer a choice, as on the web. */
   const openDay = (day: CalendarDay) => {
     if (day.future || day.before) return
-    const sessions = finished(workouts).filter((w) => dayKey(w.finishedAt) === day.date)
-    const last = sessions[sessions.length - 1]
-    if (last) router.push({ pathname: '/session-editor', params: { id: last.id } })
+    const sessions = sessionsOnDay(workouts, day.date)
+    const only = sessions[0]
+    if (sessions.length > 1) setDayOpen(day.date)
+    else if (only) openSession(only.id)
     else router.push({ pathname: '/past-day', params: { date: day.date } })
   }
 
   return (
     <View>
+      <DaySessionsDialog date={dayOpen} sessions={daySessions} onClose={() => setDayOpen(null)} onPick={openSession} />
       <View className="mt-4 rounded-xl bg-card px-4 pt-5 pb-4">
         <Text className={SECONDARY}>This week</Text>
         <View className="flex-row items-baseline">

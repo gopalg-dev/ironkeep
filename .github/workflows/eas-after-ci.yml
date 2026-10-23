@@ -1,0 +1,50 @@
+name: EAS build after CI
+
+on:
+  workflow_run:
+    workflows:
+      - CI
+    types:
+      - completed
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Dispatch Expo build
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the verified commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+
+      - name: Require Expo access token
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          if [[ -z "$EXPO_TOKEN" ]]; then
+            echo "::error title=Missing EXPO_TOKEN::Add an Expo access token as the GitHub Actions secret EXPO_TOKEN."
+            exit 1
+          fi
+
+      - name: Start EAS workflow for the verified commit
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          EAS_REF: ${{ github.event.workflow_run.head_sha }}
+        run: bunx eas-cli@25.3.0 workflow:run .eas/workflows/android-main.yml --ref "$EAS_REF" --non-interactive

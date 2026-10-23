@@ -25,10 +25,12 @@ function variantBlock(name: string): string {
 
 function tokensOf(block: string): Token[] {
   const tokens: Token[] = []
-  const line = /--color-([a-z0-9-]+):\s*([^;]+);\s*\/\*\s*(#[0-9a-f]{6})\s*\*\//g
+  const line = /--(?:(color)-)?([a-z0-9-]+):\s*([^;]+);\s*\/\*\s*(#[0-9a-f]{6})\s*\*\//g
   for (const match of block.matchAll(line)) {
-    const [, name, value, hex] = match
-    if (name && value && hex) tokens.push({ name, value: value.trim(), hex })
+    const [, colorToken, name, value, hex] = match
+    if (name && value && hex && (colorToken || name.startsWith('chart-'))) {
+      tokens.push({ name, value: value.trim(), hex })
+    }
   }
   return tokens
 }
@@ -40,6 +42,7 @@ const GROUPS: Array<{ title: string; match: (name: string) => boolean }> = [
   { title: 'Actions', match: (n) => /^(primary|secondary|accent|destructive|ring)/.test(n) },
   { title: 'Quiet', match: (n) => /^(muted|border|input)/.test(n) },
   { title: 'Day families', match: (n) => n.startsWith('day-') },
+  { title: 'Charts', match: (n) => n.startsWith('chart-') },
   { title: 'Done', match: (n) => n.startsWith('success') },
 ]
 

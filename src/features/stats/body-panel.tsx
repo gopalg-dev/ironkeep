@@ -35,6 +35,11 @@ import {
 } from './stats-model'
 
 type Panel = 'weigh' | 'tape'
+const TAPE_ACCENT: Record<Tape, string> = {
+  arm: 'accent-chart-2',
+  chest: 'accent-chart-1',
+  waist: 'accent-chart-3',
+}
 
 /**
  * Body (canvas: Stats body): the latest weigh-in with its weekly average and a line over 4 weeks, 12
@@ -93,7 +98,7 @@ export function BodyPanel({ data, onChanged }: { data: StatsData; onChanged: () 
               <LineChart
                 points={points}
                 heightClassName="h-40"
-                accentClassName="accent-foreground"
+                accentClassName="accent-chart-1"
                 format={fmtWeight}
                 accessibilityLabel={`Bodyweight, ${RANGE_LABEL[range].toLowerCase()}: ${fmtWeight(points[0]?.value)} to ${fmtWeight(points[points.length - 1]?.value)} ${units}`}
               />
@@ -143,7 +148,7 @@ export function BodyPanel({ data, onChanged }: { data: StatsData; onChanged: () 
                 <LineChart
                   points={tapeSeries}
                   heightClassName="h-35"
-                  accentClassName="accent-foreground"
+                  accentClassName={TAPE_ACCENT[tape]}
                   format={fmtWeight}
                   accessibilityLabel={`${TAPE_LABEL[tape]}: ${fmtWeight(tapeSeries[0]?.value)} to ${fmtWeight(tapeSeries[tapeSeries.length - 1]?.value)} ${unit}`}
                 />
