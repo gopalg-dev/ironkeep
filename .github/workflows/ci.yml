@@ -43,3 +43,44 @@ jobs:
 
       - name: Unit tests
         run: bun run test --runInBand
+
+  android-preflight:
+    name: Android release APK preflight
+    needs: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.0
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Generate the Android project
+        run: bunx expo prebuild --platform android --no-install
+
+      - name: Build the ARM64 release APK
+        working-directory: android
+        run: ./gradlew :app:assembleRelease -PreactNativeArchitectures=arm64-v8a -Pironkeep.buildAbis=arm64-v8a
+
+      - name: Confirm the release APK exists
+        run: test -s android/app/build/outputs/apk/release/app-arm64-v8a-release.apk
