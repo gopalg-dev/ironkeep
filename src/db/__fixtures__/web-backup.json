@@ -1,0 +1,130 @@
+{
+  "app": "ironkeep",
+  "version": 1,
+  "exportedAt": "2026-10-23T12:00:00.000Z",
+  "settings": {
+    "units": "lb",
+    "trainingAge": "over1",
+    "setupDone": true,
+    "split": "custom",
+    "plate": 2.5,
+    "dumbbellStep": 5,
+    "stackStep": 10,
+    "bar": 45,
+    "sameStep": false,
+    "bodyweight": 170,
+    "joinedAt": "2026-01-01T12:00:00.000Z",
+    "schedule": "weekday",
+    "goal": "hold",
+    "keepAwake": false,
+    "rolledPast": { "dayId": "pull", "at": "2026-10-20T12:00:00.000Z" },
+    "nudges": { "weight": { "at": "2026-10-20T12:00:00.000Z", "times": 1 } },
+    "alertsDismissed": { "sample-alert": "2026-10-20T12:00:00.000Z" }
+  },
+  "plans": [
+    {
+      "split": "custom",
+      "updatedAt": "2026-10-01T12:00:00.000Z",
+      "days": [
+        {
+          "id": "pull",
+          "name": "Pull",
+          "type": "pull",
+          "weekday": 1,
+          "exercises": [
+            {
+              "id": "row",
+              "name": "Barbell Row",
+              "sets": 3,
+              "repMin": 6,
+              "repMax": 10,
+              "muscle": "back",
+              "loadType": "weight",
+              "note": "Pause",
+              "alternates": ["Cable Row"],
+              "ramp": { "base": 2, "at": "2026-10-19" }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "split": "ppl6",
+      "updatedAt": "2026-09-01T12:00:00.000Z",
+      "days": [{ "id": "legs", "name": "Legs", "type": "legs", "exercises": [] }]
+    }
+  ],
+  "workouts": [
+    {
+      "id": "mobile-finished-uuid",
+      "dayId": "pull",
+      "dayName": "Pull",
+      "dayType": "pull",
+      "startedAt": "2026-10-21T12:00:00.000Z",
+      "finishedAt": "2026-10-21T13:00:00.000Z",
+      "status": "done",
+      "effort": 3,
+      "note": "Recorded on Android",
+      "entries": [
+        {
+          "exerciseId": "row",
+          "name": "Barbell Row",
+          "muscle": "back",
+          "loadType": "weight",
+          "repMin": 6,
+          "repMax": 10,
+          "equipment": "barbell",
+          "plateLoaded": true,
+          "sets": [{ "weight": 95, "reps": 8, "left": 1, "done": true }, { "done": false }]
+        },
+        {
+          "exerciseId": "pull-up",
+          "name": "Pull-up",
+          "muscle": "back",
+          "loadType": "bodyweight",
+          "repMin": 6,
+          "repMax": 12,
+          "sets": [{ "reps": 7, "done": true }]
+        },
+        {
+          "exerciseId": "plank",
+          "name": "Plank",
+          "muscle": "abs",
+          "loadType": "time",
+          "repMin": 20,
+          "repMax": 60,
+          "sets": [{ "seconds": 45, "done": true }]
+        }
+      ]
+    },
+    {
+      "id": "mobile-active-uuid",
+      "dayId": "pull",
+      "dayName": "Pull",
+      "dayType": "pull",
+      "startedAt": "2026-10-23T10:00:00.000Z",
+      "pausedAt": "2026-10-23T10:10:00.000Z",
+      "pausedMs": 15000,
+      "status": "in_progress",
+      "entries": [
+        {
+          "exerciseId": "row",
+          "name": "Barbell Row",
+          "muscle": "back",
+          "loadType": "weight",
+          "repMin": 6,
+          "repMax": 10,
+          "hint": "Last time 95 lb",
+          "prefill": [{ "weight": 95, "reps": 8 }],
+          "rampOffer": true,
+          "sets": [{ "weight": 95, "reps": 9, "done": true }, { "done": false }]
+        }
+      ]
+    }
+  ],
+  "bodyweights": [{ "id": "weight-uuid", "date": "2026-10-21T07:00:00.000Z", "day": "2026-10-21", "weight": 170 }],
+  "measurements": [
+    { "id": "tape-uuid", "date": "2026-10-21T07:00:00.000Z", "day": "2026-10-21", "arm": 14, "chest": 38, "waist": 32 }
+  ],
+  "prefs": { "theme": "dark", "backupFolder": "content://example/ironkeep-test-folder" }
+}
