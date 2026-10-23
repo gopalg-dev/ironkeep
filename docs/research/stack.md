@@ -83,7 +83,7 @@ Rules: `src/` keeps code apart from config; `@/*` -> `./src/*`; kebab-case files
 .
 ├── .maestro/                 # e2e flows (home.yml, session.yml, ...)
 ├── .github/workflows/        # ci.yml (lint, typecheck, unit), e2e.yml (nightly), release.yml
-├── assets/                   # icon.png, adaptive-icon*.png, splash-icon*.png, fonts/
+├── assets/                   # branding/fold/ (launcher, splash, notification), fonts/
 ├── docs/                     # ADRs, architecture.md, screens.md (screenshots), agents/
 ├── drizzle/                  # generated SQL migrations + migrations.js (committed)
 ├── scripts/

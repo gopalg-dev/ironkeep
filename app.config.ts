@@ -10,12 +10,17 @@ import { colorHex } from './scripts/css-tokens'
 export default ({ config }: ConfigContext): ExpoConfig => {
   const light = colorHex('light', 'background')
   const dark = colorHex('dark', 'background')
+  const logoBackground = colorHex('dark', 'logo-background')
   const plugins: NonNullable<ExpoConfig['plugins']> = (config.plugins ?? []).map((plugin) => {
     if (Array.isArray(plugin) && plugin[0] === 'expo-splash-screen') {
       const options = typeof plugin[1] === 'object' && plugin[1] !== null ? plugin[1] : {}
       const entry: [string, unknown] = [
         plugin[0],
-        { ...options, backgroundColor: light, dark: { backgroundColor: dark } },
+        {
+          ...options,
+          backgroundColor: light,
+          dark: { backgroundColor: dark, image: './assets/branding/fold/symbol-white.png' },
+        },
       ]
       return entry
     }
@@ -24,11 +29,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
 
   return {
     ...config,
-    name: config.name ?? 'Ironkeep',
+    name: config.name ?? 'IronKeep',
     slug: config.slug ?? 'ironkeep',
     android: {
       ...config.android,
-      adaptiveIcon: { ...config.android?.adaptiveIcon, backgroundColor: light },
+      adaptiveIcon: { ...config.android?.adaptiveIcon, backgroundColor: logoBackground },
     },
     plugins,
   }

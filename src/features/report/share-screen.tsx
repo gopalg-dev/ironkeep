@@ -25,7 +25,7 @@ export function cardText(card: ShareCardContent): string {
   if (card.win) lines.push(`${card.win.caption}: ${card.win.big}, ${card.win.small}`)
   if (card.bodyweight)
     lines.push(`Bodyweight ${card.bodyweight.value}${card.bodyweight.change ? `, ${card.bodyweight.change}` : ''}`)
-  lines.push('Ironkeep')
+  lines.push('IronKeep')
   return lines.join('\n')
 }
 
@@ -97,7 +97,7 @@ export function ShareScreen() {
             </View>
           ) : null}
           <View className="flex-row items-center justify-between">
-            <Text className={cn('text-xs font-bold', fg)}>Ironkeep</Text>
+            <Text className={cn('text-xs font-bold', fg)}>IronKeep</Text>
             <Text className={cn('text-xs font-semibold', dim)}>
               {card.bodyweight ? `${card.bodyweight.value} ${units}` : `${report.sets.now} hard sets`}
             </Text>

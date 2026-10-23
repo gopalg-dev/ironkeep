@@ -1,0 +1,12 @@
+appId: app.ironkeep
+name: Standalone first-launch smoke test (no data reset)
+---
+- launchApp
+- assertVisible: "IronKeep"
+- assertVisible: "Start fresh"
+- assertVisible: "Restore from a file"
+- stopApp
+- launchApp
+- assertVisible: "IronKeep"
+- assertVisible: "Start fresh"
+- assertVisible: "Restore from a file"

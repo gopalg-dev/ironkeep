@@ -43,7 +43,7 @@ export function MigrationFailedScreen({ error, onRetry }: { error: Error; onRetr
         <Group className="mt-6 p-4">
           <Text className={CAPTION}>What happened</Text>
           <Text className={cn(BODY, NUMBER, 'mt-1 font-mono text-sm leading-5')}>{error.message}</Text>
-          {version ? <Text className={cn(CAPTION, NUMBER, 'mt-3')}>{`Ironkeep ${version}`}</Text> : null}
+          {version ? <Text className={cn(CAPTION, NUMBER, 'mt-3')}>{`IronKeep ${version}`}</Text> : null}
         </Group>
       </View>
       <View className="gap-2 px-5 pb-5">

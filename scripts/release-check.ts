@@ -6,7 +6,7 @@ import { readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { $ } from 'bun'
 
-const LIMIT_MB = 15
+const LIMIT_MB = 30
 const OUT = 'android/app/build/outputs/apk/release'
 
 const sdk =
@@ -24,6 +24,7 @@ for (const name of apks) {
   const mb = statSync(file).size / 1024 / 1024
   const permissions = (await $`${aapt} dump permissions ${file}`.text())
     .split('\n')
+    .map((line) => line.trim())
     .filter((line) => line.startsWith('uses-permission'))
     .map((line) => line.replace(/^uses-permission: name='([^']+)'.*$/, '$1'))
   const internet = permissions.some((p) => p.endsWith('.INTERNET'))

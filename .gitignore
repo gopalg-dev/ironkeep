@@ -3,6 +3,10 @@
 # dependencies
 node_modules/
 
+# local agent configuration and skills
+/.claude/
+/.codex/
+
 # Expo
 .expo/
 dist/

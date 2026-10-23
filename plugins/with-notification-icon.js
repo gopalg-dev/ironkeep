@@ -1,0 +1,28 @@
+const { withDangerousMod } = require('expo/config-plugins')
+const fs = require('node:fs/promises')
+const path = require('node:path')
+
+/** Bundle the local notification artwork without adding notification behaviour or permissions. */
+module.exports = (config) =>
+  withDangerousMod(config, [
+    'android',
+    async (config) => {
+      const { projectRoot, platformProjectRoot } = config.modRequest
+      const resources = path.join(platformProjectRoot, 'app/src/main/res')
+      for (const density of ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi']) {
+        const folder = `drawable-${density}`
+        await fs.mkdir(path.join(resources, folder), { recursive: true })
+        await fs.copyFile(
+          path.join(projectRoot, 'assets/branding/fold/android', folder, 'ic_notification.png'),
+          path.join(resources, folder, 'ic_notification.png'),
+        )
+      }
+      // Keep the resource until the planned local-session notification feature references it.
+      await fs.mkdir(path.join(resources, 'raw'), { recursive: true })
+      await fs.writeFile(
+        path.join(resources, 'raw/keep_branding.xml'),
+        '<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@drawable/ic_notification"/>\n',
+      )
+      return config
+    },
+  ])

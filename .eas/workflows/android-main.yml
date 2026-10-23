@@ -1,0 +1,14 @@
+name: Android APK on main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  android:
+    name: Build installable Android APK
+    type: build
+    params:
+      platform: android
+      profile: preview

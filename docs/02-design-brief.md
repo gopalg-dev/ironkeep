@@ -1,4 +1,4 @@
-# Ironkeep: design brief
+﻿# Ironkeep: design brief
 
 Status: draft 1, 2026-10-21, canvas published. The canvas is "Ironkeep screens":
 https://claude.ai/artifact/JjZZTUxBdyqfhz1ravLCLQ (private until shared). Full-height screenshots of
@@ -95,13 +95,13 @@ the day colour on Today and in ink elsewhere.
 
 ```
 +----------------------------------+
-|  Wednesday, Oct 21          🔥 4 |   caption + streak, quiet
-|  ▌Pull A                         |   title 34, a 4px day-colour bar at the left
+|  Wednesday, Oct 21          ðŸ”¥ 4 |   caption + streak, quiet
+|  â–ŒPull A                         |   title 34, a 4px day-colour bar at the left
 |  6 exercises, 20 sets            |   secondary
 |                                  |
 |  +----------------------------+  |   surface group, radius 16
-|  | [img] Pull-ups      4 × 6-12| |   row 64
-|  | [img] Barbell Row   4 × 6-10| |
+|  | [img] Pull-ups      4 Ã— 6-12| |   row 64
+|  | [img] Barbell Row   4 Ã— 6-10| |
 |  | ...                         | |
 |  +----------------------------+  |
 |                                  |
@@ -122,7 +122,7 @@ Set logger (the hero):
 |  |  (-)  (+)       (-)  (+)   |  |
 |  |      [  Set 1 done  ]      |  |   one ink button; turns success green when done
 |  +----------------------------+  |
-|  ○ ● ○ ○   sets                  |   dots, tap to open a set
+|  â—‹ â— â—‹ â—‹   sets                  |   dots, tap to open a set
 ```
 
 ## Icons (review pass, 2026-10-21)

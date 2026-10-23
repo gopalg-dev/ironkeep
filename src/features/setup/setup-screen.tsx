@@ -162,7 +162,7 @@ export function SetupScreen({ initial, startAt = 'welcome' }: { initial: Setting
         }
       >
         <AppMark />
-        <Text className={`${DISPLAY} mt-6`}>Ironkeep</Text>
+        <Text className={`${DISPLAY} mt-6`}>IronKeep</Text>
         <Text className={`${BODY} mt-3 max-w-75 text-lg leading-7`}>
           Your logbook stays on this phone. No account, no internet.
         </Text>

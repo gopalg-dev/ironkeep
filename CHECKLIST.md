@@ -37,7 +37,7 @@ Legend: `[ ]` planned, `[~]` in progress, `[x]` done and verified, `[-]` dropped
   - [ ] Look "System": follows Android's theme live (light / dark), default on a fresh install; a Maestro flow toggles the phone's dark mode and checks the switch
   - [x] Migration-failed screen, import preview, destructive dialogs
 - [ ] Custom pictures: made two ways so the user can pick (decided 2026-10-21): a Blender render set and an SVG-generated set, each in light and dark. Covers:
-  - [ ] Logo (app icon, splash, the canvas)
+  - [~] Logo: Fold selected 2026-10-23. Shared vector, launcher/adaptive/themed icons, light/dark splash and notification drawable generated; unused logo concepts and template icons removed. Launcher padding increased at the user's request. Standalone ARM64 APK installed on the Pixel 6a; 360/412 light/dark emulator captures reviewed and the standalone Maestro launch/relaunch flow passes at 412dp. Repeated 360dp Maestro runs were interrupted by emulator ADB disconnects. Local setup artboards updated. Canvas publication and refreshed canvas captures remain open: the Claude canvas reports "Couldn't save" after a retry.
   - [ ] Eleven day kinds (push, pull, legs, upper, lower, full, chest, back, shoulders, arms, core) in their family colours, replacing the glyph tiles everywhere the day colour appears
   - [ ] Four effort faces (Easy, OK, Hard, Too much) for the finish check-in
   - [ ] Three progression icons (double progression, linear, top set)
@@ -149,6 +149,8 @@ and a Pixel 6a pass.
 
 ### 3.3 Data safety (each with a round-trip test and a Maestro flow)
 
+- [x] 2026-10-23: two-way JSON transfer added to the sibling web app (`../workout_plan_v3`). Same Ironkeep v1 envelope, every plan and active session, typed replace confirmation, atomic Mongo restore with rollback, account isolation and mobile preferences retained. A real web export passes through Android SQLite restore/export and back through the web repository unchanged (`src/db/backup-interop.test.ts`). Web transfer checks pass at 360/393/768/1024/1440 with simulated phone keyboards; all 257 web unit/repository tests, 57 web browser tests and 267 Android tests pass. The web production build passes. Web deployment is not performed.
+
 - [x] 2026-10-22 (`src/db/backup.ts`, `backup.test.ts`: export, restore onto a wiped phone, replace-not-add, counts) Backup envelope (requirements 7.3) built from every table, not the current plan alone: settings, every plan slot, every workout including one in progress, weigh-ins, tape, prefs; `restoreBackup` replaces all in one transaction; round-trip test proves export then restore gives an identical database (the move-to-another-phone case, user 2026-10-21)
 
 - [x] JSON export + share sheet 2026-10-22 (`features/data/files.ts` `shareBackup`; Maestro flow open)
@@ -166,13 +168,14 @@ and a Pixel 6a pass.
 
 ### 3.4 Release
 
-- [~] app.config.ts: id `app.ironkeep` and splash (light and dark) plus adaptive-icon background read from `src/global.css` through `scripts/css-tokens.js` (OKLCH converted to hex, no hand-typed colours) 2026-10-21; still open: versionCode, adaptive icon from the custom logo
+- [~] app.config.ts: id `app.ironkeep` and splash (light and dark) plus adaptive-icon background read from `src/global.css` through `scripts/css-tokens.js` (OKLCH converted to hex, no hand-typed colours) 2026-10-21; Fold adaptive and monochrome icons added 2026-10-23. Still open: release versionCode policy.
 - [x] Release build drops `android.permission.INTERNET` and `SYSTEM_ALERT_WINDOW` (`blockedPermissions` in app.json; `plugins/with-release-hardening.js` adds both back to the debug manifest for Metro); verified in the release APK with aapt by `bun run release:check` 2026-10-21
 - [ ] Release keystore created, git-ignored, documented; release script refuses the debug keystore
 - [ ] Upgrade test: build N installed, data logged, build N+1 installed over it, data intact
 - [ ] Size and battery targets met (requirements 8b): arm64 APK under 30 MB (revised by the user 2026-10-21; measured 28.5 MB), install under 35 MB, cold start under 1.5 s, no wake lock outside a session, zero network bytes in a 24-hour emulator run, no background work. **Cold start measured 2026-10-21 on the Pixel 6a release build: 340 to 420 ms to the first frame over three runs (`am start -W`, process start to first insets in logcat about 350 ms), well under 1.5 s. First size measurement 2026-10-21: arm64 release APK 28.5 MB with native libraries stored uncompressed (install size about the same, nothing extracted). React Native 0.88 core alone is about 15 MB (libreactnative 7.0, Hermes 2.7, dex 2.4, expo-modules-core 1.6, libc++ 1.3), so the 15 MB figure could not be met on this stack; the user set the target at 30 MB on 2026-10-21. Trims still available: Fresco gif/webp/filters libraries (about 1.7 MB), zstd (0.7 MB), the 4.4 MB JS bundle through tree shaking.**
 - [ ] README, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, LICENSE, CHANGELOG
 - [ ] GitHub Actions: check + unit on PR, e2e nightly
+- [~] EAS builds on main: `.eas/workflows/android-main.yml` and the `preview` profile in `eas.json` build an ARM64 APK. Install hook runs checks and tests; success hook checks release size and permissions. Workflow schema validated and 267 tests pass. Pending: project owner connects GitHub, configures Android signing, commits/pushes the app changes, and verifies the first cloud build.
 - [ ] v1.0.0 on GitHub Releases
 
 ## Testing status

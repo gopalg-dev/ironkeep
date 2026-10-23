@@ -11,8 +11,11 @@
     "check:fix": "biome check --write .",
     "test": "jest",
     "doctor": "expo-doctor",
+    "eas-build-post-install": "bun run check && bun run test --runInBand",
+    "eas-build-on-success": "bun run release:check",
     "release:check": "bun scripts/release-check.ts",
-    "design:tokens": "bun scripts/design-tokens-board.ts"
+    "design:tokens": "bun scripts/design-tokens-board.ts",
+    "design:logo": "bun scripts/design-logo.ts"
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "9.2.1",

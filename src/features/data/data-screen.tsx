@@ -69,7 +69,7 @@ interface Loaded {
   snapshots: { count: number; newest: string | null }
 }
 
-/** The folder's last path part, as the row shows it: "Ironkeep" from a content URI. */
+/** The folder's last path part, as the row shows it: "IronKeep" from a content URI. */
 function folderName(uri: string): string {
   const tail = decodeURIComponent(uri.split(/[/:]/).pop() ?? '')
   return tail || 'the folder you picked'

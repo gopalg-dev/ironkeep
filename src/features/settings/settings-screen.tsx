@@ -287,7 +287,7 @@ export function SettingsScreen() {
           <Icon as={ChevronRight} strokeWidth={1.75} className="size-5.5 text-muted-foreground" />
         </Row>
       </Group>
-      {version ? <Text className={cn(CAPTION, NUMBER, 'mt-6 px-1')}>{`Ironkeep ${version}`}</Text> : null}
+      {version ? <Text className={cn(CAPTION, NUMBER, 'mt-6 px-1')}>{`IronKeep ${version}`}</Text> : null}
 
       <Dialog open={askDelete} onClose={() => setAskDelete(false)}>
         <View className="gap-2">

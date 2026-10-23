@@ -1,0 +1,20 @@
+{
+  "cli": {
+    "version": ">= 25.3.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "environment": "preview",
+      "node": "24.18.0",
+      "bun": "1.4.0",
+      "autoIncrement": true,
+      "android": {
+        "credentialsSource": "remote",
+        "gradleCommand": ":app:assembleRelease -PreactNativeArchitectures=arm64-v8a -Pironkeep.buildAbis=arm64-v8a",
+        "applicationArchivePath": "android/app/build/outputs/apk/release/app-arm64-v8a-release.apk"
+      }
+    }
+  }
+}

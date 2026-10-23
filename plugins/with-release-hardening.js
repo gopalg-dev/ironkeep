@@ -32,7 +32,7 @@ const SPLITS = `
         abi {
             enable true
             reset()
-            include "arm64-v8a", "armeabi-v7a"
+            include(*((findProperty('ironkeep.buildAbis') ?: 'arm64-v8a,armeabi-v7a').split(',')))
             universalApk false
         }
     }

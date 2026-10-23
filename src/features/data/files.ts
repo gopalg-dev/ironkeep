@@ -196,7 +196,7 @@ export async function emailBackup(to: string, now = new Date()): Promise<boolean
   file.write(JSON.stringify(backup))
   await MailComposer.composeAsync({
     recipients: [to],
-    subject: `Ironkeep backup, ${dayKey(now)}`,
+    subject: `IronKeep backup, ${dayKey(now)}`,
     body: 'Everything the app holds, as one file. Restore it under Settings, Your data, Import a file.',
     attachments: [file.uri],
   })
