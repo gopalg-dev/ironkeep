@@ -16,6 +16,7 @@ import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
 import { restoreBackup } from '@/db/backup'
 import * as repo from '@/db/repo'
+import { announce } from '@/lib/announce'
 import { errorMessage, longDate } from '@/lib/format'
 import { dedupe, type ImportPreview, previewOf } from '@/lib/logic/import'
 import type { DayType, Workout } from '@/lib/types'
@@ -105,8 +106,10 @@ export function ImportPreviewScreen() {
         // A snapshot of today first, so the phone's own data can come back.
         if (!setup) await writeSnapshot()
         await restoreBackup(pending.backup)
+        announce('Backup restored')
       } else if (kept) {
         await repo.importLogs(kept)
+        announce('Sessions imported')
       }
       setImport(null)
       if (setup) router.replace('/')

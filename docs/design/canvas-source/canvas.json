@@ -441,6 +441,30 @@
    "w": 1180,
    "x": 11720,
    "y": -2552
+  },
+  "StatsLiftsEmpty.dc.html": {
+   "h": 964,
+   "radius": 24,
+   "title": "Stats Lifts (empty)",
+   "w": 390,
+   "x": 14240,
+   "y": -2552
+  },
+  "StatsBodyEmpty.dc.html": {
+   "h": 964,
+   "radius": 24,
+   "title": "Stats Body (empty)",
+   "w": 390,
+   "x": 14680,
+   "y": -2552
+  },
+  "ReportEmpty.dc.html": {
+   "h": 720,
+   "radius": 24,
+   "title": "Report (empty)",
+   "w": 390,
+   "x": 15120,
+   "y": -2552
   }
  },
  "createdOnFiles": {
@@ -564,7 +588,10 @@
   "IconsLucide.dc.html",
   "TabIcons.dc.html",
   "FinishIcons.dc.html",
-  "RestoreIcons.dc.html"
+  "RestoreIcons.dc.html",
+  "StatsLiftsEmpty.dc.html",
+  "StatsBodyEmpty.dc.html",
+  "ReportEmpty.dc.html"
  ],
  "pages": [],
  "title": "Ironkeep screens"

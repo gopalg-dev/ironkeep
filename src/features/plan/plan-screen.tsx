@@ -3,7 +3,7 @@ import { ChevronDown, ChevronRight, ChevronUp, Ellipsis, Plus, RotateCcw, Trash2
 import { useCallback, useState } from 'react'
 import { View } from 'react-native'
 
-import { BTN, BTN_SM2, BTN_SM2_TEXT, BTN_TEXT } from '@/components/button-styles'
+import { BTN, BTN_DANGER, BTN_SM2, BTN_SM2_TEXT, BTN_TEXT } from '@/components/button-styles'
 import { DayIcon } from '@/components/day-icon'
 import { Dialog } from '@/components/dialog'
 import { ExerciseThumb } from '@/components/exercise-thumb'
@@ -197,7 +197,7 @@ export function PlanScreen() {
           >{`Every edit and swap goes back to the ${split.name} template. Logged workouts stay.`}</Text>
         </View>
         <View className="gap-2">
-          <Button variant="destructive" className={BTN} disabled={busy} onPress={reset}>
+          <Button variant="destructive" className={cn(BTN, BTN_DANGER)} disabled={busy} onPress={reset}>
             <Icon as={Trash2} className="size-4.5 text-white" />
             <Text className={cn(BTN_TEXT, 'text-white')}>Reset</Text>
           </Button>

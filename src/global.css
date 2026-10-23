@@ -88,6 +88,7 @@
       --color-accent: oklch(0.948 0.004 106.5); /* #eeeeeb */
       --color-accent-foreground: oklch(0.213 0.007 258.4); /* #17191c */
       --color-destructive: oklch(0.551 0.187 27.1); /* #c8322e */
+      --color-destructive-surface: oklch(0.551 0.187 27.1); /* #c8322e */
       --color-border: oklch(0.915 0.005 106.5); /* #e3e3df */
       --color-input: oklch(0.915 0.005 106.5); /* #e3e3df */
       --color-ring: oklch(0.523 0.169 262); /* #2f63c9 */
@@ -120,7 +121,8 @@
       --color-muted-foreground: oklch(0.703 0.014 255.5); /* #9aa0a8 */
       --color-accent: oklch(0.28 0.009 255.6); /* #26292d */
       --color-accent-foreground: oklch(0.96 0.004 106.5); /* #f2f2ef */
-      --color-destructive: oklch(0.627 0.179 25.7); /* #e0514c */
+      --color-destructive: oklch(0.64 0.17 25.7); /* #e15a53, red text on dark reads 4.6:1 */
+      --color-destructive-surface: oklch(0.56 0.19 25.7); /* #cc3334, white button text reads 5.1:1 */
       --color-border: oklch(0.312 0.01 260.7); /* #2e3136 */
       --color-input: oklch(0.312 0.01 260.7); /* #2e3136 */
       --color-ring: oklch(0.644 0.15 262.8); /* #5b8ae8 */
@@ -158,6 +160,7 @@
       --color-accent: oklch(0.948 0.004 106.5); /* #eeeeeb */
       --color-accent-foreground: oklch(0.213 0.007 258.4); /* #17191c */
       --color-destructive: oklch(0.551 0.187 27.1); /* #c8322e */
+      --color-destructive-surface: oklch(0.551 0.187 27.1); /* #c8322e */
       --color-border: oklch(0.915 0.005 106.5); /* #e3e3df */
       --color-input: oklch(0.915 0.005 106.5); /* #e3e3df */
       --color-ring: oklch(0.523 0.169 262); /* #2f63c9 */
@@ -189,7 +192,8 @@
       --color-muted-foreground: oklch(0.703 0.014 255.5); /* #9aa0a8 */
       --color-accent: oklch(0.28 0.009 255.6); /* #26292d */
       --color-accent-foreground: oklch(0.96 0.004 106.5); /* #f2f2ef */
-      --color-destructive: oklch(0.627 0.179 25.7); /* #e0514c */
+      --color-destructive: oklch(0.64 0.17 25.7); /* #e15a53, red text on dark reads 4.6:1 */
+      --color-destructive-surface: oklch(0.56 0.19 25.7); /* #cc3334, white button text reads 5.1:1 */
       --color-border: oklch(0.312 0.01 260.7); /* #2e3136 */
       --color-input: oklch(0.312 0.01 260.7); /* #2e3136 */
       --color-ring: oklch(0.644 0.15 262.8); /* #5b8ae8 */

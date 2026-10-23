@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { announce } from '@/lib/announce'
 import { completeSet } from '@/lib/logic/sets'
 import type { LoggedSet, WorkoutEntry } from '@/lib/types'
 
@@ -58,6 +59,7 @@ export function useSessionSets(initial: WorkoutEntry[], save: SaveSets) {
     const nowDone = !at.done
     updateSets(exerciseId, (sets) => completeSet(entry, sets, index), true)
     if (!nowDone) return
+    announce('Set done')
     const allDone = entry.sets.every((s, i) => i === index || s.done)
     // A weight exercise stays open after its last set so the reps-left question can be answered.
     if (allDone && entry.loadType !== 'weight') advanceFrom(exerciseId)

@@ -5,6 +5,7 @@ import { Pressable, View } from 'react-native'
 
 import { Chip, Chips } from '@/components/chip'
 import { DayIcon, dayAccentClass, dayColourClass, dayInkClass } from '@/components/day-icon'
+import { EmptyState } from '@/components/empty-state'
 import { LineChart } from '@/components/line-chart'
 import { Group, Row, RowBody, RowSub, RowTitle, RowValue } from '@/components/row'
 import { BIG_NUMBER, CAPTION, H2, HERO_FONT_CAP, NUMBER, SECONDARY } from '@/components/typography'
@@ -50,8 +51,9 @@ export function LiftsPanel({ data }: { data: StatsData }) {
     router.push('/pick')
   }
 
-  // Before the first session there is nothing to chart: a plain line, as the web shows, not a blank tab.
-  if (lifts.length === 0) return <Text className={cn(SECONDARY, 'mt-6')}>Nothing logged yet.</Text>
+  // Before the first session there is nothing to chart: a calm illustration and a plain fact, not a
+  // blank tab (docs/research/empty-states.md).
+  if (lifts.length === 0) return <EmptyState line="Nothing logged yet." />
 
   const weeks = selected ? selected.weeks.slice(-SHOWN_WEEKS) : []
   const latest = weeks[weeks.length - 1]
@@ -149,7 +151,14 @@ export function LiftsPanel({ data }: { data: StatsData }) {
             ))}
           </Group>
         </>
-      ) : null}
+      ) : (
+        <>
+          <Text accessibilityRole="header" className={cn(H2, 'mt-8')}>
+            Recent bests
+          </Text>
+          <Text className={cn(SECONDARY, 'mt-3')}>None in the last two weeks.</Text>
+        </>
+      )}
     </View>
   )
 }

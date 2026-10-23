@@ -4,6 +4,7 @@ import { View } from 'react-native'
 
 import { BTN_SM2, BTN_SM2_TEXT } from '@/components/button-styles'
 import { instantOf } from '@/components/day-field'
+import { EmptyState } from '@/components/empty-state'
 import { LineChart } from '@/components/line-chart'
 import { Segmented } from '@/components/segmented'
 import { BIG_NUMBER, CAPTION, HERO_FONT_CAP, MID_NUMBER, NUMBER, SECONDARY } from '@/components/typography'
@@ -13,6 +14,7 @@ import { Text } from '@/components/ui/text'
 import type { StatsData } from '@/db/repo'
 import * as repo from '@/db/repo'
 import { LogWeightDialog } from '@/features/today/log-weight-dialog'
+import { announce } from '@/lib/announce'
 import { bodyweightTrend } from '@/lib/logic/stats'
 import { fmtWeight } from '@/lib/logic/units'
 import { cn } from '@/lib/utils'
@@ -97,7 +99,9 @@ export function BodyPanel({ data, onChanged }: { data: StatsData; onChanged: () 
               />
             </View>
           </>
-        ) : null}
+        ) : (
+          <EmptyState small line="Nothing logged yet." />
+        )}
       </View>
 
       <View className="mt-2 rounded-xl bg-card px-4 pt-5 pb-4">
@@ -146,7 +150,9 @@ export function BodyPanel({ data, onChanged }: { data: StatsData; onChanged: () 
               </View>
             ) : null}
           </>
-        ) : null}
+        ) : (
+          <Text className={cn(SECONDARY, 'mt-3')}>Nothing logged yet.</Text>
+        )}
       </View>
 
       <LogWeightDialog
@@ -154,14 +160,24 @@ export function BodyPanel({ data, onChanged }: { data: StatsData; onChanged: () 
         onClose={close}
         units={units}
         initial={trend.latest ?? settings.bodyweight}
-        onSave={(w, day) => void repo.logBodyweight(w, day, instantOf(day)).then(onChanged)}
+        onSave={(w, day) =>
+          void repo
+            .logBodyweight(w, day, instantOf(day))
+            .then(onChanged)
+            .then(() => announce('Bodyweight saved'))
+        }
       />
       <LogTapeDialog
         open={panel === 'tape'}
         onClose={close}
         unit={unit}
         initial={latest}
-        onSave={(m, day) => void repo.logMeasurement(m, day, instantOf(day)).then(onChanged)}
+        onSave={(m, day) =>
+          void repo
+            .logMeasurement(m, day, instantOf(day))
+            .then(onChanged)
+            .then(() => announce('Measurements saved'))
+        }
       />
     </View>
   )

@@ -5,6 +5,7 @@ import { View } from 'react-native'
 
 import { BTN, BTN_TEXT } from '@/components/button-styles'
 import { DayIcon, dayColourClass, FAMILY_DAY } from '@/components/day-icon'
+import { EmptyState } from '@/components/empty-state'
 import { IconButton } from '@/components/icon-button'
 import { useBigTitle } from '@/components/page-bar'
 import { Group, Row, RowBody, RowSub, RowTitle, RowValue } from '@/components/row'
@@ -154,13 +155,9 @@ export function ReportScreen() {
       </View>
 
       {firstReport ? (
-        <Text className={cn(SECONDARY, NUMBER, 'mt-6')}>
-          {`Your first ${unit}ly report comes on ${longDate(firstReport.toISOString())}.`}
-        </Text>
+        <EmptyState line={`Your first ${unit}ly report comes on ${longDate(firstReport.toISOString())}.`} />
       ) : !report.enough ? (
-        <Text className={cn(SECONDARY, NUMBER, 'mt-6')}>
-          {`Not enough sessions: ${report.sessions.done} of ${MIN_SESSIONS[kind]} for a ${unit}.`}
-        </Text>
+        <EmptyState line={`Not enough sessions: ${report.sessions.done} of ${MIN_SESSIONS[kind]} for a ${unit}.`} />
       ) : (
         <>
           <View className="mt-4 rounded-xl bg-card px-4 pt-5 pb-4">

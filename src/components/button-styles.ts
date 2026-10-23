@@ -12,3 +12,10 @@ export const BTN_SM = 'h-auto min-h-11 rounded-md px-4 shadow-none'
 export const BTN_SM_TEXT = 'text-base font-bold'
 export const BTN_SM2 = 'h-auto min-h-11 rounded-sm px-3.5 shadow-none'
 export const BTN_SM2_TEXT = 'text-sm font-bold'
+
+/**
+ * Overrides the destructive button's fill to the solid `destructive-surface` token in both themes, so
+ * white text clears 4.5:1. The shadcn variant uses the lighter `destructive` (the red-text colour) at
+ * 60% in dark, which fails; this stays at call sites because the ui Button is kept as published.
+ */
+export const BTN_DANGER = 'bg-destructive-surface dark:bg-destructive-surface'

@@ -1,7 +1,7 @@
 import { Trash2 } from 'lucide-react-native'
 import { View } from 'react-native'
 
-import { BTN, BTN_TEXT } from '@/components/button-styles'
+import { BTN, BTN_DANGER, BTN_TEXT } from '@/components/button-styles'
 import { Dialog } from '@/components/dialog'
 import { BODY, H2 } from '@/components/typography'
 import { Button } from '@/components/ui/button'
@@ -32,7 +32,7 @@ export function DiscardDialog({ open, onClose, doneSets, busy, onDiscard }: Disc
         </Text>
       </View>
       <View className="gap-2">
-        <Button variant="destructive" className={BTN} disabled={busy} onPress={onDiscard}>
+        <Button variant="destructive" className={cn(BTN, BTN_DANGER)} disabled={busy} onPress={onDiscard}>
           <Icon as={Trash2} className="size-4.5 text-white" />
           <Text className={cn(BTN_TEXT, 'text-white')}>Discard workout</Text>
         </Button>

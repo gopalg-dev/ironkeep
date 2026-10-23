@@ -1,5 +1,6 @@
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker'
 import { useRouter } from 'expo-router'
-import { ChevronLeft, ChevronRight } from 'lucide-react-native'
+import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react-native'
 import { useState } from 'react'
 import { Pressable, View } from 'react-native'
 
@@ -7,6 +8,7 @@ import { dayColourClass, dayInkClass, familyColourClass } from '@/components/day
 import { IconButton } from '@/components/icon-button'
 import { Stat } from '@/components/stat-tile'
 import { BIG_NUMBER, CAPTION, H2, HERO_FONT_CAP, NUMBER, SECONDARY } from '@/components/typography'
+import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
 import type { StatsData } from '@/db/repo'
 import { monthYear } from '@/lib/format'
@@ -53,6 +55,20 @@ export function SessionsPanel({ data }: { data: StatsData }) {
   const month = new Date(now.getFullYear(), now.getMonth() + offset, 1)
   const { lowest, highest } = monthBounds(now, settings.joinedAt)
   const at = monthIndex(month)
+  // Tap the month to jump to one, instead of only stepping with the arrows. The picker is bounded to
+  // the months in reach (from the join month to this one); the pick sets the offset to that month.
+  const jumpToMonth = () => {
+    DateTimePickerAndroid.open({
+      value: month,
+      mode: 'date',
+      minimumDate: settings.joinedAt ? new Date(settings.joinedAt) : undefined,
+      maximumDate: now,
+      onChange: (e, picked) => {
+        if (e.type !== 'set' || !picked) return
+        setOffset(Math.max(lowest, Math.min(highest, monthIndex(picked))) - highest)
+      },
+    })
+  }
   const weeks = monthCalendar(workouts, now, month, settings.joinedAt)
   const done = sessionsInWeek(workouts, now)
   const planned = plannedPerWeek(plan, settings)
@@ -91,9 +107,15 @@ export function SessionsPanel({ data }: { data: StatsData }) {
       </View>
 
       <View className="mt-6 flex-row items-center justify-between gap-3">
-        <Text accessibilityRole="header" className={H2}>
-          {monthYear(month)}
-        </Text>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={`${monthYear(month)}, change month`}
+          onPress={jumpToMonth}
+          className="flex-row items-center gap-2 active:opacity-70"
+        >
+          <Text className={H2}>{monthYear(month)}</Text>
+          <Icon as={CalendarDays} className="size-4.5 text-muted-foreground" />
+        </Pressable>
         <View className="flex-row gap-2">
           <IconButton
             as={ChevronLeft}

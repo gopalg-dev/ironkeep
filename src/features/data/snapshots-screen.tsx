@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
 import { restoreBackup } from '@/db/backup'
+import { announce } from '@/lib/announce'
 import { errorMessage, longDate } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import { listSnapshots, readSnapshot, SNAPSHOT_EVERY_DAYS, SNAPSHOTS_KEPT, type Snapshot, writeSnapshot } from './files'
@@ -80,6 +81,7 @@ export function SnapshotsScreen() {
       const backup = await readSnapshot(s)
       await writeSnapshot()
       await restoreBackup(backup)
+      announce('Backup restored')
       router.back()
     })
   }
@@ -141,7 +143,12 @@ export function SnapshotsScreen() {
         variant="secondary"
         className={cn(BTN, 'mt-6')}
         disabled={busy}
-        onPress={() => run(() => writeSnapshot())}
+        onPress={() =>
+          run(async () => {
+            await writeSnapshot()
+            announce('Snapshot saved')
+          })
+        }
       >
         <Icon as={Plus} className="size-4.5 text-foreground" />
         <Text className={cn(BTN_TEXT, 'text-foreground')}>{WRITE_NOW}</Text>

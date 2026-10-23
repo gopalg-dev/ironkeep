@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Pressable, TextInput, View } from 'react-native'
 import { useResolveClassNames } from 'uniwind'
 
-import { BTN, BTN_TEXT } from '@/components/button-styles'
+import { BTN, BTN_DANGER, BTN_TEXT } from '@/components/button-styles'
 import { Chip, Chips } from '@/components/chip'
 import { Dialog } from '@/components/dialog'
 import { ExerciseThumb } from '@/components/exercise-thumb'
@@ -396,7 +396,7 @@ function EditorForm({
             </Text>
           </View>
           <View className="gap-2">
-            <Button variant="destructive" className={BTN} disabled={busy} onPress={remove}>
+            <Button variant="destructive" className={cn(BTN, BTN_DANGER)} disabled={busy} onPress={remove}>
               <Icon as={Trash2} className="size-4.5 text-white" />
               <Text className={cn(BTN_TEXT, 'text-white')}>Remove</Text>
             </Button>

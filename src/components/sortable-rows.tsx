@@ -4,6 +4,7 @@ import { Animated, Easing, PanResponder, type PanResponderInstance, View } from 
 
 import { ScrollLockContext } from '@/components/screen'
 import { Icon } from '@/components/ui/icon'
+import { useReduceMotion } from '@/lib/use-reduce-motion'
 import { cn } from '@/lib/utils'
 
 interface SortableRowsProps<T extends { id: string }> {
@@ -18,10 +19,10 @@ interface SortableRowsProps<T extends { id: string }> {
   gap?: number
 }
 
-/** How long a row takes to glide to its slot. */
+/** How long a row takes to glide to its slot; 0 when the system asks for less motion. */
 const SLIDE_MS = 160
-const glide = (v: Animated.Value, to: number) =>
-  Animated.timing(v, { toValue: to, duration: SLIDE_MS, easing: Easing.out(Easing.quad), useNativeDriver: true })
+const glide = (v: Animated.Value, to: number, ms: number) =>
+  Animated.timing(v, { toValue: to, duration: ms, easing: Easing.out(Easing.quad), useNativeDriver: true })
 
 /** Where each row's top sits when the rows stand in `order`, and the height of the lot. */
 function layoutOf(order: string[], heights: Record<string, number>, gap: number) {
@@ -91,6 +92,7 @@ export function SortableRows<T extends { id: string }>({
   gap = 1,
 }: SortableRowsProps<T>) {
   const lockScroll = useContext(ScrollLockContext)
+  const slideMs = useReduceMotion() ? 0 : SLIDE_MS
   const [heights, setHeights] = useState<Record<string, number>>({})
   // The order after a drop, until `items` comes back in it.
   const [shown, setShown] = useState<string[] | null>(null)
@@ -122,9 +124,9 @@ export function SortableRows<T extends { id: string }>({
     for (const [id, top] of tops) {
       if (id === dragId || n.placedAt.get(id) === top) continue
       n.placedAt.set(id, top)
-      glide(nodeFor(n, id, top), top).start()
+      glide(nodeFor(n, id, top), top, slideMs).start()
     }
-  }, [measured, tops, dragId])
+  }, [measured, tops, dragId, slideMs])
 
   // One responder per row, made the first time the row renders; the handlers read everything else through `live`.
   const responders = useRef(new Map<string, PanResponderInstance>()).current
@@ -167,7 +169,7 @@ export function SortableRows<T extends { id: string }>({
     const next = placed(b, id, d.slot)
     const top = layoutOf(next, h, g).tops.get(id) ?? 0
     nodes.current.placedAt.set(id, top)
-    glide(posOf(id), top).start(() => {
+    glide(posOf(id), top, slideMs).start(() => {
       setDrag(null)
       if (joined(next) === joined(b)) return
       setShown(next)

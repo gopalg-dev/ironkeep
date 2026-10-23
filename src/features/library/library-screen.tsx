@@ -10,7 +10,7 @@ import { IconButton } from '@/components/icon-button'
 import { useBigTitle } from '@/components/page-bar'
 import { Group, Row, RowBody, RowSub, RowTitle } from '@/components/row'
 import { Screen } from '@/components/screen'
-import { CAPTION, NUMBER, TITLE } from '@/components/typography'
+import { CAPTION, NUMBER, SECONDARY, TITLE } from '@/components/typography'
 import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
 import { EQUIPMENT, EQUIPMENT_LABEL, type Equipment, searchLibrary } from '@/lib/library'
@@ -94,7 +94,9 @@ export function LibraryScreen() {
             )
           })}
         </Group>
-      ) : null}
+      ) : (
+        <Text className={cn(SECONDARY, 'mt-4')}>No exercise matches.</Text>
+      )}
     </Screen>
   )
 }

@@ -22,7 +22,7 @@ import { useCallback, useState } from 'react'
 import { TextInput, View } from 'react-native'
 import { useResolveClassNames, useUniwind } from 'uniwind'
 
-import { BTN, BTN_TEXT } from '@/components/button-styles'
+import { BTN, BTN_DANGER, BTN_TEXT } from '@/components/button-styles'
 import { Dialog } from '@/components/dialog'
 import { IconButton } from '@/components/icon-button'
 import { useBigTitle } from '@/components/page-bar'
@@ -313,7 +313,7 @@ export function SettingsScreen() {
         <View className="gap-1">
           <Button
             variant="destructive"
-            className={cn(BTN, !typed && 'opacity-40')}
+            className={cn(BTN, BTN_DANGER, !typed && 'opacity-40')}
             disabled={!typed || busy}
             onPress={deleteAll}
           >

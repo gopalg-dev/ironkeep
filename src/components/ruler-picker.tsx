@@ -1,5 +1,5 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
-import { FlatList, type NativeScrollEvent, type NativeSyntheticEvent, View } from 'react-native'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { FlatList, type NativeScrollEvent, type NativeSyntheticEvent, Pressable, TextInput, View } from 'react-native'
 import { useResolveClassNames } from 'uniwind'
 
 import { BIG_NUMBER, HERO_FONT_CAP } from '@/components/typography'
@@ -48,20 +48,44 @@ export function RulerPicker({
   // A half kilo per 10 dp: fine enough to land on, coarse enough to dial with a thumb. The pitch
   // comes from a class so the ruler follows the spacing scale.
   const tick = useResolveClassNames('w-2.5')
+  const muted9 = useResolveClassNames('text-muted-foreground')
   const pitch = typeof tick.width === 'number' ? tick.width : 10
   const count = Math.round((max - min) / step) + 1
   const index = Math.round((value - min) / step)
   const ticks = useMemo(() => Array.from({ length: count }, (_, i) => i), [count])
   const last = useRef(index)
   const list = useRef<FlatList<number>>(null)
+  // True only while a finger is dragging the ruler and through the fling that follows. A scroll the app
+  // itself caused, from the field or a reopen restoring the old position, must not write the value.
+  const dragging = useRef(false)
+  // After the finger lifts, a fling may or may not follow; this clears `dragging` only once no fling did.
+  const idle = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [width, setWidth] = useState(0)
+  // Type the number instead of dialling it: a tap on it opens a field, and a committed value scrolls
+  // the ruler to match. The scale and the field read and write the one `value`, so they stay in step.
+  const [editing, setEditing] = useState(false)
+  const [draft, setDraft] = useState('')
+
+  // When the value is set from outside the drag (the field, or the parent), move the ruler to it.
+  // During a drag `last.current` already tracks the landed tick, so this is a no-op then.
+  useEffect(() => {
+    // Never move the ruler while a finger is on it: `last.current` advances with each scroll event,
+    // ahead of the value React has committed, so a mid-drag render would see them differ and yank the
+    // ruler back, then forward (the jitter). Only sync when the value is set with no drag in progress,
+    // from the field or a reopen. Jump, not animate: an animated scroll's own events fed back and
+    // stalled it partway (type 75, land on 73).
+    if (!dragging.current && width > 0 && index !== last.current) {
+      last.current = index
+      list.current?.scrollToOffset({ offset: index * pitch, animated: false })
+    }
+  }, [index, width, pitch])
 
   const read = useCallback(
     (x: number): number => {
       const i = Math.max(0, Math.min(count - 1, Math.round(x / pitch)))
       if (i !== last.current) {
         last.current = i
-        onChange(round(min + i * step, step))
+        if (dragging.current) onChange(round(min + i * step, step))
       }
       return i
     },
@@ -80,19 +104,83 @@ export function RulerPicker({
     },
     [pitch, read],
   )
+  // The drag / fling lifecycle that keeps `dragging` true for the whole gesture: a finger down starts
+  // it; lifting arms a short timer that ends it, unless a fling begins first; the fling's end closes it.
+  const stopIdle = () => {
+    if (idle.current) clearTimeout(idle.current)
+    idle.current = null
+  }
+  const onBeginDrag = () => {
+    stopIdle()
+    dragging.current = true
+  }
+  const onEndDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    // Read the value, but do not scroll-correct here: a fling usually follows, and nudging the offset
+    // now fights it (the bars dance before settling). `snapToInterval` lands the release on a tick;
+    // the fine correction waits for the real end, in `onMomentumEnd`.
+    read(e.nativeEvent.contentOffset.x)
+    stopIdle()
+    idle.current = setTimeout(() => {
+      dragging.current = false
+    }, 120)
+  }
+  const onMomentumEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    onSettled(e)
+    stopIdle()
+    dragging.current = false
+  }
+  useEffect(
+    () => () => {
+      if (idle.current) clearTimeout(idle.current)
+    },
+    [],
+  )
 
   const shown = Number.isInteger(value) ? String(value) : value.toFixed(1)
   const side = Math.max(0, width / 2 - pitch / 2)
 
+  const startEdit = () => {
+    setDraft(shown)
+    setEditing(true)
+  }
+  const commit = () => {
+    const n = Number.parseFloat(draft.replace(',', '.'))
+    if (Number.isFinite(n)) onChange(round(Math.max(min, Math.min(max, n)), step))
+    setEditing(false)
+  }
+
   return (
     <View className={cn('items-center gap-4 overflow-hidden rounded-xl bg-card pt-7 pb-5', className)}>
       <View className="flex-row items-baseline">
-        <Text
-          maxFontSizeMultiplier={HERO_FONT_CAP}
-          className={cn(BIG_NUMBER, 'text-7xl', muted && 'text-muted-foreground')}
-        >
-          {shown}
-        </Text>
+        {editing ? (
+          <TextInput
+            autoFocus
+            selectTextOnFocus
+            value={draft}
+            onChangeText={setDraft}
+            onSubmitEditing={commit}
+            onBlur={commit}
+            keyboardType="decimal-pad"
+            maxLength={6}
+            accessibilityLabel={label}
+            maxFontSizeMultiplier={HERO_FONT_CAP}
+            selectionColor={typeof muted9.color === 'string' ? muted9.color : undefined}
+            className={cn(BIG_NUMBER, 'min-w-28 p-0 text-center text-7xl')}
+          />
+        ) : (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={`${label}, ${shown}${unit ? ` ${unit}` : ''}, edit`}
+            onPress={startEdit}
+          >
+            <Text
+              maxFontSizeMultiplier={HERO_FONT_CAP}
+              className={cn(BIG_NUMBER, 'text-7xl', muted && 'text-muted-foreground')}
+            >
+              {shown}
+            </Text>
+          </Pressable>
+        )}
         {unit ? <Text className="ml-1 text-2xl font-semibold leading-8 text-muted-foreground">{unit}</Text> : null}
       </View>
       <View
@@ -142,9 +230,11 @@ export function RulerPicker({
             showsHorizontalScrollIndicator={false}
             snapToInterval={pitch}
             decelerationRate="fast"
+            onScrollBeginDrag={onBeginDrag}
             onScroll={onScroll}
-            onScrollEndDrag={onSettled}
-            onMomentumScrollEnd={onSettled}
+            onScrollEndDrag={onEndDrag}
+            onMomentumScrollBegin={stopIdle}
+            onMomentumScrollEnd={onMomentumEnd}
             scrollEventThrottle={32}
             initialNumToRender={60}
             windowSize={5}
