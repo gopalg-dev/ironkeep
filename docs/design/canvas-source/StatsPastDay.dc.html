@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stats: log a past day</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./ik.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>body{margin:0;background:#F6F6F4}a{color:inherit}a:hover{color:inherit}</style>
+</helmet>
+<div class="screen d-pull" style="font-family: 'Barlow', system-ui, sans-serif">
+  <div class="content">
+    <div class="topline"><h1 class="title">Stats</h1></div>
+    <div class="seg mt16"><span>Lifts</span><span class="on">Sessions</span><span>Body</span></div>
+    <div class="group mt16" style="padding: 20px 16px 16px"><span class="sec">This week</span><div class="hstack" style="align-items: baseline"><span class="bignum num">4</span><span class="unit" style="font-size: 20px">of 6 sessions</span></div></div>
+  </div>
+  <div class="scrim"></div>
+  <div class="sheet">
+    <div class="grab"></div>
+    <div class="hstack between" style="align-items: flex-start">
+      <div class="titlerow"><span class="dtile d-pull" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><path d="m7 6 5 5 5-5"/><path d="m7 13 5 5 5-5"/></svg></span><div class="stack"><h2 class="h2">Pull A</h2><span class="cap num">Friday, Oct 16, no session logged</span></div></div>
+      <a href="StatsSessions.dc.html" class="circ" aria-label="Close"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></a>
+    </div>
+    <div class="stack gap12">
+      <div class="chips"><span class="chip">Push A</span><span class="chip on">Pull A</span><span class="chip">Legs A</span><span class="chip">Push B</span><span class="chip">Pull B</span></div>
+      <div class="hstack between"><span class="cap">Sets, prefilled from the last Pull A</span><button class="btn btn-soft sm2"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><rect x="3" y="4" width="6" height="6" rx="1"/></svg>Tick all</button></div>
+    </div>
+    <div class="stack gap8">
+<div class="group">
+      <div class="row tall"><img class="thumb" src="/_blob/36f67211b83724d979bbdc985251c74a" alt=""><div class="grow"><div class="rt">Pull-ups</div><div class="rs">4 × 6–12</div></div><span class="rv num ok-c hstack gap4">4/4 <svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span></div>
+    </div>
+
+    <div class="group">
+      <div class="row tall"><img class="thumb" src="/_blob/e147e36b534d45597be6e070579ca1b5" alt=""><div class="grow"><div class="rt">Barbell Row</div><div class="rs">4 × 6–10</div></div><span class="rv num">1/4</span><svg class="ic muted" viewBox="0 0 24 24" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg></div>
+      <div style="padding: 8px 16px 16px; display: flex; flex-direction: column; gap: 12px">
+        <div class="cap num">Last time 60 kg × 10, 10, 9, 8</div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+          <div class="stack center gap8" style="background: var(--surface); border-radius: 16px; padding: 12px 8px 12px">
+            <span class="cap">Weight</span>
+            <div class="hstack" style="align-items: baseline"><span class="bignum num" style="font-size: 48px">62.5</span><span class="unit">kg</span></div>
+            <div class="hstack gap12">
+              <button class="circ on-surface" aria-label="Less weight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+              <button class="circ on-surface" aria-label="More weight"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+            </div>
+          </div>
+          <div class="stack center gap8" style="background: var(--surface); border-radius: 16px; padding: 12px 8px 12px">
+            <span class="cap">Reps</span>
+            <div class="hstack" style="align-items: baseline"><span class="bignum num" style="font-size: 48px">10</span></div>
+            <div class="hstack gap12">
+              <button class="circ on-surface" aria-label="Fewer reps"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+              <button class="circ on-surface" aria-label="More reps"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-ink">Set 2 done</button>
+        <div class="hstack between">
+          <div class="sdots" aria-label="Sets"><span class="sd done"></span><span class="sd cur"></span><span class="sd"></span><span class="sd"></span></div>
+          <div class="hstack gap8">
+            <button class="circ" aria-label="Add a set"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="row tall"><img class="thumb" src="/_blob/cc7f3044010caa1f423db4d23fa26dab" alt=""><div class="grow"><div class="rt">Seated Cable Row</div><div class="rs">3 × 8–12</div></div><span class="rv num">0/3</span><svg class="ic muted" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></div>
+      <div class="row tall"><img class="thumb" src="/_blob/d2278e993d1b4d45b7415ff03e276116" alt=""><div class="grow"><div class="rt">Face Pull</div><div class="rs">3 × 12–15</div></div><span class="rv num">0/3</span><svg class="ic muted" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></div>
+    </div>
+  
+    </div>
+    <div class="stack gap4" style="border-top: 1px solid var(--border); padding-top: 14px; margin-top: 4px">
+      <span class="sec num" style="padding: 0 4px 8px">5 of 14 sets done</span>
+      <a href="StatsSessions.dc.html" class="btn btn-ink" style="text-decoration: none"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Log 5 sets for Oct 16</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":964}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

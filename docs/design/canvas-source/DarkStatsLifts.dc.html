@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dark: stats lifts</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./ik.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>body{margin:0;background:#121315}a{color:inherit}a:hover{color:inherit}</style>
+</helmet>
+<div class="screen dark with-tabs d-pull" style="font-family: 'Barlow', system-ui, sans-serif">
+  <div class="content">
+    <div class="topline">
+      <h1 class="title">Stats</h1>
+    </div>
+    <div class="seg mt16" role="tablist"><span class="on">Lifts</span><span>Sessions</span><span>Body</span></div>
+    <div class="chips mt16"><span class="chip on">All 12</span><span class="chip">Climbing 5</span><span class="chip">Holding 3</span><span class="chip">Slipping 1</span><span class="chip">New 3</span></div>
+    <div class="field mt16"><span class="val">Barbell Row</span><svg class="ic muted" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></div>
+    <div class="group mt8" style="padding: 20px 16px 12px">
+      <div class="hstack between" style="align-items: flex-end">
+        <div class="stack"><div class="hstack" style="align-items: baseline"><span class="bignum num">62.5</span><span class="unit">kg</span></div><span class="sec num mt8">Best this week, × 10</span></div>
+        <span class="chip" style="background: var(--day); color: var(--day-ink)">Climbing</span>
+      </div>
+      <svg viewBox="0 0 318 160" width="318" height="160" style="margin-top: 16px; display: block" role="img" aria-label="Weekly best, 8 weeks: 52.5 to 62.5 kg">
+        <line x1="40" y1="144" x2="318" y2="144" stroke="#2E3136" stroke-width="1" stroke-dasharray="3 3"/><line x1="40" y1="103" x2="318" y2="103" stroke="#2E3136" stroke-width="1" stroke-dasharray="3 3"/><line x1="40" y1="61" x2="318" y2="61" stroke="#2E3136" stroke-width="1" stroke-dasharray="3 3"/><line x1="40" y1="20" x2="318" y2="20" stroke="#2E3136" stroke-width="1" stroke-dasharray="3 3"/><text x="36" y="148" font-family="Barlow, sans-serif" font-size="12" font-weight="500" fill="#9AA0A8" text-anchor="end">50</text><text x="36" y="107" font-family="Barlow, sans-serif" font-size="12" font-weight="500" fill="#9AA0A8" text-anchor="end">55</text><text x="36" y="65" font-family="Barlow, sans-serif" font-size="12" font-weight="500" fill="#9AA0A8" text-anchor="end">60</text><text x="36" y="24" font-family="Barlow, sans-serif" font-size="12" font-weight="500" fill="#9AA0A8" text-anchor="end">65</text>
+        <polyline fill="none" stroke="#5B8AE8" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="40,123 79,123 119,105 158,105 197,87 237,87 276,68 310,41"/>
+        <circle cx="310" cy="41" r="5" fill="#5B8AE8"/>
+        <text x="302" y="31" font-family="Barlow, sans-serif" font-size="12" font-weight="700" fill="#F2F2EF" text-anchor="end">62.5</text>
+        <text x="8" y="149.3" font-family="Barlow, sans-serif" font-size="11" font-weight="500" fill="#9AA0A8">Aug 31</text>
+        <text x="310" y="149.3" font-family="Barlow, sans-serif" font-size="11" font-weight="500" fill="#9AA0A8" text-anchor="end">Oct 19</text>
+      </svg>
+    </div>
+    <div class="group mt8">
+      <div class="row"><div class="grow rs">Week of Oct 19</div><span class="rv num" style="color: var(--fg)">62.5 kg × 10</span><span class="rv num ok-c" style="min-width: 56px; text-align: right">+2.5 kg</span></div>
+      <div class="row"><div class="grow rs">Oct 12</div><span class="rv num" style="color: var(--fg)">60 kg × 10</span><span class="rv num ok-c" style="min-width: 56px; text-align: right">+1 rep</span></div>
+      <div class="row"><div class="grow rs">Oct 5</div><span class="rv num" style="color: var(--fg)">60 kg × 9</span><span class="rv num" style="min-width: 56px; text-align: right">same</span></div>
+      <div class="row"><div class="grow rs">Sep 28</div><span class="rv num" style="color: var(--fg)">60 kg × 9</span><span class="rv num ok-c" style="min-width: 56px; text-align: right">+2.5 kg</span></div>
+    </div>
+    <h2 class="h2 mt32">Recent bests</h2>
+    <div class="group mt12">
+      <div class="row"><span class="dtile  d-pull" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><path d="m7 6 5 5 5-5"/><path d="m7 13 5 5 5-5"/></svg></span><div class="grow"><div class="rt">Barbell Row</div><div class="rs">Oct 19</div></div><span class="rv num" style="color: var(--fg)">62.5 kg × 10</span></div>
+      <div class="row"><span class="dtile  d-push" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><path d="m17 11-5-5-5 5"/><path d="m17 18-5-5-5 5"/></svg></span><div class="grow"><div class="rt">Bench Press</div><div class="rs">Oct 17</div></div><span class="rv num" style="color: var(--fg)">80 kg × 8</span></div>
+    </div>
+  </div>
+  <nav class="tabbar" aria-label="Main">
+    <a class="tab" href="DarkToday.dc.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.409 13.017A5 5 0 0 1 22 15c0 3.866-4 7-9 7-4.077 0-8.153-.82-10.371-2.462-.426-.316-.631-.832-.62-1.362C2.118 12.723 2.627 2 10 2a3 3 0 0 1 3 3 2 2 0 0 1-2 2c-1.105 0-1.64-.444-2-1"/><path d="M15 14a5 5 0 0 0-7.584 2"/><path d="M9.964 6.825C8.019 7.977 9.5 13 8 15"/></svg>Today</a>
+    <a class="tab" href="DarkPlan.dc.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><rect x="3" y="4" width="6" height="6" rx="1"/></svg>Plan</a>
+    <a class="tab on" href="DarkStatsLifts.dc.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><rect x="15" y="5" width="4" height="12" rx="1"/><rect x="7" y="8" width="4" height="9" rx="1"/></svg>Stats</a>
+    <a class="tab" href="Menu.dc.html"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>Menu</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1208}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

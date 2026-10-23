@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Setup 2: split</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./ik.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>body{margin:0;background:#F6F6F4}a{color:inherit}a:hover{color:inherit}.wk{display:flex;gap:4px;margin-top:12px}.wk i{width:16px;height:16px;border-radius:2px;background:#EEEEEB}.wk .p{background:#D23B3B}.wk .u{background:#2F63C9}.wk .l{background:#D9A400}.wk .m{background:#646971}</style>
+</helmet>
+<div class="screen" style="font-family: 'Barlow', system-ui, sans-serif">
+  <div class="content">
+    <div class="topline">
+      <a href="SetupUnits.dc.html" class="circ on-surface" aria-label="Back"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7M19 12H5"/></svg></a>
+      <span class="cap num">2 of 4</span>
+    </div>
+    <div class="prog mt16"><i style="width: 40%"></i></div>
+    <h1 class="title mt32">Which split?</h1>
+    <div class="stack gap8 mt24">
+      <div class="option on"><span class="radio on"></span><div class="grow"><div class="h3">Push / Pull / Legs</div><div class="cap">6 days. Six sessions a week, every muscle twice. The default.</div><div class="wk" aria-hidden="true"><i class="u"></i><i class="p"></i><i class="l"></i><i class="u"></i><i class="p"></i><i class="l"></i><i></i></div></div></div>
+      <div class="option"><span class="radio"></span><div class="grow"><div class="h3">Push / Pull / Legs, 3 days</div><div class="cap">3 days. Three sessions, each muscle once, the big lifts first.</div><div class="wk" aria-hidden="true"><i class="u"></i><i></i><i class="p"></i><i></i><i class="l"></i><i></i><i></i></div></div></div>
+      <div class="option"><span class="radio"></span><div class="grow"><div class="h3">Push / Pull / Legs + Upper / Lower</div><div class="cap">5 days. Five sessions, every muscle twice, with a lighter upper and lower day.</div><div class="wk" aria-hidden="true"><i class="u"></i><i class="p"></i><i class="l"></i><i class="m"></i><i class="l"></i><i></i><i></i></div></div></div>
+      <div class="option"><span class="radio"></span><div class="grow"><div class="h3">Upper / Lower</div><div class="cap">4 days. Four sessions, every muscle twice, each session a bit longer.</div><div class="wk" aria-hidden="true"><i class="m"></i><i class="l"></i><i></i><i class="m"></i><i class="l"></i><i></i><i></i></div></div></div>
+      <div class="option"><span class="radio"></span><div class="grow"><div class="h3">PHUL</div><div class="cap">4 days. Four sessions: two heavy for strength, two for size.</div><div class="wk" aria-hidden="true"><i class="m"></i><i class="l"></i><i></i><i class="m"></i><i class="l"></i><i></i><i></i></div></div></div>
+      <div class="option"><span class="radio"></span><div class="grow"><div class="h3">Upper / Lower / Full body</div><div class="cap">3 days. Three sessions with a full-body day to catch up.</div><div class="wk" aria-hidden="true"><i class="m"></i><i></i><i class="l"></i><i></i><i class="m"></i><i></i><i></i></div></div></div>
+      <div class="option"><span class="radio"></span><div class="grow"><div class="h3">Full body</div><div class="cap">3 days. Three short sessions, everything every time. Good for a first year.</div><div class="wk" aria-hidden="true"><i class="m"></i><i></i><i class="m"></i><i></i><i class="m"></i><i></i><i></i></div></div></div>
+      <div class="option"><span class="radio"></span><div class="grow"><div class="h3">One muscle a day</div><div class="cap">5 days. Five sessions, one muscle each, lots of sets per muscle.</div><div class="wk" aria-hidden="true"><i class="p"></i><i class="u"></i><i class="p"></i><i class="l"></i><i class="m"></i><i></i><i></i></div></div></div>
+      <div class="option"><span class="radio"></span><div class="grow"><div class="h3">Arnold split</div><div class="cap">6 days. Six sessions: chest with back, shoulders with arms, legs alone.</div><div class="wk" aria-hidden="true"><i class="m"></i><i class="m"></i><i class="l"></i><i class="m"></i><i class="m"></i><i class="l"></i><i></i></div></div></div>
+      <div class="option"><span class="radio"></span><div class="grow"><div class="h3">Your own</div><div class="cap">4 days. Pick a kind for each day. Each starts with five lifts to edit.</div></div></div>
+    </div>
+    <div class="hstack gap12 mt16" style="padding: 0 4px"><span class="tick"></span><span class="body">Start with empty days</span></div>
+  </div>
+  <div class="bottom">
+    <a href="SetupWeight.dc.html" class="btn btn-ink" style="text-decoration: none">Continue</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1082}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

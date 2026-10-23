@@ -1,0 +1,210 @@
+@import "tailwindcss";
+@import "uniwind";
+@import "tw-animate-css";
+
+/* Ironkeep tokens. Source of truth: docs/02-design-brief.md and the design canvas. */
+
+@theme {
+  /*
+   * One family, five static weights. Each weight file is registered as its own font family by the
+   * expo-font plugin (app.json), and the weight utilities below pick the file: React Native 0.88 on
+   * Android picks the wrong face when a multi-weight XML family is asked for a weight.
+   */
+  --font-sans: "Barlow-Regular";
+
+  /*
+   * Every weight utility keeps font-weight at 400: the weight comes from the file the utility names
+   * (below), so Android loads exactly that file and never looks for a synthetic bold.
+   */
+  --font-weight-normal: 400;
+  --font-weight-medium: 400;
+  --font-weight-semibold: 400;
+  --font-weight-bold: 400;
+  --font-weight-extrabold: 400;
+
+  /* Shape by hierarchy (design brief): sheets 2xl, grouped lists and fields xl, buttons lg, thumbnails md, chips full. */
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-md: 12px;
+  --radius-lg: 14px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+}
+
+/*
+ * The weight utilities choose the weight's own file. Never put `font-sans` on a text beside one of
+ * these: `font-sans` names the Regular file and would win. The root layout sets `font-normal` instead.
+ */
+@utility font-normal {
+  font-family: "Barlow-Regular";
+  font-weight: 400;
+}
+@utility font-medium {
+  font-family: "Barlow-Medium";
+  font-weight: 400;
+}
+@utility font-semibold {
+  font-family: "Barlow-SemiBold";
+  font-weight: 400;
+}
+@utility font-bold {
+  font-family: "Barlow-Bold";
+  font-weight: 400;
+}
+@utility font-extrabold {
+  font-family: "Barlow-ExtraBold";
+  font-weight: 400;
+}
+
+/* The condensed cut, as the web app sets it on titles and big numbers: its own files, the same rule. */
+@utility font-condensed-medium {
+  font-family: "BarlowCondensed-Medium";
+  font-weight: 400;
+}
+@utility font-condensed-semibold {
+  font-family: "BarlowCondensed-SemiBold";
+  font-weight: 400;
+}
+@utility font-condensed-bold {
+  font-family: "BarlowCondensed-Bold";
+  font-weight: 400;
+}
+
+@layer theme {
+  :root {
+    @variant light {
+      --color-background: oklch(0.973 0.003 106.4); /* #f6f6f4 */
+      --color-foreground: oklch(0.213 0.007 258.4); /* #17191c */
+      --color-card: oklch(1 0 0); /* #ffffff */
+      --color-card-foreground: oklch(0.213 0.007 258.4); /* #17191c */
+      --color-popover: oklch(1 0 0); /* #ffffff */
+      --color-popover-foreground: oklch(0.213 0.007 258.4); /* #17191c */
+      --color-primary: oklch(0.213 0.007 258.4); /* #17191c */
+      --color-primary-foreground: oklch(0.973 0.003 106.4); /* #f6f6f4 */
+      --color-secondary: oklch(0.948 0.004 106.5); /* #eeeeeb */
+      --color-secondary-foreground: oklch(0.213 0.007 258.4); /* #17191c */
+      --color-muted: oklch(0.948 0.004 106.5); /* #eeeeeb */
+      --color-muted-foreground: oklch(0.52 0.014 259.8); /* #646971 */
+      --color-accent: oklch(0.948 0.004 106.5); /* #eeeeeb */
+      --color-accent-foreground: oklch(0.213 0.007 258.4); /* #17191c */
+      --color-destructive: oklch(0.551 0.187 27.1); /* #c8322e */
+      --color-border: oklch(0.915 0.005 106.5); /* #e3e3df */
+      --color-input: oklch(0.915 0.005 106.5); /* #e3e3df */
+      --color-ring: oklch(0.523 0.169 262); /* #2f63c9 */
+      --color-scrim: oklch(0 0 0 / 0.5); /* the sheet and dialog backdrop */
+
+      --color-day-push: oklch(0.578 0.188 25.3); /* #d23b3b */
+      --color-day-push-ink: oklch(1 0 0); /* #ffffff */
+      --color-day-pull: oklch(0.523 0.169 262); /* #2f63c9 */
+      --color-day-pull-ink: oklch(1 0 0); /* #ffffff */
+      --color-day-legs: oklch(0.748 0.153 85.2); /* #d9a400 */
+      --color-day-legs-ink: oklch(0.213 0.007 258.4); /* #17191c */
+      --color-day-mixed: oklch(0.52 0.014 259.8); /* #646971 */
+      --color-day-mixed-ink: oklch(0.973 0.003 106.4); /* #f6f6f4 */
+      --color-success: oklch(0.52 0.134 152.5); /* #047e40, white ink reads 5.17:1 */
+      --color-success-foreground: oklch(1 0 0); /* #ffffff */
+    }
+
+    @variant dark {
+      --color-background: oklch(0.186 0.004 264.5); /* #121315 */
+      --color-foreground: oklch(0.96 0.004 106.5); /* #f2f2ef */
+      --color-card: oklch(0.234 0.007 258.4); /* #1c1e21 */
+      --color-card-foreground: oklch(0.96 0.004 106.5); /* #f2f2ef */
+      --color-popover: oklch(0.234 0.007 258.4); /* #1c1e21 */
+      --color-popover-foreground: oklch(0.96 0.004 106.5); /* #f2f2ef */
+      --color-primary: oklch(0.96 0.004 106.5); /* #f2f2ef */
+      --color-primary-foreground: oklch(0.186 0.004 264.5); /* #121315 */
+      --color-secondary: oklch(0.28 0.009 255.6); /* #26292d */
+      --color-secondary-foreground: oklch(0.96 0.004 106.5); /* #f2f2ef */
+      --color-muted: oklch(0.28 0.009 255.6); /* #26292d */
+      --color-muted-foreground: oklch(0.703 0.014 255.5); /* #9aa0a8 */
+      --color-accent: oklch(0.28 0.009 255.6); /* #26292d */
+      --color-accent-foreground: oklch(0.96 0.004 106.5); /* #f2f2ef */
+      --color-destructive: oklch(0.627 0.179 25.7); /* #e0514c */
+      --color-border: oklch(0.312 0.01 260.7); /* #2e3136 */
+      --color-input: oklch(0.312 0.01 260.7); /* #2e3136 */
+      --color-ring: oklch(0.644 0.15 262.8); /* #5b8ae8 */
+      --color-scrim: oklch(0 0 0 / 0.5); /* the sheet and dialog backdrop */
+
+      --color-day-push: oklch(0.58 0.168 23.1); /* #cb4649, white ink reads 4.65:1 */
+      --color-day-push-ink: oklch(1 0 0); /* #ffffff */
+      --color-day-pull: oklch(0.57 0.15 262.8); /* #4673cf, white ink reads 4.55:1 */
+      --color-day-pull-ink: oklch(1 0 0); /* #ffffff */
+      --color-day-legs: oklch(0.814 0.155 90.7); /* #e8bd2e */
+      --color-day-legs-ink: oklch(0.186 0.004 264.5); /* #121315 */
+      --color-day-mixed: oklch(0.703 0.014 255.5); /* #9aa0a8 */
+      --color-day-mixed-ink: oklch(0.186 0.004 264.5); /* #121315 */
+      --color-success: oklch(0.684 0.146 153.6); /* #3fb36e */
+      --color-success-foreground: oklch(0.186 0.004 264.5); /* #121315 */
+    }
+    /*
+     * The phone's colours (Material You): two themes that start as Slate and take the phone's palette at
+     * runtime through `Uniwind.updateCSSVariables` (src/theme/material-you.ts). Every variable is listed
+     * because a theme must define them all; the values here are what shows before the palette lands.
+     */
+    @variant you-light {
+      --color-background: oklch(0.973 0.003 106.4); /* #f6f6f4 */
+      --color-foreground: oklch(0.213 0.007 258.4); /* #17191c */
+      --color-card: oklch(1 0 0); /* #ffffff */
+      --color-card-foreground: oklch(0.213 0.007 258.4); /* #17191c */
+      --color-popover: oklch(1 0 0); /* #ffffff */
+      --color-popover-foreground: oklch(0.213 0.007 258.4); /* #17191c */
+      --color-primary: oklch(0.213 0.007 258.4); /* #17191c */
+      --color-primary-foreground: oklch(0.973 0.003 106.4); /* #f6f6f4 */
+      --color-secondary: oklch(0.948 0.004 106.5); /* #eeeeeb */
+      --color-secondary-foreground: oklch(0.213 0.007 258.4); /* #17191c */
+      --color-muted: oklch(0.948 0.004 106.5); /* #eeeeeb */
+      --color-muted-foreground: oklch(0.52 0.014 259.8); /* #646971 */
+      --color-accent: oklch(0.948 0.004 106.5); /* #eeeeeb */
+      --color-accent-foreground: oklch(0.213 0.007 258.4); /* #17191c */
+      --color-destructive: oklch(0.551 0.187 27.1); /* #c8322e */
+      --color-border: oklch(0.915 0.005 106.5); /* #e3e3df */
+      --color-input: oklch(0.915 0.005 106.5); /* #e3e3df */
+      --color-ring: oklch(0.523 0.169 262); /* #2f63c9 */
+      --color-scrim: oklch(0 0 0 / 0.5); /* the sheet and dialog backdrop */
+
+      --color-day-push: oklch(0.578 0.188 25.3); /* #d23b3b */
+      --color-day-push-ink: oklch(1 0 0); /* #ffffff */
+      --color-day-pull: oklch(0.523 0.169 262); /* #2f63c9 */
+      --color-day-pull-ink: oklch(1 0 0); /* #ffffff */
+      --color-day-legs: oklch(0.748 0.153 85.2); /* #d9a400 */
+      --color-day-legs-ink: oklch(0.213 0.007 258.4); /* #17191c */
+      --color-day-mixed: oklch(0.52 0.014 259.8); /* #646971 */
+      --color-day-mixed-ink: oklch(0.973 0.003 106.4); /* #f6f6f4 */
+      --color-success: oklch(0.52 0.134 152.5); /* #047e40, white ink reads 5.17:1 */
+      --color-success-foreground: oklch(1 0 0); /* #ffffff */
+    }
+    @variant you-dark {
+      --color-background: oklch(0.186 0.004 264.5); /* #121315 */
+      --color-foreground: oklch(0.96 0.004 106.5); /* #f2f2ef */
+      --color-card: oklch(0.234 0.007 258.4); /* #1c1e21 */
+      --color-card-foreground: oklch(0.96 0.004 106.5); /* #f2f2ef */
+      --color-popover: oklch(0.234 0.007 258.4); /* #1c1e21 */
+      --color-popover-foreground: oklch(0.96 0.004 106.5); /* #f2f2ef */
+      --color-primary: oklch(0.96 0.004 106.5); /* #f2f2ef */
+      --color-primary-foreground: oklch(0.186 0.004 264.5); /* #121315 */
+      --color-secondary: oklch(0.28 0.009 255.6); /* #26292d */
+      --color-secondary-foreground: oklch(0.96 0.004 106.5); /* #f2f2ef */
+      --color-muted: oklch(0.28 0.009 255.6); /* #26292d */
+      --color-muted-foreground: oklch(0.703 0.014 255.5); /* #9aa0a8 */
+      --color-accent: oklch(0.28 0.009 255.6); /* #26292d */
+      --color-accent-foreground: oklch(0.96 0.004 106.5); /* #f2f2ef */
+      --color-destructive: oklch(0.627 0.179 25.7); /* #e0514c */
+      --color-border: oklch(0.312 0.01 260.7); /* #2e3136 */
+      --color-input: oklch(0.312 0.01 260.7); /* #2e3136 */
+      --color-ring: oklch(0.644 0.15 262.8); /* #5b8ae8 */
+      --color-scrim: oklch(0 0 0 / 0.5); /* the sheet and dialog backdrop */
+
+      --color-day-push: oklch(0.58 0.168 23.1); /* #cb4649, white ink reads 4.65:1 */
+      --color-day-push-ink: oklch(1 0 0); /* #ffffff */
+      --color-day-pull: oklch(0.57 0.15 262.8); /* #4673cf, white ink reads 4.55:1 */
+      --color-day-pull-ink: oklch(1 0 0); /* #ffffff */
+      --color-day-legs: oklch(0.814 0.155 90.7); /* #e8bd2e */
+      --color-day-legs-ink: oklch(0.186 0.004 264.5); /* #121315 */
+      --color-day-mixed: oklch(0.703 0.014 255.5); /* #9aa0a8 */
+      --color-day-mixed-ink: oklch(0.186 0.004 264.5); /* #121315 */
+      --color-success: oklch(0.684 0.146 153.6); /* #3fb36e */
+      --color-success-foreground: oklch(0.186 0.004 264.5); /* #121315 */
+    }
+  }
+}

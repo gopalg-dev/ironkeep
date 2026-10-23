@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Import: preview</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./ik.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>body{margin:0;background:#F6F6F4}a{color:inherit}a:hover{color:inherit}</style>
+</helmet>
+<div class="screen" style="font-family: 'Barlow', system-ui, sans-serif">
+  <div class="content">
+    <div class="topline">
+      <a href="SettingsData.dc.html" class="circ on-surface" aria-label="Back"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7M19 12H5"/></svg></a>
+    </div>
+    <h1 class="title mt16" style="font-size: 30px">ironkeep-logs-2026-10-18.xlsx</h1>
+    <div class="sec mt8 num">Log layout, Feb 3 to Oct 18, 2026</div>
+    <div class="group mt16" style="padding: 16px">
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+        <div class="stat"><span class="midnum num" style="font-size: 26px">214</span><span class="cap">sessions</span></div>
+        <div class="stat"><span class="midnum num" style="font-size: 26px">4,310</span><span class="cap">sets</span></div>
+        <div class="stat"><span class="midnum num" style="font-size: 26px">36</span><span class="cap">weigh-ins</span></div>
+        <div class="stat"><span class="midnum num" style="font-size: 26px">9</span><span class="cap">tapes</span></div>
+      </div>
+    </div>
+    <div class="group mt8">
+      <div class="row"><span class="dot" style="background: var(--success)"></span><div class="grow"><div class="rt">New</div></div><span class="rv num" style="color: var(--fg)">206 sessions</span></div>
+      <div class="row"><span class="dot" style="background: var(--surface-2)"></span><div class="grow"><div class="rt">Already here, skipped</div></div><span class="rv num" style="color: var(--fg)">8 sessions</span></div>
+      <div class="row"><span class="dtile  d-legs" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg></span><div class="grow"><div class="rt">Lifts not in the library</div><div class="rs">Kept as typed: Zercher Squat, Pin Press</div></div><span class="rv num" style="color: var(--fg)">2</span></div>
+    </div>
+    <div class="cap mt24" style="padding: 0 4px">Check these rows</div>
+    <div class="group mt8">
+      <div class="row"><svg class="ic bad-c" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><div class="grow"><div class="rt num">Row 1,204</div><div class="rs">No date, row skipped.</div></div></div>
+      <div class="row"><svg class="ic bad-c" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><div class="grow"><div class="rt num">Row 2,871</div><div class="rs">Reps looked like a date. Read as 6, check it.</div></div></div>
+    </div>
+    <div class="body mt24">Nothing is written until you import. The import is all or nothing.</div>
+  </div>
+  <div class="bottom">
+    <a href="SettingsData.dc.html" class="btn btn-ink" style="text-decoration: none"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>Import 206 sessions</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1017}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Report: share card</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./ik.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>body{margin:0;background:#F6F6F4}a{color:inherit}a:hover{color:inherit}.sw{width:28px;height:28px;border-radius:999px;border:2px solid #fff;box-shadow:0 0 0 1px #E3E3DF}</style>
+</helmet>
+<div class="screen" style="font-family: 'Barlow', system-ui, sans-serif">
+  <div class="content">
+    <div class="topline"><div class="seg" style="width: 160px"><span class="on">Week</span><span>Month</span></div></div>
+    <h1 class="title mt16" style="font-size: 30px">Oct 13 to 19</h1>
+    <div class="group mt16" style="padding: 20px 16px 16px"><div class="hstack" style="align-items: baseline"><span class="bignum num">5</span><span class="unit" style="font-size: 20px">of 6 sessions</span></div></div>
+  </div>
+  <div class="scrim"></div>
+  <div class="sheet">
+    <div class="grab"></div>
+    <div class="hstack between"><h2 class="h2">Share your week</h2><a href="Report.dc.html" class="circ" aria-label="Close"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></a></div>
+    <div class="hstack" style="justify-content: center">
+      <div style="width: 216px; height: 270px; border-radius: 16px; background: #17191C; color: #F6F6F4; padding: 20px; display: flex; flex-direction: column; justify-content: space-between" role="img" aria-label="Share card preview">
+        <div class="stack gap4"><span style="font-size: 12px; font-weight: 600; opacity: 0.7">Oct 13 to 19</span><span style="font-size: 44px; font-weight: 800; letter-spacing: -0.03em; line-height: 1">5<span style="font-size: 16px; font-weight: 600; opacity: 0.7; margin-left: 6px">of 6 sessions</span></span></div>
+        <div class="stack gap4"><span style="font-size: 12px; font-weight: 600; opacity: 0.7">Barbell Row</span><span style="font-size: 26px; font-weight: 800; letter-spacing: -0.02em">62.5 kg × 10</span><span style="font-size: 12px; font-weight: 600; color: #5B8AE8">New best</span></div>
+        <div class="hstack between"><span style="font-size: 12px; font-weight: 700">Ironkeep</span><span style="font-size: 12px; font-weight: 600; opacity: 0.7">52 hard sets</span></div>
+      </div>
+    </div>
+    <div class="hstack gap12" style="justify-content: center"><span class="sw" style="background: var(--fg); outline: 2px solid var(--fg); outline-offset: 2px" role="radio" aria-checked="true" aria-label="Ink"></span><span class="sw" style="background: var(--surface); border: 1px solid var(--border)" role="radio" aria-checked="false" aria-label="Paper"></span></div>
+    <div class="stack gap8"><div class="cap" style="padding: 0 4px">Highlight</div><div class="chips"><span class="chip on">Barbell Row</span><span class="chip">Squat</span><span class="chip">Pull-ups</span></div></div>
+    <div class="hstack gap12" style="padding: 0 4px"><span class="tick"></span><span class="body">Bodyweight on the card</span></div>
+    <button class="btn btn-ink"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>Share</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":964}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

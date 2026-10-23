@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Settings: your data</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./ik.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>body{margin:0;background:#F6F6F4}a{color:inherit}a:hover{color:inherit}</style>
+</helmet>
+<div class="screen" style="font-family: 'Barlow', system-ui, sans-serif">
+  <div class="content">
+    <div class="topline">
+      <a href="Settings.dc.html" class="circ on-surface" aria-label="Back"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7M19 12H5"/></svg></a>
+    </div>
+    <h1 class="title mt16">Your data</h1>
+    <div class="group mt16" style="padding: 16px">
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+        <div class="stat"><span class="midnum num" style="font-size: 26px">312</span><span class="cap">sessions</span></div>
+        <div class="stat"><span class="midnum num" style="font-size: 26px">6,140</span><span class="cap">sets</span></div>
+        <div class="stat"><span class="midnum num" style="font-size: 26px">14</span><span class="cap">months</span></div>
+      </div>
+      <div class="sec num mt12">Last backup 3 days ago, in Downloads/Ironkeep</div>
+    </div>
+    <div class="cap mt24" style="padding: 0 4px">Export</div>
+    <div class="group mt8">
+      <div class="row tall"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg><div class="grow"><div class="rt">Backup file</div><div class="rs">Everything, as JSON</div></div><button class="btn btn-ink sm2"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>Share</button></div>
+      <div class="row tall"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg><div class="grow"><div class="rt">Excel</div><div class="rs">Log or Tracker layout</div></div><button class="btn btn-soft sm2"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>Share</button></div>
+      <div class="row tall"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M8 13h8M8 17h8"/></svg><div class="grow"><div class="rt">CSV</div><div class="rs">One row per set</div></div><button class="btn btn-soft sm2"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>Share</button></div>
+    </div>
+    <div class="group mt8">
+      <div class="row"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg><div class="grow"><div class="rt">Email to me</div><div class="rs">sam@example.com</div></div><svg class="ic muted" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></div>
+      <div class="row"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg><div class="grow"><div class="rt">Backup folder</div><div class="rs">Downloads/Ironkeep, every 7 days</div></div><svg class="ic muted" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></div>
+    </div>
+    <div class="cap mt24" style="padding: 0 4px">Import</div>
+    <div class="group mt8">
+      <a href="DataImportPreview.dc.html" class="row tall" style="text-decoration: none"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg><div class="grow"><div class="rt">Import a file</div><div class="rs">Backup, Excel or CSV</div></div><svg class="ic muted" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+      <a href="DataRestore.dc.html" class="row tall" style="text-decoration: none"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 3"/></svg><div class="grow"><div class="rt">Snapshots on this phone</div><div class="rs num">8 kept, newest Oct 18</div></div><svg class="ic muted" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1082}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

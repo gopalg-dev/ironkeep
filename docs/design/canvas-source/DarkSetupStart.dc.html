@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dark: setup start</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./ik.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>body{margin:0;background:#121315}a{color:inherit}a:hover{color:inherit}</style>
+</helmet>
+<div class="screen dark" style="font-family: 'Barlow', system-ui, sans-serif">
+  <div class="content center-page" style="gap: 0">
+    <svg width="72" height="72" viewBox="0 0 72 72" role="img" aria-label="Ironkeep mark"><rect x="6" y="6" width="60" height="60" rx="18" fill="#F2F2EF"/><path d="M22 46V26h6v20zM44 46V26h6v20zM28 33h16v6H28z" fill="#121315"/></svg>
+    <h1 class="title mt24" style="font-size: 44px">Ironkeep</h1>
+    <div class="body mt12" style="font-size: 18px; max-width: 300px">Your logbook stays on this phone. No account, no internet.</div>
+  </div>
+  <div class="bottom" style="gap: 10px">
+    <a href="SetupUnits.dc.html" class="btn btn-ink" style="text-decoration: none"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 3 14 9-14 9V3z"/></svg>Start fresh</a>
+    <a href="DataImportPreview.dc.html" class="btn btn-surface" style="text-decoration: none"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>Restore from a file</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":964}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

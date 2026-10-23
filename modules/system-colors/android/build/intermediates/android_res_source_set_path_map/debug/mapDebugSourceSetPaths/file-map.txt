@@ -1,0 +1,9 @@
+app.ironkeep.systemcolors.system-colors-pngs-0 C:\Users\Gopal\projects\per\workout_plan_v4\modules\system-colors\android\build\generated\res\pngs\debug
+app.ironkeep.systemcolors.system-colors-updated_navigation_xml-1 C:\Users\Gopal\projects\per\workout_plan_v4\modules\system-colors\android\build\generated\updated_navigation_xml\debug
+app.ironkeep.systemcolors.system-colors-mergeDebugResources-2 C:\Users\Gopal\projects\per\workout_plan_v4\modules\system-colors\android\build\intermediates\incremental\debug\mergeDebugResources\merged.dir
+app.ironkeep.systemcolors.system-colors-mergeDebugResources-3 C:\Users\Gopal\projects\per\workout_plan_v4\modules\system-colors\android\build\intermediates\incremental\debug\mergeDebugResources\stripped.dir
+app.ironkeep.systemcolors.system-colors-debug-4 C:\Users\Gopal\projects\per\workout_plan_v4\modules\system-colors\android\build\intermediates\merged_res\debug\mergeDebugResources
+app.ironkeep.systemcolors.system-colors-debug-5 C:\Users\Gopal\projects\per\workout_plan_v4\modules\system-colors\android\build\intermediates\packaged_res\debug\packageDebugResources
+app.ironkeep.systemcolors.system-colors-debug-6 C:\Users\Gopal\projects\per\workout_plan_v4\modules\system-colors\android\src\debug\res
+app.ironkeep.systemcolors.system-colors-main-7 C:\Users\Gopal\projects\per\workout_plan_v4\modules\system-colors\android\src\main\res
+gradleHome-0 C:\Users\Gopal\.gradle

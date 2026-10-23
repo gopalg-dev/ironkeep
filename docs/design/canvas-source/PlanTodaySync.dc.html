@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plan: today-sync dialog</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./ik.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>body{margin:0;background:#F6F6F4}a{color:inherit}a:hover{color:inherit}</style>
+</helmet>
+<div class="screen" style="font-family: 'Barlow', system-ui, sans-serif">
+  <div class="content">
+    <div class="topline"><h1 class="title">Plan</h1><span class="circ on-surface" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></span></div>
+    <div class="sec mt4">Push / Pull / Legs, 6 days</div>
+    <div class="group mt24 d-pull">
+      <div class="row tall"><span class="dtile  d-pull" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><path d="m7 6 5 5 5-5"/><path d="m7 13 5 5 5-5"/></svg></span><div class="grow"><div class="rt">Pull A</div><div class="rs">6 exercises, 20 sets</div></div><span class="chip" style="height: 28px; font-size: 13px; background: var(--day); color: var(--day-ink)">In progress</span></div>
+      <div class="row"><div class="grow"><div class="rt">Pull-ups</div></div><span class="rv">4 × 6–12</span></div>
+      <div class="row"><div class="grow"><div class="rt">Pendlay Row</div><div class="rs">Was Barbell Row</div></div><span class="rv">4 × 6–10</span></div>
+      <div class="row"><div class="grow"><div class="rt">Seated Cable Row</div></div><span class="rv">3 × 8–12</span></div>
+    </div>
+  </div>
+  <div class="scrim"></div>
+  <div class="dialog">
+    <div class="stack gap8">
+      <h2 class="h2">Pull A is running right now</h2>
+      <span class="body muted">The session on Today still has Barbell Row. Change it there too?</span>
+    </div>
+    <div class="stack gap8">
+      <a href="Workout.dc.html" class="btn btn-ink" style="text-decoration: none"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><rect x="3" y="4" width="6" height="6" rx="1"/></svg>Plan and today</a>
+      <a href="Plan.dc.html" class="btn btn-soft" style="text-decoration: none"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Plan only</a>
+    </div>
+    <div class="cap">Sets already ticked stay as they are.</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":964}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+appId: app.ironkeep
+name: Scaffold spike
+---
+- launchApp
+- assertVisible: "Pull A"
+- tapOn: "Write a row"
+- assertVisible:
+    id: "spike-db"
+    text: "Saved row: 20.*"

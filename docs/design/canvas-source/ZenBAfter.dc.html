@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Zen mode B: after a set</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./ik.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>body{margin:0;background:#F6F6F4}a{color:inherit}a:hover{color:inherit}.pill{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:1;min-height:76px;padding:8px 2px;border-radius:14px;background:#FFFFFF;font-variant-numeric:tabular-nums}.pill .n{font-size:12px;font-weight:600;color:#646971}.pill .v{font-size:14px;font-weight:700}.pill.done{background:#FFFFFF}.pill.done .v{color:#1F8A4C}.pill.cur{outline:2px solid #17191C;outline-offset:-2px}.pill.next .v{color:#646971;font-weight:500}.pill .l{font-size:12px;font-weight:500;color:#646971;font-variant-numeric:tabular-nums}.lp{display:flex;gap:6px}.lp i{flex:1;height:4px;border-radius:2px;background:#E3E3DF}.lp i.d{background:#1F8A4C}.lp i.c{background:#17191C}</style>
+</helmet>
+<div class="screen d-pull" style="font-family: 'Barlow', system-ui, sans-serif">
+  <div class="content">
+    <div class="topline">
+      <div class="hstack gap8">
+        <button class="circ on-surface" aria-label="Pause"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg></button>
+        <span class="sec num">13 min, 0:08 since set 2</span>
+      </div>
+      <a href="Workout.dc.html" class="circ on-surface" aria-label="Exit zen"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></a>
+    </div>
+    <div class="lp mt16" aria-label="Lifts in this session"><i class="d"></i><i class="c"></i><i></i><i></i><i></i><i></i></div>
+    <div class="hstack between mt20" style="align-items: center; margin-top: 20px">
+      <div class="stack gap4">
+        <span class="hstack gap8 sec num"><span class="dtile d-pull" aria-hidden="true" style="width: 28px; height: 28px; border-radius: 8px"><svg class="ic" viewBox="0 0 24 24" style="width: 16px; height: 16px"><path d="m7 6 5 5 5-5"/><path d="m7 13 5 5 5-5"/></svg></span>Pull A, lift 2 of 6</span>
+        <h1 class="title" style="font-size: 30px">Barbell Row</h1>
+      </div>
+      <img src="/_blob/e147e36b534d45597be6e070579ca1b5" alt="" style="width: 56px; height: 56px; object-fit: cover; border-radius: 14px; background: var(--surface-2); flex: none">
+    </div>
+
+    <div class="hstack between mt16"><span class="sec num">Set 3 of 4</span><div class="sdots" aria-label="Sets"><span class="sd done"></span><span class="sd done"></span><span class="sd cur"></span><span class="sd"></span></div></div>
+    <div class="stack center gap8 mt16" style="background: var(--surface); border-radius: 16px; padding: 16px 16px 14px"><span class="cap">Weight</span><div class="hstack" style="align-items: baseline"><span class="bignum num">102.5</span><span class="unit" style="font-size: 20px">kg</span></div><div class="hstack gap8" style="width: 100%"><button class="btn btn-soft" style="flex: 1; height: 64px" aria-label="Less"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button><button class="btn btn-soft" style="flex: 1; height: 64px" aria-label="More"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button></div></div>
+    <div class="stack center gap8 mt8" style="background: var(--surface); border-radius: 16px; padding: 16px 16px 14px"><span class="cap">Reps, 6–10</span><div class="hstack" style="align-items: baseline"><span class="bignum num">10</span></div><div class="hstack gap8" style="width: 100%"><button class="btn btn-soft" style="flex: 1; height: 64px" aria-label="Less"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button><button class="btn btn-soft" style="flex: 1; height: 64px" aria-label="More"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg></button></div></div>
+    <div class="cap num" style="text-align: center; margin-top: 12px">Last time 100 kg × 10, Oct 14</div>
+  </div>
+  <div class="bottom" style="gap: 8px">
+    <a href="ZenB.dc.html" class="btn btn-ink" style="height: 72px; font-size: 20px; border-radius: 24px; text-decoration: none">Set 3 done</a>
+    <div class="hstack between" style="padding-top: 4px">
+      <a href="ZenB.dc.html" class="btn btn-surface sm" style="text-decoration: none"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14 4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>Undo set 2</a>
+      <a href="WorkoutSwap.dc.html" class="btn btn-surface sm" style="text-decoration: none"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 3-4 4 4 4M4 7h16M16 21l4-4-4-4M20 17H4"/></svg>Swap</a>
+      <a href="ZenB.dc.html" class="circ on-surface" aria-label="Next lift" style="text-decoration: none"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":964}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

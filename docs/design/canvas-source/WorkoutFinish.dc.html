@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Workout: finish check-in</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./ik.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>body{margin:0;background:#F6F6F4}a{color:inherit}a:hover{color:inherit}</style>
+</helmet>
+<div class="screen d-pull" style="font-family: 'Barlow', system-ui, sans-serif">
+  <div class="content">
+    <div class="topline"><span class="sec num">41 min</span></div>
+    <div class="titlerow mt8"><span class="dtile lg d-pull" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><path d="m7 6 5 5 5-5"/><path d="m7 13 5 5 5-5"/></svg></span><h1 class="title">Pull A</h1></div>
+    <div class="group mt24"><div class="row tall"><img class="thumb" src="/_blob/36f67211b83724d979bbdc985251c74a" alt=""><div class="grow"><div class="rt">Pull-ups</div></div><span class="rv num">4/4</span></div></div>
+    <div class="group mt8"><div class="row tall"><img class="thumb" src="/_blob/e147e36b534d45597be6e070579ca1b5" alt=""><div class="grow"><div class="rt">Barbell Row</div></div><span class="rv num">4/4</span></div></div>
+  </div>
+  <div class="scrim"></div>
+  <div class="sheet">
+    <div class="grab"></div>
+    <h2 class="h2">How did it go?</h2>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+      <button class="btn btn-soft" style="height: 76px; font-size: 14px; padding: 0; flex-direction: column; gap: 6px"><svg class="ic lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/></svg>Easy</button>
+      <button class="btn btn-ink" style="height: 76px; font-size: 14px; padding: 0; flex-direction: column; gap: 6px"><svg class="ic lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/><path d="M8 15h8"/></svg>OK</button>
+      <button class="btn btn-soft" style="height: 76px; font-size: 14px; padding: 0; flex-direction: column; gap: 6px"><svg class="ic lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="9" cy="10" r="1"/><circle cx="15" cy="10" r="1"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/></svg>Hard</button>
+      <button class="btn btn-soft" style="height: 76px; font-size: 14px; padding: 0; flex-direction: column; gap: 6px"><svg class="ic lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m7.5 8.5 3 3M10.5 8.5l-3 3M13.5 8.5l3 3M16.5 8.5l-3 3"/><path d="M16 16.5s-1.5-2-4-2-4 2-4 2"/></svg>Too much</button>
+    </div>
+    <div class="input" style="height: 72px; align-items: flex-start; padding-top: 14px"><span class="ph">Note</span></div>
+    <div class="body"><span class="strong num">3 of 20</span> sets are not ticked. They won't count.</div>
+    <div class="stack gap8">
+      <a href="WorkoutSummary.dc.html" class="btn btn-ink" style="text-decoration: none"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Save and finish</a>
+      <a href="Workout.dc.html" class="btn btn-ghost" style="text-decoration: none"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>Keep going</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":964}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

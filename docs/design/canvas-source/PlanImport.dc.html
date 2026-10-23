@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plan: bring your own plan</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./ik.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>body{margin:0;background:#F6F6F4}a{color:inherit}a:hover{color:inherit}</style>
+</helmet>
+<div class="screen" style="font-family: 'Barlow', system-ui, sans-serif">
+  <div class="content">
+    <div class="topline">
+      <a href="Plan.dc.html" class="circ on-surface" aria-label="Back"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 19-7-7 7-7M19 12H5"/></svg></a>
+    </div>
+    <h1 class="title mt16" style="font-size: 30px">Bring your own plan</h1>
+    <div class="field mt24"><span class="lab">Template</span><span class="hstack gap4 val">Current plan <svg class="ic sm muted" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span></div>
+    <div class="stack gap8 mt8">
+      <button class="btn btn-ink"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>Upload a file</button>
+      <button class="btn btn-surface"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Download template</button>
+    </div>
+    <div class="hstack between mt32"><h2 class="h2">my-plan.xlsx</h2><span class="sec num">2 days, 8 exercises</span></div>
+    <div class="group mt12 d-mixed">
+      <div class="row"><span class="dtile  d-mixed" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><path d="M8 6L12 2L16 6"/><path d="M12 2V22"/></svg></span><div class="grow"><div class="rt">Upper</div></div><span class="rv">Upper</span><svg class="ic muted" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></div>
+      <div class="row"><div class="grow"><div class="rt">Bench Press</div><div class="rs">Weighted, chest</div></div><span class="rv">4 × 6–10</span></div>
+      <div class="row"><div class="grow"><div class="rt">Chin-ups</div><div class="rs">Bodyweight, back</div></div><span class="rv">3 × 6–10</span></div>
+      <div class="row"><div class="grow"><div class="rt">Overhead Press</div><div class="rs">Weighted, shoulders</div></div><span class="rv">3 × 8–12</span></div>
+      <div class="row"><div class="grow"><div class="rt">Plank</div><div class="rs">Timed hold, abs</div></div><span class="rv">3 × 30–45 s</span></div>
+    </div>
+    <div class="group mt8 d-legs">
+      <div class="row"><span class="dtile  d-legs" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg></span><div class="grow"><div class="rt">Lower</div></div><span class="rv">Lower</span><svg class="ic muted" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></div>
+    </div>
+    <div class="group mt16" style="background: var(--surface)">
+      <div class="row"><svg class="ic bad-c" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg><div class="grow"><div class="rt">Row 6</div><div class="rs">No exercise name, row skipped.</div></div></div>
+    </div>
+  </div>
+  <div class="bottom">
+    <a href="Plan.dc.html" class="btn btn-ink" style="text-decoration: none"><svg class="ic sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Use this plan</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1109}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\Gopal\projects\per\workout_plan_v4\modules\system-colors\android\src\main\assets"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\Gopal\projects\per\workout_plan_v4\modules\system-colors\android\src\debug\assets"/></dataSet></merger>

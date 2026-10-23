@@ -1,0 +1,5 @@
+# Peer dependencies are never installed on their own: every native module in the app is listed in
+# package.json by hand, so nothing (Reanimated, worklets, gesture-handler) gets autolinked by accident.
+# See docs/00-requirements.md section 8b.
+[install]
+peer = false

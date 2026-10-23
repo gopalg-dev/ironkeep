@@ -1,0 +1,571 @@
+{
+ "v": 3,
+ "attachments": {},
+ "boards": {
+  "DarkPlan.dc.html": {
+   "h": 1309,
+   "radius": 40,
+   "title": "Dark: plan",
+   "w": 390,
+   "x": 1410,
+   "y": 8384
+  },
+  "DarkSettingsData.dc.html": {
+   "h": 1082,
+   "radius": 40,
+   "title": "Dark: your data",
+   "w": 390,
+   "x": 2350,
+   "y": 8384
+  },
+  "DarkSetupStart.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Dark: setup start",
+   "w": 390,
+   "x": 0,
+   "y": 8384
+  },
+  "DarkStatsLifts.dc.html": {
+   "h": 1208,
+   "radius": 40,
+   "title": "Dark: stats lifts",
+   "w": 390,
+   "x": 1880,
+   "y": 8384
+  },
+  "DarkToday.dc.html": {
+   "h": 1058,
+   "radius": 40,
+   "title": "Dark: today",
+   "w": 390,
+   "x": 470,
+   "y": 8384
+  },
+  "DarkWorkout.dc.html": {
+   "h": 1082,
+   "radius": 40,
+   "title": "Dark: workout",
+   "w": 390,
+   "x": 940,
+   "y": 8384
+  },
+  "DataDeleteAll.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Data: delete everything",
+   "w": 390,
+   "x": 2820,
+   "y": 6910
+  },
+  "DataImportPreview.dc.html": {
+   "h": 1017,
+   "radius": 40,
+   "title": "Import: preview",
+   "w": 390,
+   "x": 1880,
+   "y": 6910
+  },
+  "DataRestore.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Data: snapshots",
+   "w": 390,
+   "x": 2350,
+   "y": 6910
+  },
+  "DesignColors.dc.html": {
+   "h": 1912,
+   "radius": 24,
+   "title": "Design system: colour tokens",
+   "w": 1180,
+   "x": 0,
+   "y": -2552
+  },
+  "DesignComponents.dc.html": {
+   "h": 1509,
+   "radius": 24,
+   "title": "Design system: components",
+   "w": 1180,
+   "x": 2520,
+   "y": -2552
+  },
+  "DesignType.dc.html": {
+   "h": 1105,
+   "radius": 24,
+   "title": "Design system: type, space, shape",
+   "w": 1180,
+   "x": 1260,
+   "y": -2552
+  },
+  "Guide.dc.html": {
+   "h": 1071,
+   "radius": 40,
+   "title": "Guide",
+   "w": 390,
+   "x": 3760,
+   "y": 6910
+  },
+  "Library.dc.html": {
+   "h": 1024,
+   "radius": 40,
+   "title": "Library",
+   "w": 390,
+   "x": 0,
+   "y": 6910
+  },
+  "Main.dc.html": {
+   "h": 1058,
+   "radius": 40,
+   "title": "Today: next up",
+   "w": 390,
+   "x": 0,
+   "y": 2124
+  },
+  "Menu.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Menu sheet",
+   "w": 390,
+   "x": 3290,
+   "y": 6910
+  },
+  "MigrationFailed.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Migration failed",
+   "w": 390,
+   "x": 4230,
+   "y": 6910
+  },
+  "Plan.dc.html": {
+   "h": 1309,
+   "radius": 40,
+   "title": "Plan",
+   "w": 390,
+   "x": 0,
+   "y": 3639
+  },
+  "PlanAddDay.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Plan: add a day",
+   "w": 390,
+   "x": 940,
+   "y": 3639
+  },
+  "PlanEditor.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Plan: exercise editor",
+   "w": 390,
+   "x": 470,
+   "y": 3639
+  },
+  "PlanImport.dc.html": {
+   "h": 1109,
+   "radius": 40,
+   "title": "Plan: bring your own plan",
+   "w": 390,
+   "x": 1880,
+   "y": 3639
+  },
+  "PlanTodaySync.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Plan: today-sync dialog",
+   "w": 390,
+   "x": 1410,
+   "y": 3639
+  },
+  "Report.dc.html": {
+   "h": 1098,
+   "radius": 40,
+   "title": "Report: week",
+   "w": 390,
+   "x": 2820,
+   "y": 5288
+  },
+  "ReportShare.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Report: share card",
+   "w": 390,
+   "x": 3290,
+   "y": 5288
+  },
+  "Settings.dc.html": {
+   "h": 1134,
+   "radius": 40,
+   "title": "Settings",
+   "w": 390,
+   "x": 940,
+   "y": 6910
+  },
+  "SettingsData.dc.html": {
+   "h": 1082,
+   "radius": 40,
+   "title": "Settings: your data",
+   "w": 390,
+   "x": 1410,
+   "y": 6910
+  },
+  "SetupAge.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Setup 4: training age",
+   "w": 390,
+   "x": 1880,
+   "y": 0
+  },
+  "SetupSplit.dc.html": {
+   "h": 1784,
+   "radius": 40,
+   "title": "Setup 2: split",
+   "w": 390,
+   "x": 940,
+   "y": 0
+  },
+  "SetupStart.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Setup: start or restore",
+   "w": 390,
+   "x": 0,
+   "y": 0
+  },
+  "SetupUnits.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Setup 1: units",
+   "w": 390,
+   "x": 470,
+   "y": 0
+  },
+  "SetupWeight.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Setup 3: weight and goal",
+   "w": 390,
+   "x": 1410,
+   "y": 0
+  },
+  "StatsBody.dc.html": {
+   "h": 1107,
+   "radius": 40,
+   "title": "Stats: body",
+   "w": 390,
+   "x": 2350,
+   "y": 5288
+  },
+  "StatsLifts.dc.html": {
+   "h": 1208,
+   "radius": 40,
+   "title": "Stats: lifts",
+   "w": 390,
+   "x": 0,
+   "y": 5288
+  },
+  "StatsPastDay.dc.html": {
+   "h": 1110,
+   "radius": 40,
+   "title": "Stats: log a past day",
+   "w": 390,
+   "x": 1410,
+   "y": 5288
+  },
+  "StatsSessionEditor.dc.html": {
+   "h": 1082,
+   "radius": 40,
+   "title": "Stats: session editor",
+   "w": 390,
+   "x": 940,
+   "y": 5288
+  },
+  "StatsSessions.dc.html": {
+   "h": 1620,
+   "radius": 40,
+   "title": "Stats: sessions",
+   "w": 390,
+   "x": 470,
+   "y": 5288
+  },
+  "TodayAlerts.dc.html": {
+   "h": 1175,
+   "radius": 40,
+   "title": "Today: alerts deck",
+   "w": 390,
+   "x": 940,
+   "y": 2124
+  },
+  "TodayPickDay.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Today: pick a day",
+   "w": 390,
+   "x": 1880,
+   "y": 2124
+  },
+  "TodaySkip.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Today: skip or done",
+   "w": 390,
+   "x": 2350,
+   "y": 2124
+  },
+  "TodayWeekday.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Today: weekday schedule, rest day",
+   "w": 390,
+   "x": 1410,
+   "y": 2124
+  },
+  "Workout.dc.html": {
+   "h": 1082,
+   "radius": 40,
+   "title": "Workout: set logger",
+   "w": 390,
+   "x": 3290,
+   "y": 2124
+  },
+  "WorkoutFinish.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Workout: finish check-in",
+   "w": 390,
+   "x": 4700,
+   "y": 2124
+  },
+  "WorkoutRepsLeft.dc.html": {
+   "h": 1116,
+   "radius": 40,
+   "title": "Workout: reps left",
+   "w": 390,
+   "x": 3760,
+   "y": 2124
+  },
+  "WorkoutSummary.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Workout: saved",
+   "w": 390,
+   "x": 5170,
+   "y": 2124
+  },
+  "WorkoutSwap.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Workout: swap lift",
+   "w": 390,
+   "x": 4230,
+   "y": 2124
+  },
+  "ZenB.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Zen mode B: one set at a time",
+   "w": 390,
+   "x": 5640,
+   "y": 2124
+  },
+  "ZenBAfter.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Zen mode B: after a set",
+   "w": 390,
+   "x": 6110,
+   "y": 2124
+  },
+  "TodayWeigh.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Today: weigh-in",
+   "w": 390,
+   "x": 2820,
+   "y": 2124
+  },
+  "MainScrolled.dc.html": {
+   "h": 1058,
+   "radius": 40,
+   "title": "Today: scrolled",
+   "w": 390,
+   "x": 470,
+   "y": 2124
+  },
+  "ExerciseDrawer.dc.html": {
+   "h": 964,
+   "radius": 40,
+   "title": "Exercise: drawer",
+   "w": 390,
+   "x": 4700,
+   "y": 6910
+  },
+  "LookYou.dc.html": {
+   "h": 1054,
+   "radius": 40,
+   "title": "Look: your phone's colours (sample palette, seed #6750A4; the real one comes from the wallpaper)",
+   "w": 390,
+   "x": 2820,
+   "y": 8384
+  },
+  "IconsLucide.dc.html": {
+   "h": 2587,
+   "radius": 24,
+   "title": "Lucide alternatives: what was there, what is in the app now (outlined), the other candidates",
+   "w": 1100,
+   "x": 8020,
+   "y": -2552
+  },
+  "TabIcons.dc.html": {
+   "h": 1500,
+   "radius": 24,
+   "title": "Tab icons: candidates for Today and Plan, each in the real bar",
+   "w": 1180,
+   "x": 9240,
+   "y": -2552
+  },
+  "FinishIcons.dc.html": {
+   "h": 1180,
+   "radius": 24,
+   "title": "Finish icons: candidates on the real Finish button",
+   "w": 1180,
+   "x": 10480,
+   "y": -2552
+  },
+  "RestoreIcons.dc.html": {
+   "h": 1180,
+   "radius": 24,
+   "title": "Restore icons: candidates on the real button",
+   "w": 1180,
+   "x": 11720,
+   "y": -2552
+  }
+ },
+ "createdOnFiles": {
+  "at": "2026-10-21T11:05:00Z",
+  "v": 1
+ },
+ "designSystems": [],
+ "launch": {
+  "view": "canvas"
+ },
+ "notes": {
+  "t-dark": {
+   "kind": "title1",
+   "maxW": 2740,
+   "text": "Dark mode",
+   "w": 240,
+   "x": 0,
+   "y": 8084
+  },
+  "t-design-system": {
+   "kind": "title1",
+   "maxW": 3700,
+   "text": "Design system (tokens generated from src/global.css)",
+   "w": 240,
+   "x": 0,
+   "y": -2852
+  },
+  "t-more": {
+   "kind": "title1",
+   "maxW": 5090,
+   "text": "Library, settings, your data",
+   "w": 240,
+   "x": 0,
+   "y": 6610
+  },
+  "t-plan": {
+   "kind": "title1",
+   "maxW": 2270,
+   "text": "Plan",
+   "w": 240,
+   "x": 0,
+   "y": 3339
+  },
+  "t-setup": {
+   "kind": "title1",
+   "maxW": 4150,
+   "text": "Setup",
+   "w": 240,
+   "x": 0,
+   "y": -300
+  },
+  "t-stats": {
+   "kind": "title1",
+   "maxW": 3680,
+   "text": "Stats and report",
+   "w": 240,
+   "x": 0,
+   "y": 4988
+  },
+  "t-today": {
+   "kind": "title1",
+   "maxW": 6500,
+   "text": "Today and the workout",
+   "w": 240,
+   "x": 0,
+   "y": 1824
+  }
+ },
+ "order": [
+  "DesignColors.dc.html",
+  "DesignType.dc.html",
+  "DesignComponents.dc.html",
+  "SetupStart.dc.html",
+  "SetupUnits.dc.html",
+  "SetupSplit.dc.html",
+  "SetupWeight.dc.html",
+  "SetupAge.dc.html",
+  "Main.dc.html",
+  "MainScrolled.dc.html",
+  "TodayAlerts.dc.html",
+  "TodayWeekday.dc.html",
+  "TodayPickDay.dc.html",
+  "TodaySkip.dc.html",
+  "TodayWeigh.dc.html",
+  "Workout.dc.html",
+  "WorkoutRepsLeft.dc.html",
+  "WorkoutSwap.dc.html",
+  "WorkoutFinish.dc.html",
+  "WorkoutSummary.dc.html",
+  "ZenB.dc.html",
+  "ZenBAfter.dc.html",
+  "Plan.dc.html",
+  "PlanEditor.dc.html",
+  "PlanAddDay.dc.html",
+  "PlanTodaySync.dc.html",
+  "PlanImport.dc.html",
+  "StatsLifts.dc.html",
+  "StatsSessions.dc.html",
+  "StatsSessionEditor.dc.html",
+  "StatsPastDay.dc.html",
+  "StatsBody.dc.html",
+  "Report.dc.html",
+  "ReportShare.dc.html",
+  "Library.dc.html",
+  "ExerciseDrawer.dc.html",
+  "Settings.dc.html",
+  "SettingsData.dc.html",
+  "DataImportPreview.dc.html",
+  "DataRestore.dc.html",
+  "DataDeleteAll.dc.html",
+  "Menu.dc.html",
+  "Guide.dc.html",
+  "MigrationFailed.dc.html",
+  "DarkSetupStart.dc.html",
+  "DarkToday.dc.html",
+  "DarkWorkout.dc.html",
+  "DarkPlan.dc.html",
+  "DarkStatsLifts.dc.html",
+  "DarkSettingsData.dc.html",
+  "LookYou.dc.html",
+  "IconsLucide.dc.html",
+  "TabIcons.dc.html",
+  "FinishIcons.dc.html",
+  "RestoreIcons.dc.html"
+ ],
+ "pages": [],
+ "title": "Ironkeep screens"
+}

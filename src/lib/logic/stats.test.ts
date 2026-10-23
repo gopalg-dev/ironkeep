@@ -1,0 +1,339 @@
+import { describe, expect, it } from '@jest/globals'
+import {
+  allTimeBests,
+  attachBodyweight,
+  averageWeight,
+  bodyweightTrend,
+  epley,
+  monthCalendar,
+  plannedVolumeByMuscle,
+  prsBetween,
+  recentPRs,
+  sessionsInWeek,
+  setScore,
+  startOfWeek,
+  strengthSeries,
+  totalsBetween,
+  volumeByMuscle,
+  volumeByMuscleInWeek,
+  weeklyStreak,
+  weeklyStrength,
+  weekTotals,
+} from '@/lib/logic/stats'
+import { must } from '@/lib/must'
+import { seedPlan } from '@/lib/seed-plan'
+import type { BodyweightLog, DayType, LoggedSet, Workout, WorkoutEntry } from '@/lib/types'
+
+// Saturday evening.
+const now = new Date(2026, 9, 10, 18, 0, 0)
+
+let counter = 0
+function workout(finishedAt: Date | null, dayType: DayType = 'push', entries: WorkoutEntry[] = []): Workout {
+  counter++
+  return {
+    id: `w${counter}`,
+    dayId: `${dayType}-a`,
+    dayName: `${dayType} A`,
+    dayType,
+    startedAt: (finishedAt ?? now).toISOString(),
+    finishedAt: finishedAt?.toISOString(),
+    status: finishedAt ? 'done' : 'in_progress',
+    entries,
+  }
+}
+
+function benchEntry(sets: LoggedSet[]): WorkoutEntry {
+  return {
+    exerciseId: 'barbell-bench-press',
+    name: 'Barbell Bench Press',
+    muscle: 'chest',
+    loadType: 'weight',
+    repMin: 5,
+    repMax: 8,
+    sets,
+  }
+}
+
+function daysAgo(n: number, hour = 12): Date {
+  const d = new Date(now)
+  d.setDate(d.getDate() - n)
+  d.setHours(hour, 0, 0, 0)
+  return d
+}
+
+describe('dates', () => {
+  it('starts the week on Monday', () => {
+    const monday = startOfWeek(now)
+    expect(monday.getDay()).toBe(1)
+    expect(monday.getDate()).toBe(5)
+    expect(monday.getHours()).toBe(0)
+  })
+})
+
+describe('epley', () => {
+  it('estimates a one rep max', () => {
+    expect(epley(100, 1)).toBe(100)
+    expect(epley(60, 8)).toBe(76)
+    expect(epley(0, 8)).toBe(0)
+    expect(epley(60, 0)).toBe(0)
+  })
+})
+
+describe('consistency', () => {
+  it('counts only finished sessions in the current week', () => {
+    const ws = [workout(daysAgo(0)), workout(daysAgo(2)), workout(daysAgo(8)), workout(null)]
+    expect(sessionsInWeek(ws, now)).toBe(2)
+  })
+
+  it('lays a month out Monday to Sunday with blanks outside the month', () => {
+    const ws = [workout(daysAgo(0), 'legs'), workout(daysAgo(3), 'pull')]
+    // October 2026 starts on a Thursday and ends on a Saturday.
+    const weeks = monthCalendar(ws, now, new Date(2026, 9, 1))
+    expect(weeks).toHaveLength(5)
+    expect(weeks.every((week) => week.days.length === 7)).toBe(true)
+    expect(weeks.map((w) => w.start)).toEqual(['2026-09-28', '2026-10-05', '2026-10-12', '2026-10-19', '2026-10-26'])
+    expect(weeks[0].days.slice(0, 3)).toEqual([null, null, null])
+    expect(weeks[0].days[3]).toMatchObject({ date: '2026-10-01', dayOfMonth: 1, future: false })
+    expect(new Date(must(weeks[0].days[3], 'the first of the month').iso).getDate()).toBe(1)
+    expect(weeks[1].days[2]).toMatchObject({ date: '2026-10-07', type: 'pull', types: ['pull'] })
+    expect(weeks[1].days[5]).toMatchObject({ date: '2026-10-10', type: 'legs', future: false })
+    // Two sessions on one day: both listed in the order they were done, the first painting the cell.
+    const doubled = monthCalendar([...ws, workout(new Date(2026, 9, 7, 19), 'push')], now, new Date(2026, 9, 1))
+    expect(doubled[1].days[2]).toMatchObject({ date: '2026-10-07', type: 'pull', types: ['pull', 'push'] })
+    expect(weeks[1].days[6]).toMatchObject({ date: '2026-10-11', type: null, future: true })
+    expect(weeks[4].days[5]).toMatchObject({ dayOfMonth: 31 })
+    expect(weeks[4].days[6]).toBeNull()
+    // September 2026 starts on a Tuesday, so its first week starts on Monday 31 August.
+    const september = monthCalendar([], now, new Date(2026, 8, 1))
+    expect(september[0].start).toBe('2026-08-31')
+    expect(september[0].days[0]).toBeNull()
+    expect(september[0].days[1]).toMatchObject({ date: '2026-09-01' })
+    // Days before the join date are marked.
+    const joined = monthCalendar(ws, now, new Date(2026, 9, 1), new Date(2026, 9, 3, 9, 30).toISOString())
+    expect(joined[0].days[3]).toMatchObject({ date: '2026-10-01', before: true })
+    expect(joined[0].days[4]).toMatchObject({ date: '2026-10-02', before: true })
+    expect(joined[0].days[5]).toMatchObject({ date: '2026-10-03', before: false })
+    expect(must(weeks[0].days[3], 'the first of the month').before).toBe(false)
+  })
+
+  it('counts weeks in a row with a session in each, the current week included once it has one', () => {
+    // now is Saturday Oct 10. Two weeks ago and last week each have a session; this week has none yet.
+    const ws = [workout(daysAgo(19)), workout(daysAgo(16)), workout(daysAgo(10))]
+    expect(weeklyStreak(ws, now)).toBe(2)
+    expect(weeklyStreak([...ws, workout(daysAgo(1))], now)).toBe(3)
+    // A week without a session breaks it.
+    expect(weeklyStreak([workout(daysAgo(19)), workout(daysAgo(1))], now)).toBe(1)
+    expect(weeklyStreak([], now)).toBe(0)
+  })
+})
+
+describe('volume', () => {
+  it('counts done sets with reps this week per muscle', () => {
+    const ws = [
+      workout(daysAgo(1), 'push', [
+        benchEntry([
+          { weight: 60, reps: 8, done: true },
+          { weight: 60, reps: 8, done: true },
+          { weight: 60, reps: 0, done: true },
+          { weight: 60, reps: 8, done: false },
+        ]),
+      ]),
+      workout(daysAgo(9), 'push', [benchEntry([{ weight: 60, reps: 8, done: true }])]),
+    ]
+    const v = volumeByMuscleInWeek(ws, now)
+    expect(v.chest).toBe(2)
+    expect(v.back).toBe(0)
+  })
+
+  it('sums the planned sets per muscle, capped at 3 for beginners', () => {
+    const plan = seedPlan()
+    const over = plannedVolumeByMuscle(plan, 'over1')
+    expect(over.chest).toBe(14)
+    expect(over.back).toBe(20)
+    expect(over.calves).toBe(8)
+    const under = plannedVolumeByMuscle(plan, 'under1')
+    expect(under.chest).toBe(12)
+    expect(under.back).toBe(18)
+    expect(under.calves).toBe(6)
+  })
+})
+
+describe('strength', () => {
+  it('returns the best set per session in date order', () => {
+    const ws = [
+      workout(daysAgo(1), 'push', [
+        benchEntry([
+          { weight: 62.5, reps: 5, done: true },
+          { weight: 62.5, reps: 7, done: true },
+        ]),
+      ]),
+      workout(daysAgo(8), 'push', [benchEntry([{ weight: 60, reps: 8, done: true }])]),
+      workout(daysAgo(15), 'push', [benchEntry([{ weight: 60, reps: 8, done: false }])]),
+    ]
+    const series = strengthSeries(ws, 'barbell-bench-press')
+    expect(series).toHaveLength(2)
+    expect(series[0].weight).toBe(60)
+    expect(series[1].reps).toBe(7)
+    expect(series[1].score).toBeCloseTo(62.5 * (1 + 7 / 30))
+  })
+
+  it('keeps the best set of each week and numbers the weeks from the first log, gaps included', () => {
+    // now is Saturday Oct 10: 1 and 3 days ago sit in the same week, 8 days ago in the one before, 22 days ago two weeks earlier.
+    const ws = [
+      workout(daysAgo(1), 'push', [benchEntry([{ weight: 62.5, reps: 7, done: true }])]),
+      workout(daysAgo(3), 'push', [benchEntry([{ weight: 60, reps: 8, done: true }])]),
+      workout(daysAgo(8), 'push', [benchEntry([{ weight: 60, reps: 6, done: true }])]),
+      workout(daysAgo(22), 'push', [benchEntry([{ weight: 55, reps: 8, done: true }])]),
+    ]
+    const weeks = weeklyStrength(ws, 'barbell-bench-press')
+    expect(weeks.map((w) => w.weekNo)).toEqual([1, 3, 4])
+    expect(weeks.map((w) => w.weight)).toEqual([55, 60, 62.5])
+    expect(weeks[2].sessions).toBe(2)
+    expect(weeks[2].reps).toBe(7)
+    expect(weeks[2].date).toBe(daysAgo(1).toISOString())
+    expect(weeklyStrength(ws, 'nothing')).toEqual([])
+  })
+
+  it('totals the sets, the weight moved and the minutes of the week', () => {
+    const done = workout(daysAgo(1), 'push', [
+      benchEntry([
+        { weight: 60, reps: 8, done: true },
+        { weight: 62.5, reps: 7, done: true },
+        { weight: 65, reps: 5, done: false },
+      ]),
+    ])
+    done.startedAt = new Date(new Date(must(done.finishedAt, 'the finish time')).getTime() - 50 * 60_000).toISOString()
+    const lastWeek = workout(daysAgo(8), 'push', [benchEntry([{ weight: 100, reps: 10, done: true }])])
+    const totals = weekTotals([done, lastWeek], now)
+    expect(totals).toEqual({ sets: 2, lifted: 60 * 8 + 62.5 * 7, minutes: 50 })
+    expect(weekTotals([], now)).toEqual({ sets: 0, lifted: 0, minutes: 0 })
+  })
+
+  it('lists sets that beat every earlier best', () => {
+    const ws = [
+      workout(daysAgo(20), 'push', [benchEntry([{ weight: 60, reps: 8, done: true }])]),
+      workout(daysAgo(6), 'push', [benchEntry([{ weight: 62.5, reps: 8, done: true }])]),
+      workout(daysAgo(2), 'push', [benchEntry([{ weight: 62.5, reps: 6, done: true }])]),
+    ]
+    const prs = recentPRs(ws, now)
+    expect(prs).toHaveLength(1)
+    expect(prs[0].weight).toBe(62.5)
+    expect(prs[0].reps).toBe(8)
+  })
+
+  it('does not count a first ever session as a PR', () => {
+    const ws = [workout(daysAgo(2), 'push', [benchEntry([{ weight: 60, reps: 8, done: true }])])]
+    expect(recentPRs(ws, now)).toHaveLength(0)
+  })
+
+  it('still measures a best against sessions older than the ones loaded', () => {
+    // Three years ago the bench reached 70 × 8; the year loaded only holds a climb back to 65. No new best yet.
+    const old = allTimeBests([workout(daysAgo(1000), 'push', [benchEntry([{ weight: 70, reps: 8, done: true }])])])
+    expect(old).toEqual({ 'barbell-bench-press': epley(70, 8) })
+    const ws = [
+      workout(daysAgo(20), 'push', [benchEntry([{ weight: 60, reps: 8, done: true }])]),
+      workout(daysAgo(2), 'push', [benchEntry([{ weight: 65, reps: 8, done: true }])]),
+    ]
+    expect(recentPRs(ws, now).map((p) => p.weight)).toEqual([65])
+    expect(recentPRs(ws, now, 14, old)).toHaveLength(0)
+    expect(prsBetween(ws, daysAgo(30), undefined, old)).toHaveLength(0)
+    // Beating the old best counts, once.
+    const back = [...ws, workout(daysAgo(1), 'push', [benchEntry([{ weight: 72.5, reps: 8, done: true }])])]
+    expect(recentPRs(back, now, 14, old).map((p) => p.weight)).toEqual([72.5])
+  })
+})
+
+describe('bodyweight work', () => {
+  const pullups = (reps: number): WorkoutEntry => ({
+    exerciseId: 'pull-ups',
+    name: 'Pull-ups',
+    muscle: 'back',
+    loadType: 'bodyweight',
+    repMin: 6,
+    repMax: 12,
+    sets: [{ reps, done: true }],
+  })
+  const log = (date: Date, weight: number): BodyweightLog => ({ id: String(weight), date: date.toISOString(), weight })
+
+  it('gives each session the weigh-in in force at the time, or the first one after it', () => {
+    const ws = [workout(daysAgo(20)), workout(daysAgo(5)), workout(daysAgo(1))]
+    const logs = [log(daysAgo(10, 7), 70), log(daysAgo(3, 7), 72)]
+    expect(attachBodyweight(ws, logs).map((w) => w.bodyweight)).toEqual([70, 70, 72])
+    expect(attachBodyweight(ws, []).map((w) => w.bodyweight)).toEqual([undefined, undefined, undefined])
+  })
+
+  it('scores pull-ups at bodyweight when known, by reps otherwise', () => {
+    expect(setScore(pullups(8), { reps: 8, done: true })).toBe(8)
+    expect(setScore(pullups(8), { reps: 8, done: true }, 75)).toBe(epley(75, 8))
+    expect(setScore(pullups(8), { reps: 8, done: true }, 80)).toBeGreaterThan(
+      setScore(pullups(8), { reps: 8, done: true }, 70),
+    )
+  })
+
+  it('counts bodyweight reps in the weight lifted and in new bests', () => {
+    const logs = [log(daysAgo(30, 7), 70), log(daysAgo(3, 7), 75)]
+    const ws = attachBodyweight(
+      [workout(daysAgo(20), 'pull', [pullups(8)]), workout(daysAgo(1), 'pull', [pullups(8)])],
+      logs,
+    )
+    expect(weekTotals(ws, now).lifted).toBe(75 * 8)
+    // The same 8 reps at 75 kg beat 8 reps at 70 kg.
+    expect(recentPRs(ws, now).map((p) => p.exerciseId)).toEqual(['pull-ups'])
+    // Without weigh-ins the reps alone decide, and 8 after 8 is no new best.
+    expect(
+      recentPRs(
+        ws.map((w) => ({ ...w, bodyweight: undefined })),
+        now,
+      ),
+    ).toEqual([])
+  })
+})
+
+describe('bodyweight', () => {
+  it('compares this week to last week', () => {
+    const logs = [
+      { id: '1', date: daysAgo(13).toISOString(), weight: 70 },
+      { id: '2', date: daysAgo(9).toISOString(), weight: 70.4 },
+      { id: '3', date: daysAgo(5).toISOString(), weight: 70.6 },
+      { id: '4', date: daysAgo(0).toISOString(), weight: 71 },
+    ]
+    const t = bodyweightTrend(logs, now)
+    expect(t.latest).toBe(71)
+    expect(t.weekAvg).toBeCloseTo(70.8)
+    expect(t.prevWeekAvg).toBeCloseTo(70.2)
+    expect(t.changePct).toBeCloseTo(((70.8 - 70.2) / 70.2) * 100)
+  })
+
+  it('handles no data', () => {
+    const t = bodyweightTrend([], now)
+    expect(t.latest).toBeUndefined()
+    expect(t.changePct).toBeUndefined()
+  })
+})
+
+describe('ranges', () => {
+  it('counts sets, totals and bests between two dates, the end left out', () => {
+    const ws = [
+      workout(daysAgo(20), 'push', [benchEntry([{ weight: 60, reps: 8, done: true }])]),
+      workout(daysAgo(6), 'push', [benchEntry([{ weight: 62.5, reps: 8, done: true }])]),
+      workout(daysAgo(2), 'push', [benchEntry([{ weight: 65, reps: 8, done: true }])]),
+    ]
+    const start = daysAgo(10)
+    const end = daysAgo(3)
+    expect(volumeByMuscle(ws, start, end).chest).toBe(1)
+    expect(totalsBetween(ws, start, end).sets).toBe(1)
+    // Only the 62.5 kg set falls inside; the 60 kg one before still counts as the best it beat.
+    expect(prsBetween(ws, start, end).map((p) => p.weight)).toEqual([62.5])
+    expect(prsBetween(ws, start).map((p) => p.weight)).toEqual([65, 62.5])
+  })
+
+  it('averages the weigh-ins between two dates', () => {
+    const logs: BodyweightLog[] = [
+      { id: 'a', date: daysAgo(9, 7).toISOString(), weight: 70 },
+      { id: 'b', date: daysAgo(5, 7).toISOString(), weight: 72 },
+      { id: 'c', date: daysAgo(1, 7).toISOString(), weight: 80 },
+    ]
+    expect(averageWeight(logs, daysAgo(10), daysAgo(3))).toBe(71)
+    expect(averageWeight(logs, daysAgo(30), daysAgo(20))).toBeUndefined()
+  })
+})
