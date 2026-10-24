@@ -1,6 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it } from '@jest/globals'
-import { setDbForTests } from '@/db/handle'
+import { eq } from 'drizzle-orm'
+import { getDb, setDbForTests } from '@/db/handle'
 import * as repo from '@/db/repo'
+import { workouts } from '@/db/schema'
 import { openTestDb } from '@/db/test-db'
 import { must } from '@/lib/must'
 
@@ -39,6 +41,12 @@ describe('settings', () => {
     expect(s.units).toBe('lb')
     expect(s.bodyweight).toBe(160)
     expect(s.setupDone).toBe(true)
+  })
+
+  it('rejects invalid rep ranges when editing a plan', async () => {
+    const before = await repo.getPlan()
+    await expect(repo.updateExercise('legs-a', 'leg-curl', { repMin: 20 })).rejects.toThrow('rep range')
+    expect((await repo.getPlan()).days).toEqual(before.days)
   })
 
   it('stamps the join date once, when setup first completes', async () => {
@@ -427,7 +435,7 @@ describe('workouts', () => {
     ])
   })
 
-  it('a day with the lift in another rep range keeps its own line, borrowing one only until it has history', async () => {
+  it('uses the newest session for an exercise across plan days and rep ranges', async () => {
     // Pull A and Push A both hold a barbell exercise under the same id only in a custom plan; make one.
     const plan = await repo.getPlan()
     const row = must(
@@ -447,12 +455,69 @@ describe('workouts', () => {
     expect(light.entries[0].prefill?.[0].weight).toBe(80)
     await repo.saveEntrySets(light.id, 'barbell-row', [{ weight: 50, reps: 15, done: true }])
     await repo.finishWorkout(light.id)
-    // Now each day follows its own line: Heavy starts from 80, Light from 50.
-    expect((await repo.startWorkout('heavy')).entries[0].prefill?.[0].weight).toBe(80)
+    // A newer session on Light is also the last session for Heavy.
+    expect((await repo.startWorkout('heavy')).entries[0].prefill?.[0].weight).toBe(50)
     expect((await repo.startWorkout('light')).entries[0].prefill?.[0].weight).toBe(50)
-    // Light moved to Heavy's range: it joins Heavy's line rather than carrying its 10-15 numbers on.
+    // Changing today's range does not make a more recent completed session disappear.
     await repo.updateExercise('light', 'barbell-row', { repMin: 4, repMax: 6 })
-    expect((await repo.startWorkout('light')).entries[0].prefill?.[0].weight).toBe(80)
+    expect((await repo.startWorkout('light')).entries[0].prefill?.[0].weight).toBe(50)
+  })
+
+  it('does not reuse history when an exercise changes to another load type', async () => {
+    await finishSession('pull-a', async (workout) => {
+      await repo.saveEntrySets(workout.id, 'pull-ups', [{ reps: 8, done: true }])
+    })
+    await repo.updateExercise('pull-a', 'pull-ups', { loadType: 'time', repMin: 30, repMax: 45 })
+    const next = await repo.startWorkout('pull-a')
+    expect(next.entries.find((entry) => entry.exerciseId === 'pull-ups')?.prefill).toBeUndefined()
+  })
+
+  it('refreshes stale active-session history without changing entered sets', async () => {
+    await repo.logPastWorkout('legs-a', '2026-01-10T12:00:00.000Z', [
+      { exerciseId: 'leg-curl', sets: [{ weight: 25, reps: 14, done: true }] },
+    ])
+    const active = await repo.startWorkout('legs-a')
+    const entry = must(
+      active.entries.find((candidate) => candidate.exerciseId === 'leg-curl'),
+      'active curl',
+    )
+    const entered = [
+      { weight: 30, reps: 12, done: true },
+      { weight: 31, reps: 11, done: false },
+    ]
+    const db = await getDb()
+    await db
+      .update(workouts)
+      .set({
+        entries: [{ ...entry, sets: entered, hint: 'Stale hint', prefill: [{ weight: 10, reps: 5 }] }],
+        historyRevision: 0,
+      })
+      .where(eq(workouts.id, active.id))
+
+    const refreshed = must(await repo.getActiveWorkout(), 'refreshed workout').entries[0]
+    expect(refreshed.sets).toEqual(entered)
+    expect(refreshed.prefill?.[0]).toEqual({ weight: 25, reps: 14 })
+    expect(refreshed.hint).toContain('25 kg')
+    expect(refreshed.hint).not.toContain('Stale')
+  })
+
+  it('renaming an exercise starts a separate history identity', async () => {
+    await finishSession('legs-a', async (workout) => {
+      await repo.saveEntrySets(workout.id, 'leg-curl', [{ weight: 50, reps: 12, done: true }])
+    })
+    await repo.updateExercise('legs-a', 'leg-curl', {
+      name: 'Leg Extension',
+      muscle: 'quads',
+      repMin: 12,
+      repMax: 15,
+    })
+    const next = await repo.startWorkout('legs-a')
+    const extension = must(
+      next.entries.find((entry) => entry.exerciseId === 'leg-extension'),
+      'extension',
+    )
+    expect(extension.prefill).toBeUndefined()
+    expect(extension.hint).toBeUndefined()
   })
 
   it('discards an in-progress workout', async () => {
@@ -705,7 +770,7 @@ describe('workouts', () => {
     expect(draft.startedAt).toBe(at)
     expect(draft.finishedAt).toBe(at)
     expect(draft.entries.every((e) => e.sets.every((s) => !s.done))).toBe(true)
-    expect(draft.entries.find((e) => e.exerciseId === 'pull-ups')?.prefill?.[0]?.reps).toBeDefined()
+    expect(draft.entries.find((e) => e.exerciseId === 'pull-ups')?.prefill).toBeUndefined()
     expect(draft.entries.some((e) => e.rampOffer)).toBe(false)
     // Nothing is stored until the sets come back.
     expect(await repo.listWorkouts()).toHaveLength(1)

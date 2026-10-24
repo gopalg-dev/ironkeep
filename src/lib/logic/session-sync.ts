@@ -16,19 +16,23 @@ function toLength<T>(list: T[], n: number): T[] {
 }
 
 /** One lift the session already had, fitted to the plan's version of it. Ticked sets stay, all of them. */
-function fitted(entry: WorkoutEntry, ex: Exercise, trainingAge: TrainingAge): WorkoutEntry {
+function fitted(entry: WorkoutEntry, ex: Exercise, trainingAge: TrainingAge, fresh?: WorkoutEntry): WorkoutEntry {
   const lastTicked = entry.sets.reduce((last, s, i) => (s.done ? i : last), -1)
   const count = Math.max(plannedSetsFor(ex.sets, trainingAge), lastTicked + 1)
   const sets: LoggedSet[] = Array.from({ length: count }, (_, i) => entry.sets[i] ?? { done: false })
-  const prefill: SetTarget[] | undefined = entry.prefill && toLength(entry.prefill, count)
+  const source = fresh ?? entry
+  const prefill: SetTarget[] | undefined = source.prefill && toLength(source.prefill, count)
+  const { hint: _hint, prefill: _prefill, rampOffer: _rampOffer, ...kept } = entry
   return {
-    ...entry,
+    ...kept,
     name: ex.name,
     muscle: ex.muscle,
     loadType: ex.loadType,
     repMin: ex.repMin,
     repMax: ex.repMax,
     ...(prefill ? { prefill } : {}),
+    ...(source.hint ? { hint: source.hint } : {}),
+    ...(source.rampOffer ? { rampOffer: source.rampOffer } : {}),
     sets,
   }
 }
@@ -48,7 +52,7 @@ export function syncEntries(
   const added = new Map(fresh.map((e) => [e.exerciseId, e]))
   const synced = day.flatMap((ex) => {
     const old = had.get(ex.id)
-    if (old) return [fitted(old, ex, trainingAge)]
+    if (old) return [fitted(old, ex, trainingAge, added.get(ex.id))]
     const created = added.get(ex.id)
     return created ? [created] : []
   })
@@ -80,10 +84,4 @@ export function swapEntries(entries: WorkoutEntry[], exerciseId: string, fresh: 
 /** The sets a swapped-in lift gets: what the old one had left, at least one. */
 export function setsLeft(entry: Pick<WorkoutEntry, 'sets'>): number {
   return Math.max(1, entry.sets.filter((s) => !s.done).length)
-}
-
-/** The lifts of a day the session does not have yet: these need fresh entries built for them. */
-export function missingFrom(entries: WorkoutEntry[], day: Exercise[]): Exercise[] {
-  const had = new Set(entries.map((e) => e.exerciseId))
-  return day.filter((ex) => !had.has(ex.id))
 }

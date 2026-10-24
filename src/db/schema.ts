@@ -36,6 +36,7 @@ export const workouts = sqliteTable(
     effort: integer('effort'),
     note: text('note'),
     entries: text('entries', { mode: 'json' }).$type<WorkoutEntry[]>().notNull(),
+    historyRevision: integer('history_revision').notNull().default(0),
   },
   (t) => [index('workouts_status_finished').on(t.status, t.finishedAt), index('workouts_day').on(t.dayId)],
 )

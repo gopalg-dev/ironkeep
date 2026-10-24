@@ -1,6 +1,7 @@
 import { findLibraryByName, type LibraryRow, nameKey } from '../library'
 import { slug } from '../seed-plan'
 import { type Exercise, MAX_EXERCISES_PER_DAY, type PlanDay, type WorkoutEntry } from '../types'
+import { assertRepRange } from './plan-ranges'
 import { guessLoad } from './plan-sheet'
 
 /*
@@ -47,12 +48,22 @@ export function updateExerciseIn(day: PlanDay, exerciseId: string, patch: Exerci
   const ex = findExercise(next, exerciseId)
   // A number typed by hand is the plan's number again: the ramp's memory of the old one goes.
   if (patch.sets !== undefined) delete ex.ramp
+  const oldName = ex.name
   Object.assign(ex, patch)
+  assertRepRange(ex)
+  if (patch.name !== undefined && nameKey(patch.name) !== nameKey(oldName)) {
+    ex.id = uniqueId(
+      slug(ex.name),
+      next.exercises.filter((candidate) => candidate !== ex).map((candidate) => candidate.id),
+    )
+    delete ex.ramp
+  }
   return next
 }
 
 /** Adds an exercise to the end of the day. A day holds `MAX_EXERCISES_PER_DAY` at most. */
 export function addExerciseTo(day: PlanDay, input: Omit<Exercise, 'id'>): PlanDay {
+  assertRepRange(input)
   if (day.exercises.length >= MAX_EXERCISES_PER_DAY) {
     throw new Error(`A day holds up to ${MAX_EXERCISES_PER_DAY} exercises`)
   }

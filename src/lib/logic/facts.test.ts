@@ -13,8 +13,13 @@ function entry(sets: LoggedSet[]): WorkoutEntry {
 }
 
 /** One past session of a weight lift at one weight, with the reps per set. */
-function session(weight: number, reps: number[], effort?: number): PastEntry {
-  return { entry: entry(reps.map((r) => ({ weight, reps: r, done: true }))), effort }
+function session(
+  weight: number,
+  reps: number[],
+  effort?: number,
+  range: Pick<WorkoutEntry, 'repMin' | 'repMax'> = bench,
+): PastEntry {
+  return { entry: { ...entry(reps.map((r) => ({ weight, reps: r, done: true }))), ...range }, effort }
 }
 
 describe('liftStart, weight lifts', () => {
@@ -63,14 +68,14 @@ describe('liftStart, weight lifts', () => {
     expect(s.hint).toBe('Last time 100 kg × 8, 8, 8. Top of the range on every set.')
     expect(s.prefill?.[0]).toEqual({ weight: 100, reps: 8 })
     // The 5 kg preacher curl that was told 10 kg: now it says the step doubles the load, and asks nothing.
-    const preacher = liftStart(curl, 3, [session(5, [12, 12, 12])], 'kg', { equipment: 'barbell' })
+    const preacher = liftStart(curl, 3, [session(5, [12, 12, 12], undefined, curl)], 'kg', { equipment: 'barbell' })
     expect(preacher.hint).toBe(
       'Last time 5 kg × 12, 12, 12. Top of the range on every set. The next step, 10 kg, is 100% more.',
     )
     expect(preacher.prefill?.map((x) => x.weight)).toEqual([5, 5, 5])
     // With 1.25 kg plates the step is 2.5 kg.
     const small = { equipment: 'barbell', steps: { ...stepsOf({ units: 'kg' }), plates: 1.25 } } as const
-    expect(liftStart(curl, 3, [session(5, [12, 12, 12])], 'kg', small).hint).toContain(
+    expect(liftStart(curl, 3, [session(5, [12, 12, 12], undefined, curl)], 'kg', small).hint).toContain(
       'The next step, 7.5 kg, is 50% more.',
     )
     // Fewer sets than planned is not every set.
@@ -104,11 +109,18 @@ describe('liftStart, weight lifts', () => {
     const past: PastEntry = { entry: entry([{ weight: 60, reps: 8, done: false }]) }
     expect(liftStart(bench, 3, [past], 'kg').hint).toBeUndefined()
   })
+
+  it('carries the newest sets across ranges without declaring the new range complete', () => {
+    const start = liftStart(bench, 3, [session(40, [12, 12, 12], undefined, { repMin: 10, repMax: 15 })], 'kg')
+    expect(start.prefill).toEqual(Array.from({ length: 3 }, () => ({ weight: 40, reps: 12 })))
+    expect(start.hint).not.toContain('Top of the range')
+    expect(start.hint).not.toContain('next step')
+  })
 })
 
 describe('liftStart, bodyweight and timed work', () => {
   const bw = (reps: number[]): PastEntry => ({
-    entry: { ...entry(reps.map((r) => ({ reps: r, done: true }))), loadType: 'bodyweight' },
+    entry: { ...entry(reps.map((r) => ({ reps: r, done: true }))), ...pullups },
   })
 
   it('repeats last time and says when every set reached the top', () => {
@@ -130,7 +142,7 @@ describe('liftStart, bodyweight and timed work', () => {
 
   it('repeats a hold in seconds', () => {
     const hold: PastEntry = {
-      entry: { ...entry([45, 45].map((seconds) => ({ seconds, done: true }))), loadType: 'time' },
+      entry: { ...entry([45, 45].map((seconds) => ({ seconds, done: true }))), ...plank },
     }
     const s = liftStart(plank, 2, [hold], 'kg')
     expect(s.prefill).toEqual([{ seconds: 45 }, { seconds: 45 }])

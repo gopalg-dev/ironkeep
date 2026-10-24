@@ -82,8 +82,9 @@ export function liftStart(
   }
   const done = doneOf(last.entry)
   const prefill = carried(done, targetSets)
+  const sameRange = (entry: WorkoutEntry) => entry.repMin === exercise.repMin && entry.repMax === exercise.repMax
   const allAtTop = (key: 'reps' | 'seconds') =>
-    done.length >= targetSets && done.every((s) => (s[key] ?? 0) >= exercise.repMax)
+    sameRange(last.entry) && done.length >= targetSets && done.every((s) => (s[key] ?? 0) >= exercise.repMax)
   const tooMuch = last.effort === 4 ? ' Rated too much.' : ''
 
   if (exercise.loadType === 'weight') {
@@ -121,7 +122,9 @@ export function liftStart(
     // Three sessions with every set under the range; the plan may hold an easier way to the same muscle.
     const under =
       past.length >= UNDER_SESSIONS &&
-      past.slice(0, UNDER_SESSIONS).every((h) => doneOf(h.entry).every((s) => (s.reps ?? 0) < exercise.repMin))
+      past
+        .slice(0, UNDER_SESSIONS)
+        .every((h) => sameRange(h.entry) && doneOf(h.entry).every((s) => (s.reps ?? 0) < exercise.repMin))
     if (under) {
       const alternate = exercise.alternates?.[0]
       fact = ` Under ${exercise.repMin} for ${UNDER_SESSIONS} sessions.${alternate ? ` ${alternate} is its alternate on Plan.` : ''}`

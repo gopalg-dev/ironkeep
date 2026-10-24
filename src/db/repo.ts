@@ -15,10 +15,11 @@ import {
 } from '@/lib/logic/day-edit'
 import { FACT_SESSIONS, liftStart, type PastEntry } from '@/lib/logic/facts'
 import { nextDayId, rollingCursor } from '@/lib/logic/next-day'
+import { assertPlanRanges } from '@/lib/logic/plan-ranges'
 import { barOf, stepsOf } from '@/lib/logic/progression'
 import { rampOffer } from '@/lib/logic/ramp'
 import { assignWeekdays, type Finished } from '@/lib/logic/schedule'
-import { missingFrom, setsLeft, swapEntries, syncEntries } from '@/lib/logic/session-sync'
+import { setsLeft, swapEntries, syncEntries } from '@/lib/logic/session-sync'
 import { type Pause, setPaused } from '@/lib/logic/session-time'
 import {
   allTimeBests,
@@ -59,6 +60,7 @@ import { bodyweights, measurements, plans, settings, workouts } from './schema'
  */
 
 type WorkoutRow = typeof workouts.$inferSelect
+const HISTORY_REVISION = 1
 
 const DEFAULT_SETTINGS: Settings = { units: 'kg', trainingAge: 'over1', setupDone: false }
 const SETTINGS_ROW = 1
@@ -138,6 +140,7 @@ async function findPlan(split: PlanSource): Promise<Plan | null> {
 
 /** Writes the days into the slot for one split, creating the slot when it is new. */
 async function savePlanFor(split: PlanSource, days: PlanDay[]): Promise<Plan> {
+  assertPlanRanges(days)
   const db = await getDb()
   const updated = { days, updatedAt: new Date().toISOString() }
   await db
@@ -225,6 +228,7 @@ export async function setDayWeekday(dayId: string, weekday: number): Promise<Pla
  */
 export async function replacePlan(days: PlanDay[], split?: SplitId): Promise<Plan> {
   if (days.length === 0) throw new Error('The plan needs at least one day')
+  assertPlanRanges(days)
   if (split) splitTemplate(split) // an unknown template id throws here
   const source: PlanSource = split ?? 'custom'
   await saveSettings({ split: source })
@@ -345,8 +349,26 @@ async function rowById(db: AppDb, id: string): Promise<WorkoutRow | null> {
 }
 
 export async function getActiveWorkout(): Promise<Workout | null> {
-  const row = await activeRow(await getDb())
-  return row ? toWorkout(row) : null
+  const db = await getDb()
+  const row = await activeRow(db)
+  if (!row) return null
+  if (row.historyRevision >= HISTORY_REVISION) return toWorkout(row)
+  const s = await getSettings()
+  const { library } = readContent()
+  const entries = await Promise.all(
+    row.entries.map(async (entry) => {
+      const ex = lineOf(entry, entry.sets.length)
+      const start = await startFor(ex, entry.sets.length, s, library)
+      const { hint: _hint, prefill: _prefill, ...kept } = entry
+      return {
+        ...kept,
+        ...(start.hint ? { hint: start.hint } : {}),
+        ...(start.prefill ? { prefill: start.prefill } : {}),
+      }
+    }),
+  )
+  await db.update(workouts).set({ entries, historyRevision: HISTORY_REVISION }).where(eq(workouts.id, row.id))
+  return toWorkout({ ...row, entries, historyRevision: HISTORY_REVISION })
 }
 
 /** The plan day of the session in progress, if any: what Plan needs to ask whether an edit should follow today. */
@@ -370,61 +392,70 @@ export async function lastFinishedMark(): Promise<Pick<Workout, 'dayId' | 'dayNa
 }
 
 /** Every finished session, newest first: the ids, how each felt and its lifts. What a lift's history is read from. */
-async function finishedSessions(db: AppDb): Promise<Pick<WorkoutRow, 'effort' | 'entries'>[]> {
+async function finishedSessions(db: AppDb): Promise<Pick<WorkoutRow, 'effort' | 'entries' | 'finishedAt'>[]> {
   return db
-    .select({ effort: workouts.effort, entries: workouts.entries })
+    .select({ effort: workouts.effort, entries: workouts.entries, finishedAt: workouts.finishedAt })
     .from(workouts)
     .where(eq(workouts.status, 'done'))
-    .orderBy(desc(workouts.finishedAt))
+    .orderBy(desc(workouts.finishedAt), desc(workouts.id))
 }
 
-type LiftMatch = { exerciseId: string; repMin?: number; repMax?: number }
+type LiftMatch = { exerciseId: string; loadType?: Exercise['loadType'] }
 
 const matchesLift = (e: WorkoutEntry, lift: LiftMatch): boolean =>
   e.exerciseId === lift.exerciseId &&
   e.sets.some((s) => s.done) &&
-  (lift.repMin === undefined || e.repMin === lift.repMin) &&
-  (lift.repMax === undefined || e.repMax === lift.repMax)
+  (lift.loadType === undefined || e.loadType === lift.loadType)
 
 /** `recentEntries` over sessions already read, so a whole session's lifts share one read. */
 function recentEntriesFrom(
-  sessions: Pick<WorkoutRow, 'effort' | 'entries'>[],
+  sessions: Pick<WorkoutRow, 'effort' | 'entries' | 'finishedAt'>[],
   exerciseId: string,
-  range: Pick<Exercise, 'repMin' | 'repMax'>,
+  loadType: Exercise['loadType'] | undefined,
   limit: number,
+  before?: Date,
 ): PastEntry[] {
-  const anyRange: LiftMatch = { exerciseId }
-  const inRange: LiftMatch = { ...anyRange, repMin: range.repMin, repMax: range.repMax }
-  const find = (lift: LiftMatch): PastEntry[] => {
-    const found: PastEntry[] = []
-    for (const session of sessions) {
-      const entry = session.entries.find((e) => matchesLift(e, lift))
-      if (!entry) continue
-      found.push({
-        entry: { ...entry, sets: entry.sets.map(cleanSet) },
-        ...(session.effort != null ? { effort: session.effort } : {}),
-      })
-      if (found.length >= limit) break
-    }
-    return found
+  const found: PastEntry[] = []
+  for (const session of sessions) {
+    if (before && (!session.finishedAt || session.finishedAt >= before.toISOString())) continue
+    const entry = session.entries.find((candidate) => matchesLift(candidate, { exerciseId, loadType }))
+    if (!entry) continue
+    found.push({
+      entry: { ...entry, sets: entry.sets.map(cleanSet) },
+      ...(session.effort != null ? { effort: session.effort } : {}),
+    })
+    if (found.length >= limit) break
   }
-  const docs = find(inRange)
-  return docs.length > 0 ? docs : find(anyRange)
+  return found
 }
 
 /**
  * The last few finished sessions of an exercise, newest first, with how each felt. A lift's line of progress runs
- * across every plan day that works it in the same rep range: with the leg press on Wednesday's and Saturday's leg
- * days, Saturday's session is the newest whichever day comes next. A day that holds the lift in another range
- * (Heavy 4-6, Light 10-15) is a line of its own. Any range serves while the lift has no history in this one: a
- * range just changed, or a day new to the lift, starts from where the lift is.
+ * across every plan day and rep range, so a newer completed session is not skipped when another day uses a different
+ * range. The load type still has to match.
  */
 export async function recentEntries(
   exerciseId: string,
-  range: Pick<Exercise, 'repMin' | 'repMax'>,
-  limit = FACT_SESSIONS,
+  { limit = FACT_SESSIONS, before, loadType }: { limit?: number; before?: Date; loadType?: Exercise['loadType'] } = {},
 ): Promise<PastEntry[]> {
-  return recentEntriesFrom(await finishedSessions(await getDb()), exerciseId, range, limit)
+  return recentEntriesFrom(await finishedSessions(await getDb()), exerciseId, loadType, limit, before)
+}
+
+async function startFor(
+  ex: Exercise,
+  targetSets: number,
+  s: Settings,
+  library: ReturnType<typeof readContent>['library'],
+  before?: Date,
+) {
+  const history = await recentEntries(ex.id, { before, loadType: ex.loadType })
+  const known = findLibraryByName(library, ex.name)
+  return liftStart(ex, targetSets, history, s.units, {
+    equipment: known?.equipment,
+    plateLoaded: known?.plateLoaded === true,
+    steps: stepsOf(s),
+    bar: barOf(s),
+  })
 }
 
 /**
@@ -432,7 +463,7 @@ export async function recentEntries(
  * coach works out from the lift's history, and the ramp's offer. What a new session starts with, and what a lift
  * added to the day mid-session comes in as.
  */
-async function sessionEntries(plan: Plan, s: Settings, exercises: Exercise[]): Promise<WorkoutEntry[]> {
+async function sessionEntries(plan: Plan, s: Settings, exercises: Exercise[], at?: Date): Promise<WorkoutEntry[]> {
   if (exercises.length === 0) return []
   const db = await getDb()
   const [past, weighIns, sessions] = await Promise.all([
@@ -453,7 +484,7 @@ async function sessionEntries(plan: Plan, s: Settings, exercises: Exercise[]): P
   const entries: WorkoutEntry[] = []
   for (const ex of exercises) {
     const targetSets = plannedSetsFor(ex.sets, s.trainingAge)
-    const history = recentEntriesFrom(sessions, ex.id, ex, FACT_SESSIONS)
+    const history = recentEntriesFrom(sessions, ex.id, ex.loadType, FACT_SESSIONS, at)
     // The library knows what the lift is done on: with the gym's smallest steps that sizes the next step a fact
     // names, and the gym's empty bar is where a barbell lift's first session starts.
     const known = findLibraryByName(library, ex.name)
@@ -503,6 +534,7 @@ export async function startWorkout(dayId: string): Promise<Workout> {
     effort: null,
     note: null,
     entries,
+    historyRevision: HISTORY_REVISION,
   }
   await db.insert(workouts).values(row)
   return toWorkout(row)
@@ -520,7 +552,7 @@ export async function syncSession(): Promise<{ workout: Workout; kept: string[] 
   const [plan, s] = await Promise.all([getPlan(), getSettings()])
   const day = plan.days.find((d) => d.id === row.dayId)
   if (!day) throw new Error("Today's day is no longer in the plan")
-  const fresh = await sessionEntries(plan, s, missingFrom(row.entries, day.exercises))
+  const fresh = await sessionEntries(plan, s, day.exercises)
   const { entries, kept } = syncEntries(row.entries, day.exercises, fresh, s.trainingAge)
   await db.update(workouts).set({ entries, dayName: day.name, dayType: day.type }).where(eq(workouts.id, row.id))
   return { workout: toWorkout({ ...row, entries, dayName: day.name, dayType: day.type }), kept }
@@ -710,7 +742,7 @@ export async function draftWorkout(dayId: string, at: string): Promise<Workout> 
   const day = plan.days.find((d) => d.id === dayId)
   if (!day) throw new Error('Day not found')
   if (day.exercises.length === 0) throw new Error(`${day.name} has no lifts yet. Add some on Plan first.`)
-  const entries = await sessionEntries(plan, s, day.exercises)
+  const entries = await sessionEntries(plan, s, day.exercises, new Date(at))
   return {
     id: `draft-${day.id}`,
     dayId: day.id,
@@ -754,6 +786,7 @@ export async function logPastWorkout(
     effort: null,
     note: null,
     entries,
+    historyRevision: HISTORY_REVISION,
   }
   await db.insert(workouts).values(row)
   return toWorkout(row)

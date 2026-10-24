@@ -9,6 +9,7 @@ const path = require('node:path')
  *    SYSTEM_ALERT_WINDOW) from every manifest. The debug build still needs them to reach Metro, so
  *    this mod adds them back to the debug source set only.
  * 2. One APK per ABI, no universal APK, so a phone downloads only its own native code.
+ * 3. Keep only English Android library resources; the app itself currently ships English UI only.
  */
 const DEBUG_PERMISSIONS = ['android.permission.INTERNET', 'android.permission.SYSTEM_ALERT_WINDOW']
 
@@ -38,10 +39,18 @@ const SPLITS = `
     }
 `
 
+const ENGLISH_RESOURCES = "        resourceConfigurations += ['en']\n"
+
 const withAbiSplits = (config) =>
   withAppBuildGradle(config, (config) => {
     if (!config.modResults.contents.includes('splits {')) {
       config.modResults.contents = config.modResults.contents.replace(/\nandroid \{\n/, `\nandroid {\n${SPLITS}`)
+    }
+    if (!config.modResults.contents.includes('resourceConfigurations')) {
+      config.modResults.contents = config.modResults.contents.replace(
+        /\n\s{4}defaultConfig \{\n/,
+        `\n    defaultConfig {\n${ENGLISH_RESOURCES}`,
+      )
     }
     return config
   })

@@ -85,6 +85,9 @@ jobs:
       - name: Confirm the release APK exists
         run: test -s android/app/build/outputs/apk/release/app-arm64-v8a-release.apk
 
+      - name: Check release APK size and permissions
+        run: bun run release:check
+
   ios-preflight:
     name: iOS simulator build preflight
     needs: quality
@@ -109,6 +112,17 @@ jobs:
 
       - name: Generate the iOS project
         run: bunx expo prebuild --platform ios --no-install
+
+      - name: Cache CocoaPods dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ios/Pods
+            ios/Podfile.lock
+            ~/Library/Caches/CocoaPods
+          key: ${{ runner.os }}-${{ runner.arch }}-pods-${{ hashFiles('bun.lock', 'package.json', 'app.json', 'app.config.ts', 'ios/Podfile') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-pods-
 
       - name: Install CocoaPods dependencies
         working-directory: ios

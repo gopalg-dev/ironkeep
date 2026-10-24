@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals'
-import { missingFrom, setsLeft, swapEntries, syncEntries } from '@/lib/logic/session-sync'
+import { setsLeft, swapEntries, syncEntries } from '@/lib/logic/session-sync'
 import type { Exercise, LoggedSet, WorkoutEntry } from '@/lib/types'
 
 const ex = (id: string, sets = 3, extra: Partial<Exercise> = {}): Exercise => ({
@@ -28,6 +28,22 @@ const blank = (n: number): LoggedSet[] => Array.from({ length: n }, () => ({ don
 const ticked: LoggedSet = { weight: 60, reps: 10, done: true }
 
 describe('syncEntries', () => {
+  it('refreshes range facts and prefill without losing logged or typed sets', () => {
+    const sets = [ticked, { weight: 65, reps: 7, done: false }]
+    const old = entry('row', sets, { hint: 'Top of the range on every set.', prefill: [{ weight: 50, reps: 12 }] })
+    const fresh = entry('row', blank(3), {
+      repMin: 15,
+      repMax: 20,
+      hint: 'Last time 60 kg.',
+      prefill: [{ weight: 60, reps: 10 }],
+    })
+    const [synced] = syncEntries([old], [ex('row', 3, { repMin: 15, repMax: 20 })], [fresh], 'over1').entries
+    expect(synced.sets.slice(0, 2)).toEqual(sets)
+    expect(synced.repMax).toBe(20)
+    expect(synced.hint).toBe('Last time 60 kg.')
+    expect(synced.prefill).toEqual(Array.from({ length: 3 }, () => ({ weight: 60, reps: 10 })))
+  })
+
   it('follows the day: its order, new lifts from fresh, untouched lifts that left are gone', () => {
     const session = [entry('row', blank(3)), entry('curl', blank(3))]
     const day = [ex('pull-ups'), ex('row')]
@@ -91,11 +107,5 @@ describe('swapEntries', () => {
   it('gives the new lift the sets that were left, at least one', () => {
     expect(setsLeft(entry('leg-press', [ticked, ...blank(3)]))).toBe(3)
     expect(setsLeft(entry('leg-press', [ticked, ticked]))).toBe(1)
-  })
-})
-
-describe('missingFrom', () => {
-  it('lists the day lifts the session does not have', () => {
-    expect(missingFrom([entry('row', [])], [ex('row'), ex('curl')]).map((e) => e.id)).toEqual(['curl'])
   })
 })
