@@ -1,12 +1,11 @@
 /**
  * Checks the release APKs against docs/00-requirements.md section 8b: no INTERNET permission, one APK
- * per ABI, and the arm64 APK under the size limit. Run after `cd android && ./gradlew assembleRelease`.
+ * per ABI, and APK size reporting. Run after `cd android && ./gradlew assembleRelease`.
  */
 import { readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { $ } from 'bun'
 
-const LIMIT_MB = 30
 const OUT = 'android/app/build/outputs/apk/release'
 
 const sdk =
@@ -28,9 +27,8 @@ for (const name of apks) {
     .filter((line) => line.startsWith('uses-permission'))
     .map((line) => line.replace(/^uses-permission: name='([^']+)'.*$/, '$1'))
   const internet = permissions.some((p) => p.endsWith('.INTERNET'))
-  const overLimit = name.includes('arm64') && mb > LIMIT_MB
-  if (internet || overLimit) failed = true
-  console.log(`${name}: ${mb.toFixed(1)} MB${overLimit ? ` (over ${LIMIT_MB} MB)` : ''}`)
+  if (internet) failed = true
+  console.log(`${name}: ${mb.toFixed(1)} MB`)
   console.log(`  permissions: ${permissions.join(', ') || 'none'}${internet ? '  <- INTERNET must not be here' : ''}`)
 }
 if (!apks.some((name) => name.includes('arm64'))) {

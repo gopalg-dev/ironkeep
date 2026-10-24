@@ -272,7 +272,7 @@ The app must be light on the battery and tiny on disk. Rules:
 - Stopwatches tick once a second at most, only while the screen that shows them is visible, and pause in the background.
 - Database reads are small and indexed; the Today screen loads in one query per table; charts get at most a few hundred points.
 - Release builds ship with Hermes, R8 with resource shrinking, per-ABI APKs (arm64-v8a as the main one), only the font weights in use (five: 400 to 800, about 470 KB), and pictures as WebP sized for the screen. No Skia, no Reanimated worklets, no native modules that are not needed; charts are drawn with react-native-svg (a line, a dot and a label), which replaces victory-native in the stack table.
-- Targets, checked on every release: arm64 APK under 30 MB with native libraries stored uncompressed (so the installed size is about the same; revised 2026-10-21 from 15 MB after the first measurement, 28.5 MB, showed React Native 0.88 core alone is about 15 MB), install size under 35 MB, cold start under 1.5 s on the Pixel 6a, no wake locks outside a session, zero bytes of network in a 24-hour run.
+- Release APK size is reported without a hard limit (user, 2026-10-24: removed the 30 MB release gate). Native libraries remain stored uncompressed. Other targets remain: install size under 35 MB, cold start under 1.5 s on the Pixel 6a, no wake locks outside a session, zero bytes of network in a 24-hour run.
 
 ## 9. Quality bar
 
