@@ -1,0 +1,32 @@
+appId: ${APP_ID}
+name: Workout widget controls
+# Sample-only install, widget already placed on the visible home page.
+# Seed: 25 kg x 15, three leg-curl sets, two push-up sets, two planks.
+---
+- assertVisible: "25 kg"
+- assertVisible: "15 reps"
+- tapOn: "Increase weight"
+- assertVisible: "27.5 kg"
+- tapOn: "Decrease weight"
+- assertVisible: "25 kg"
+- tapOn: "Increase reps"
+- assertVisible: "16 reps"
+- tapOn: "Decrease reps"
+- assertVisible: "15 reps"
+- tapOn: "Add set"
+- assertVisible: "0 of 8 sets done"
+- assertVisible: "Set 1 of 4 done"
+- tapOn: "Pause"
+- assertVisible: "Resume"
+- assertVisible:
+    id: "${APP_ID}:id/widget_done"
+    enabled: false
+- assertVisible:
+    id: "${APP_ID}:id/widget_add"
+    enabled: false
+- tapOn: "Resume"
+- assertVisible: "Pause"
+- tapOn: "Set 1 of 4 done"
+- assertVisible: "Set 2 of 4 done"
+- assertVisible: "1 of 8 sets done"
+- takeScreenshot: widget-controls

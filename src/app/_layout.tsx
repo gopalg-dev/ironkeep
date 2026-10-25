@@ -11,11 +11,15 @@ import { TextClassContext } from '@/components/ui/text'
 import { useDatabase } from '@/db/use-database'
 import { autoSnapshot } from '@/features/data/files'
 import { MigrationFailedScreen } from '@/features/data/migration-failed-screen'
+import { useSessionNotifications } from '@/features/workout/session-notifications'
 import { followPhone, restoreLook } from '@/theme/look'
 import { useNavTheme } from '@/theme/nav-theme'
 import { useThemeScheme } from '@/theme/use-theme-scheme'
 
 export { ErrorBoundary } from 'expo-router'
+
+// Notification deep links need a real screen underneath the finish/review sheet.
+export const unstable_settings = { anchor: '(tabs)' }
 
 SplashScreen.preventAutoHideAsync()
 
@@ -43,6 +47,7 @@ function Gate({ onRetry }: { onRetry: () => void }) {
   const scheme = useThemeScheme()
   const navTheme = useNavTheme()
   const database = useDatabase()
+  useSessionNotifications(database.status === 'ready')
   // The phone's insets go to Uniwind, so `pb-safe` and friends measure the gesture bar everywhere, sheets included.
   const insets = useSafeAreaInsets()
   useEffect(() => {

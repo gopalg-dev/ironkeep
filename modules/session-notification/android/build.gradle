@@ -1,0 +1,35 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+group = 'app.ironkeep.sessionnotification'
+version = '1.0.0'
+
+apply from: new File(project(':expo-modules-core').projectDir, 'ExpoModulesCorePlugin.gradle')
+applyKotlinExpoModulesCorePlugin()
+useCoreDependencies()
+useDefaultAndroidSdkVersions()
+
+android {
+  namespace 'app.ironkeep.sessionnotification'
+  testOptions { unitTests.includeAndroidResources = true }
+}
+
+dependencies {
+  testImplementation 'junit:junit:4.13.2'
+  testImplementation 'org.robolectric:robolectric:4.16.1'
+}
+
+// Colours come from the CSS tokens; RemoteViews uses launcher-safe system typefaces.
+def widgetResources = layout.buildDirectory.dir('generated/widgetResources')
+def appRoot = projectDir.toPath().resolve('../../..').normalize().toFile()
+def generateWidgetResources = tasks.register('generateWidgetResources', Exec) {
+  inputs.files(new File(appRoot, 'src/global.css'), new File(appRoot, 'scripts/css-tokens.js'), new File(appRoot, 'scripts/widget-resources.js'))
+  outputs.dir(widgetResources)
+  workingDir appRoot
+  commandLine(System.getProperty('os.name').toLowerCase().contains('windows') ? 'bun.exe' : 'bun', 'scripts/widget-resources.js', widgetResources.get().asFile.absolutePath)
+}
+android.sourceSets.main.res.srcDir(widgetResources.get().asFile)
+tasks.named('preBuild').configure { dependsOn(generateWidgetResources) }
+
+
+android.sourceSets.test.resources.srcDir(new File(appRoot, "src/lib/logic/__fixtures__"))

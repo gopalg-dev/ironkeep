@@ -29,7 +29,7 @@ So the mobile app:
 
 - No sync between devices. No cloud. No accounts. (A file export is the way to move data.)
 - No iOS build yet. The code stays iOS-ready (Expo), but version 1 ships as an Android APK on GitHub Releases. Play Store comes later, and needs Google's developer verification (global in 2027).
-- No push notifications, no reminders that fire on their own. The app only speaks when it is open.
+- No push notifications or reminders that fire on their own. An active workout can expose quiet notification and widget controls; they update from app changes or the user's taps.
 - No tablet or landscape layout. Portrait phone only. (Expo Router can add it later.)
 - No public web pages (how it works, demo, privacy, sitemap). Those stay on the web app.
 
@@ -266,7 +266,7 @@ path for existing web users (open point 11.5).
 ## 8b. Battery and size (user rule, 2026-10-21)
 
 The app must be light on the battery and tiny on disk. Rules:
-- No background work at all: no background tasks, no scheduled jobs, no push, no location, no sensors. The snapshot runs only when the app is in the foreground. The keep-awake lock is held only while a session is open and released on leave.
+- No unattended background work: no background tasks, scheduled jobs, push, location or sensors. User-requested active-workout notification/widget actions may perform one short local transaction in response to a tap (2026-10-25). Their system-drawn count-up clocks need no app timer or service. The snapshot runs only when the app is in the foreground. The keep-awake lock is held only while a session is open and released on leave.
 - Zero network: no analytics, no crash reporting that phones home, no font or picture downloads, no update checks (`updates.enabled: false`). The app never asks for the internet permission.
 - No animation that runs on its own. Motion answers taps only and stops at once. Respect Reduce Motion.
 - Stopwatches tick once a second at most, only while the screen that shows them is visible, and pause in the background.

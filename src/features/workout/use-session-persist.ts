@@ -1,37 +1,41 @@
-import { useRef } from 'react'
-
+import { useEffect } from 'react'
+import { Alert, AppState } from 'react-native'
 import * as repo from '@/db/repo'
-import type { LoggedSet, WorkoutEntry } from '@/lib/types'
+import type { LoggedSet } from '@/lib/types'
+import { sessionNotification } from '../../../modules/session-notification'
+import { SessionWriteQueue } from './session-write-queue'
+
+const writes = new SessionWriteQueue(
+  () => sessionNotification?.beginWrite(),
+  () => {
+    sessionNotification?.endWrite()
+  },
+  () => Alert.alert('Set was not saved', 'Reopen the workout to check its saved values.'),
+)
 
 /**
  * Where a session's changes go: a tick is written at once, a stepped number 500 ms after the last
  * step, and `flush` writes whatever is still waiting before anything reads the stored session (a
- * ramp, a swap, Finish). The caller keeps `latest` pointing at its current entries.
+ * ramp, a swap, Finish).
  */
 export function useSessionPersist(workoutId: string) {
-  const pending = useRef(new Map<string, ReturnType<typeof setTimeout>>())
-  const latest = useRef<WorkoutEntry[]>([])
+  useEffect(() => {
+    const state = AppState.addEventListener('change', (next) => {
+      if (next !== 'active') void writes.flush(`${workoutId}:`).catch(() => undefined)
+    })
+    return () => {
+      state.remove()
+      void writes.flush(`${workoutId}:`).catch(() => undefined)
+    }
+  }, [workoutId])
 
   function persist(exerciseId: string, sets: LoggedSet[], immediate: boolean) {
-    const existing = pending.current.get(exerciseId)
-    if (existing) clearTimeout(existing)
-    const run = () => {
-      pending.current.delete(exerciseId)
-      void repo.saveEntrySets(workoutId, exerciseId, sets)
-    }
-    if (immediate) run()
-    else pending.current.set(exerciseId, setTimeout(run, 500))
+    writes.save(`${workoutId}:${exerciseId}`, () => repo.saveEntrySets(workoutId, exerciseId, sets), immediate)
   }
 
   async function flush() {
-    const ids = [...pending.current.keys()]
-    for (const id of ids) {
-      clearTimeout(pending.current.get(id))
-      pending.current.delete(id)
-      const entry = latest.current.find((e) => e.exerciseId === id)
-      if (entry) await repo.saveEntrySets(workoutId, id, entry.sets)
-    }
+    await writes.flush(`${workoutId}:`)
   }
 
-  return { persist, flush, latest }
+  return { persist, flush }
 }

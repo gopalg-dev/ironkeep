@@ -78,7 +78,8 @@ export async function exportBackup(now = new Date()): Promise<Backup> {
       ...(m.chest != null ? { chest: m.chest } : {}),
       ...(m.waist != null ? { waist: m.waist } : {}),
     })),
-    prefs: Object.fromEntries(pr.map((p) => [p.key, p.value])),
+    // Native action receipts are local and must never revive old controls after restore.
+    prefs: Object.fromEntries(pr.filter((p) => p.key !== 'session-controls').map((p) => [p.key, p.value])),
   }
 }
 
@@ -132,7 +133,9 @@ export async function restoreBackup(b: Backup): Promise<void> {
         waist: m.waist ?? null,
       })
     }
-    for (const [key, value] of Object.entries(b.prefs ?? {})) await db.insert(prefs).values({ key, value })
+    for (const [key, value] of Object.entries(b.prefs ?? {})) {
+      if (key !== 'session-controls') await db.insert(prefs).values({ key, value })
+    }
   })
 }
 

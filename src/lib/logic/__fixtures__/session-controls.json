@@ -1,0 +1,139 @@
+[
+  {
+    "name": "latest prefill",
+    "loadType": "weight",
+    "repMin": 10,
+    "prefill": [
+      {
+        "weight": 25,
+        "reps": 15
+      }
+    ],
+    "sets": [
+      {
+        "done": false
+      }
+    ],
+    "expected": {
+      "done": true,
+      "weight": 25,
+      "reps": 15
+    }
+  },
+  {
+    "name": "own overrides prefill",
+    "loadType": "weight",
+    "repMin": 10,
+    "prefill": [
+      {
+        "weight": 25,
+        "reps": 15
+      }
+    ],
+    "sets": [
+      {
+        "done": false,
+        "weight": 30,
+        "reps": 12
+      }
+    ],
+    "expected": {
+      "done": true,
+      "weight": 30,
+      "reps": 12
+    }
+  },
+  {
+    "name": "prefill before earlier set",
+    "loadType": "weight",
+    "repMin": 10,
+    "prefill": [
+      {},
+      {
+        "weight": 25,
+        "reps": 15
+      }
+    ],
+    "sets": [
+      {
+        "done": true,
+        "weight": 30,
+        "reps": 12
+      },
+      {
+        "done": false
+      }
+    ],
+    "expected": {
+      "done": true,
+      "weight": 25,
+      "reps": 15
+    }
+  },
+  {
+    "name": "earlier set fallback",
+    "loadType": "weight",
+    "repMin": 10,
+    "sets": [
+      {
+        "done": true,
+        "weight": 30,
+        "reps": 12
+      },
+      {
+        "done": false
+      }
+    ],
+    "expected": {
+      "done": true,
+      "weight": 30,
+      "reps": 12
+    }
+  },
+  {
+    "name": "missing weight rejected",
+    "loadType": "weight",
+    "repMin": 10,
+    "sets": [
+      {
+        "done": false
+      }
+    ],
+    "expected": {
+      "done": false
+    }
+  },
+  {
+    "name": "bodyweight range floor",
+    "loadType": "bodyweight",
+    "repMin": 8,
+    "sets": [
+      {
+        "done": false
+      }
+    ],
+    "expected": {
+      "done": true,
+      "reps": 8
+    }
+  },
+  {
+    "name": "timed prefill",
+    "loadType": "time",
+    "repMin": 30,
+    "prefill": [
+      {
+        "seconds": 45
+      }
+    ],
+    "sets": [
+      {
+        "done": false
+      }
+    ],
+    "expected": {
+      "done": true,
+      "seconds": 45
+    }
+  }
+]

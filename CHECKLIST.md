@@ -75,7 +75,7 @@ step. A feature is ticked only when the app and the canvas agree.
 - [x] Colour tokens in OKLCH in `src/global.css` only; nav theme reads them with `useCSSVariable`; theme registry with light / dark scheme for the status bar; `scripts/check-colors.ts` blocks colour literals 2026-10-21
 - [x] Design-system row on the canvas (colour tokens generated from `global.css` by `bun run design:tokens`, type / space / shape, components) 2026-10-21
 - [x] Theme switching verified on the Pixel 6a (status bar, nav theme, OKLCH tokens resolve on device; root render count flat before and after a toggle, no loop) 2026-10-21
-- [x] Plus Jakarta Sans embedded with the expo-font plugin (one family, weights 400–800, plain `fontDefinitions`); all five weights and tabular numerals verified on the Pixel 6a 2026-10-21
+- [x] Plus Jakarta Sans embedded with the expo-font plugin (one family, weights 400ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ800, plain `fontDefinitions`); all five weights and tabular numerals verified on the Pixel 6a 2026-10-21
 - [x] expo-sqlite + Drizzle + one migration runs at startup; live query updates on write and the row survives a force-stop and relaunch on the Pixel 6a 2026-10-21
 - [x] react-native-svg line chart renders with a date axis and tap (no Skia, no Reanimated: size and battery rule); `src/components/line-chart.tsx`, stroke and fill colours through `withUniwind` + `accent-` tokens, verified on the Pixel 6a 2026-10-21
 - [x] expo-sharing, file pick, mail composer and folder pick all work on the Pixel 6a (file and folder pickers come from expo-file-system 58, so expo-document-picker is not installed; Android refuses the storage root and Download as a target folder, so the flow needs a subfolder such as Download/Ironkeep) 2026-10-21
@@ -139,7 +139,7 @@ now", surface facts and controls, the decision stays the user's). Offline only: 
 notification, no push, no new permission beyond what a local notification needs; the widget reads local
 state. Each of the two starts with a research pass written to `docs/research/`, then build, unit tests,
 and a Pixel 6a pass.
-- [ ] Research the notification controls (`docs/research/session-notification.md`): the platform
+- [x] Research the notification controls (`docs/research/session-notification.md`), 2026-10-25: the platform
   guidelines for an ongoing-activity notification and its live status, from credible sources, for
   example Android ongoing-activity / Live Updates and MediaStyle-type transport controls, notification
   actions and channels, Material's notification guidance; Apple's Live Activities / ActivityKit and
@@ -148,16 +148,12 @@ and a Pixel 6a pass.
   total) and which actions it carries (mark set done, pause / resume, next lift, open the app), and how
   it updates live as the session changes. Note the Expo path (expo-notifications for a local ongoing
   notification, a config plugin for anything native).
-- [ ] Build the session notification from the research, honouring the no-nudge and offline rules; it
-  shows only during a live session and is removed on finish or discard.
-- [ ] Research the home-screen widget (`docs/research/session-widget.md`): Android App Widget and
-  Jetpack Glance guidance, Material widget design, sizing and update limits; Apple WidgetKit for design
-  principles. Decide the small widget's content and controls for the active session (mirroring the
-  notification), and its resting state when no session runs (quiet, no nudge). Note the Expo path: there
-  is no built-in widget API, so a native Android App Widget through a config plugin or a library such as
-  react-native-android-widget, sharing the session state with the app.
-- [ ] Build the widget from the research, honouring the same rules; it mirrors the notification's
-  controls for the active session and stays quiet otherwise.
+- [~] Build the session notification, 2026-10-25: local native module, expanded weight/reps/seconds controls, set completion and automatic advance, Pause/Resume, and Finish through the existing review screen. No service, polling or network. Native SQLite is isolated in `:session_controls`, with stale-action receipts and a cross-process edit lock. Native build and 14 native / 302 JS tests pass. Emulator manual testing covers edits, exercise advancement, controls with the main process killed, cold-start review, save and removal; the Maestro control flow passes. 360/412 dp light/dark and 2x-text layouts reviewed; local design boards added. Physical Pixel debug verification at 14:43-14:52 passed reps/weight increase and decrease, pause/resume and disabled edits, set/exercise advancement, native actions with the main app process killed, two-way app/notification updates, Finish review, saved values and notification removal; database integrity remained ok. Timed controls on Pixel, remaining edge cases and shared-canvas publication are pending. Evidence: `docs/testing/session-notification.md`.
+- [x] Research the home-screen widget 2026-10-25: `docs/research/session-widget.md`. Reviewed Android/Glance, Material sizing, Apple WidgetKit design, SDK 58 Expo Widgets and react-native-android-widget. Corrected the outdated no-Expo-widget-API assumption. Recommend native RemoteViews for the live clock and controls, with a shared transactional session-command layer. Cold-process execution was subsequently verified in the sample-only prototype below.
+- [~] Widget feasibility spike, 2026-10-25: native clock, cold-process SQLite writes, replay protection and shared TypeScript/Kotlin completion fixtures verified in `app.ironkeep.widgetpreview`. No new production dependency. Missing-database safety is tested; older-schema migration and release APK delta remain open.
+- [x] First widget prototype, 2026-10-25: weight/reps/seconds steppers, session-only + Set, explicit Set done, Pause/Resume, native count-up clock and compact open-session layout. Pixel/Niagara sample installation verified with physical weight/reps edits, pause/resume and completion. Emulator 360/412 light/dark, 2x text, resize, idle-after-finish, cold-process completion and both Maestro flows pass. Full check, 309 JS tests and 18 native tests pass. Test captures are Git-ignored. Evidence and remaining gates: `docs/testing/session-widget.md`.
+- [x] Smaller widget and idle-card layouts, 2026-10-25: one-row default with a filled minimum-height card, 48 dp resize minimum, 250 x 220 dp full controls, centered vector open icon, long-name and font-change clipping fixes. Actual Pixel Launcher one/two/three-row resizing and landscape strip verified; 360/412 light/dark, 200% text, cold-process completion and both Maestro flows pass. 309 app / 26 native tests pass. Separate sample reinstalled and tested in Niagara/Pixel Launcher. Density-corrected fill and centered arrow visually confirmed on the unlocked phone at its minimum row height. Evidence and remaining release gates: `docs/testing/session-widget.md`.
+- [ ] Full widget release gates: manual lift cursor, older Android, reboot/upgrade/restore, simultaneous widgets, TalkBack, final release APK/permission delta and shared-canvas publication. Local light/dark boards and canonical references are ready; external canvas edit requires explicit approval after auto-review blocked it.
 
 ### 3.3 Data safety (each with a round-trip test and a Maestro flow)
 

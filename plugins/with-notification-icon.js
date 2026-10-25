@@ -2,7 +2,7 @@ const { withDangerousMod } = require('expo/config-plugins')
 const fs = require('node:fs/promises')
 const path = require('node:path')
 
-/** Bundle the local notification artwork without adding notification behaviour or permissions. */
+/** Bundle the Fold artwork used by the local active-workout notification. */
 module.exports = (config) =>
   withDangerousMod(config, [
     'android',
@@ -17,7 +17,7 @@ module.exports = (config) =>
           path.join(resources, folder, 'ic_notification.png'),
         )
       }
-      // Keep the resource until the planned local-session notification feature references it.
+      // The local module resolves this app-owned drawable by name; keep it through resource shrinking.
       await fs.mkdir(path.join(resources, 'raw'), { recursive: true })
       await fs.writeFile(
         path.join(resources, 'raw/keep_branding.xml'),

@@ -59,11 +59,13 @@ export function WorkoutScreen({ workout, settings, onChanged }: WorkoutScreenPro
   const measure = useBigTitle()
   const now = useNow(15_000)
   const [pause, setPause] = useState<PauseState>({ pausedAt: workout.pausedAt, pausedMs: workout.pausedMs })
+  useEffect(() => {
+    setPause({ pausedAt: workout.pausedAt, pausedMs: workout.pausedMs })
+  }, [workout.pausedAt, workout.pausedMs])
   const [discardOpen, setDiscardOpen] = useState(false)
   const [busy, setBusy] = useState(false)
-  const { persist, flush, latest } = useSessionPersist(workout.id)
+  const { persist, flush } = useSessionPersist(workout.id)
   const sets = useSessionSets(workout.entries, persist)
-  latest.current = sets.entries
   const steps = stepsOf(settings)
   const paused = Boolean(pause.pausedAt)
 
@@ -82,6 +84,7 @@ export function WorkoutScreen({ workout, settings, onChanged }: WorkoutScreenPro
   async function discard() {
     setBusy(true)
     try {
+      await flush().catch(() => undefined)
       await repo.discardWorkout(workout.id)
       setDiscardOpen(false)
       onChanged()

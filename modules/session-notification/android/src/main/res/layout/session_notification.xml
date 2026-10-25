@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical">
+  <TextView android:id="@+id/session_lift" android:layout_width="match_parent" android:layout_height="wrap_content"
+      android:textAppearance="@style/TextAppearance.Compat.Notification.Title" android:maxLines="2" android:ellipsize="end" />
+  <TextView android:id="@+id/session_progress" android:layout_width="match_parent" android:layout_height="wrap_content"
+      android:textAppearance="@style/TextAppearance.Compat.Notification" android:maxLines="2" />
+  <LinearLayout android:id="@+id/session_weight_row" android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical">
+    <Button android:id="@+id/session_weight_minus" style="@style/SessionNotificationButton" android:layout_width="64dp" android:text="−" android:contentDescription="Decrease weight" />
+    <TextView android:id="@+id/session_weight" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:gravity="center" android:textAppearance="@style/TextAppearance.Compat.Notification.Title" />
+    <Button android:id="@+id/session_weight_plus" style="@style/SessionNotificationButton" android:layout_width="64dp" android:text="+" android:contentDescription="Increase weight" />
+  </LinearLayout>
+  <LinearLayout android:id="@+id/session_amount_row" android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical">
+    <Button android:id="@+id/session_amount_minus" style="@style/SessionNotificationButton" android:layout_width="64dp" android:text="−" />
+    <TextView android:id="@+id/session_amount" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:gravity="center" android:textAppearance="@style/TextAppearance.Compat.Notification.Title" />
+    <Button android:id="@+id/session_amount_plus" style="@style/SessionNotificationButton" android:layout_width="64dp" android:text="+" />
+  </LinearLayout>
+  <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical">
+    <Button android:id="@+id/session_pause" style="@style/SessionNotificationButton" android:layout_width="0dp" android:layout_weight="1" />
+    <Button android:id="@+id/session_done" style="@style/SessionNotificationButton" android:layout_width="0dp" android:layout_weight="1.5" />
+    <Button android:id="@+id/session_finish" style="@style/SessionNotificationButton" android:layout_width="0dp" android:layout_weight="1" android:text="Finish" android:contentDescription="Review and finish workout" />
+  </LinearLayout>
+</LinearLayout>

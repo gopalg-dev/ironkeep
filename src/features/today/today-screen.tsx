@@ -18,6 +18,7 @@ import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
 import * as repo from '@/db/repo'
 import { useOpenExercise } from '@/features/library/open-exercise'
+import { useNativeSessionChanges } from '@/features/workout/session-notifications'
 import { WorkoutScreen } from '@/features/workout/workout-screen'
 import { targetOf, weekdayDate } from '@/lib/format'
 import type { Alert } from '@/lib/logic/alerts'
@@ -64,6 +65,7 @@ export function TodayScreen() {
     }
   }, [])
   useFocusEffect(load)
+  useNativeSessionChanges(load)
   const refresh = () => repo.getTodayData().then(setData)
   const close = () => setPanel(null)
 

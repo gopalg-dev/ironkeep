@@ -1,0 +1,35 @@
+<resources>
+  <string name="widget_name">Workout</string>
+  <string name="widget_description">Active workout controls</string>
+  <style name="WidgetBody">
+    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="android:includeFontPadding">false</item>
+    <item name="android:textColor">@color/widget_foreground</item>
+    <item name="android:textSize">16sp</item>
+  </style>
+  <style name="WidgetDisplay" parent="WidgetBody">
+    <item name="android:fontFamily">sans-serif-condensed</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textSize">22sp</item>
+  </style>
+  <style name="WidgetButton" parent="WidgetBody">
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_width">48dp</item>
+    <item name="android:background">@drawable/widget_button</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:maxLines">2</item>
+    <item name="android:minHeight">48dp</item>
+    <item name="android:minWidth">48dp</item>
+    <item name="android:padding">0dp</item>
+    <item name="android:gravity">center</item>
+  </style>
+  <style name="WidgetOpenButton">
+    <item name="android:layout_width">48dp</item>
+    <item name="android:layout_height">48dp</item>
+    <item name="android:background">@drawable/widget_button</item>
+    <item name="android:src">@drawable/widget_open_arrow</item>
+    <item name="android:scaleType">fitCenter</item>
+    <item name="android:padding">12dp</item>
+  </style>
+</resources>

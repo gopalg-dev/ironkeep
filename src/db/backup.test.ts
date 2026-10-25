@@ -85,6 +85,17 @@ describe('the backup envelope', () => {
     expect(JSON.parse(JSON.stringify(b))).toEqual(b)
   })
 
+  it('keeps native action receipts local and discards them on restore', async () => {
+    await fill()
+    await setPref('session-controls', '{"nonce":"old-device"}')
+    const backup = await exportBackup()
+    expect(backup.prefs).not.toHaveProperty('session-controls')
+    backup.prefs['session-controls'] = '{"nonce":"another-device"}'
+    await restoreBackup(backup)
+    expect(await getPref('session-controls')).toBeNull()
+    expect(await getPref('email')).toBe('sam@example.com')
+  })
+
   it('comes back the same after a restore onto a wiped phone', async () => {
     await fill()
     const before = await exportBackup(new Date(2026, 9, 13, 10))

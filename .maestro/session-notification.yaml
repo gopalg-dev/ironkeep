@@ -1,0 +1,75 @@
+appId: ${APP_ID}
+name: Active workout notification controls
+# Run on a disposable debug install with the default plan (Pull A or Push A).
+# An already-active session must have no completed sets or edited reps.
+# This flow logs test sets; never point it at the user's release installation.
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible: "Start fresh|Start Pull A|Start Push A|Pause the session"
+    timeout: 180000
+- runFlow:
+    when:
+      visible: "Start fresh"
+    commands:
+      - tapOn: "Start fresh"
+      - tapOn: "Continue"
+      - tapOn: "Continue"
+      - tapOn: "Skip"
+      - tapOn: "Start training"
+- runFlow:
+    when:
+      visible: "Start Pull A|Start Push A"
+    commands:
+      - tapOn: "Start Pull A|Start Push A"
+- runFlow:
+    when:
+      visible: "Allow"
+    commands:
+      - tapOn: "Allow"
+- swipe:
+    start: "180, 10"
+    end: "180, 600"
+    duration: 600
+- extendedWaitUntil:
+    visible:
+      id: "android:id/expand_button"
+    timeout: 10000
+- runFlow:
+    when:
+      notVisible: "Increase reps"
+    commands:
+      - tapOn:
+          id: "android:id/expand_button"
+          childOf:
+            id: "android:id/expand_button_touch_container"
+            childOf:
+              containsDescendants:
+                - text: "Pull A|Push A"
+- runFlow:
+    when:
+      visible: "5 reps"
+    commands:
+      - tapOn: "Increase reps"
+      - assertVisible: "6 reps"
+- tapOn: "Increase reps"
+- assertVisible: "7 reps"
+- tapOn: "Set 1 done"
+- assertVisible: "Set 2 of 4.*"
+- tapOn: "Pause"
+- assertVisible: "Resume"
+- tapOn: "Resume"
+- assertVisible: "Pause"
+- takeScreenshot: notification-controls
+- tapOn: "Review and finish workout"
+- extendedWaitUntil:
+    visible: "How did it go?"
+    timeout: 15000
+- tapOn: "Save and finish"
+- assertVisible: "Workout saved"
+- swipe:
+    start: "180, 10"
+    end: "180, 600"
+    duration: 600
+- assertNotVisible: "Set 2 of 4.*"

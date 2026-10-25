@@ -1,0 +1,20 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent" android:layout_height="match_parent">
+  <LinearLayout android:id="@+id/widget_card" android:layout_width="match_parent" android:layout_height="48dp"
+    android:orientation="horizontal" android:gravity="center_vertical"
+    android:paddingHorizontal="12dp" android:background="@drawable/widget_surface">
+    <LinearLayout android:id="@+id/widget_header" android:layout_width="0dp" android:layout_weight="1"
+      android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginEnd="8dp">
+      <TextView android:id="@+id/widget_lift" style="@style/WidgetDisplay" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="IronKeep" android:textSize="20sp" android:maxLines="1" android:ellipsize="end" />
+      <TextView android:id="@+id/widget_day" style="@style/WidgetBody" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="No active session" android:textSize="12sp" android:visibility="gone"
+        android:textColor="@color/widget_muted_foreground" android:maxLines="2" android:ellipsize="end" />
+      <TextView android:id="@+id/widget_progress" style="@style/WidgetBody" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:visibility="gone" />
+    </LinearLayout>
+    <Chronometer android:id="@+id/widget_clock" style="@style/WidgetBody" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+    <LinearLayout android:id="@+id/widget_controls" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+    <ImageButton android:id="@+id/widget_open" style="@style/WidgetOpenButton" android:contentDescription="Open IronKeep" />
+  </LinearLayout>
+</FrameLayout>

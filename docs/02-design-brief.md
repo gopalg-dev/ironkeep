@@ -1,4 +1,4 @@
-﻿# Ironkeep: design brief
+# Ironkeep: design brief
 
 Status: draft 1, 2026-10-21, canvas published. The canvas is "Ironkeep screens":
 https://claude.ai/artifact/JjZZTUxBdyqfhz1ravLCLQ (private until shared). Full-height screenshots of
@@ -95,13 +95,13 @@ the day colour on Today and in ink elsewhere.
 
 ```
 +----------------------------------+
-|  Wednesday, Oct 21          ðŸ”¥ 4 |   caption + streak, quiet
-|  â–ŒPull A                         |   title 34, a 4px day-colour bar at the left
+|  Wednesday, Oct 21          Ã°Å¸â€Â¥ 4 |   caption + streak, quiet
+|  Ã¢â€“Å’Pull A                         |   title 34, a 4px day-colour bar at the left
 |  6 exercises, 20 sets            |   secondary
 |                                  |
 |  +----------------------------+  |   surface group, radius 16
-|  | [img] Pull-ups      4 Ã— 6-12| |   row 64
-|  | [img] Barbell Row   4 Ã— 6-10| |
+|  | [img] Pull-ups      4 Ãƒâ€” 6-12| |   row 64
+|  | [img] Barbell Row   4 Ãƒâ€” 6-10| |
 |  | ...                         | |
 |  +----------------------------+  |
 |                                  |
@@ -122,7 +122,7 @@ Set logger (the hero):
 |  |  (-)  (+)       (-)  (+)   |  |
 |  |      [  Set 1 done  ]      |  |   one ink button; turns success green when done
 |  +----------------------------+  |
-|  â—‹ â— â—‹ â—‹   sets                  |   dots, tap to open a set
+|  Ã¢â€”â€¹ Ã¢â€”Â Ã¢â€”â€¹ Ã¢â€”â€¹   sets                  |   dots, tap to open a set
 ```
 
 ## Icons (review pass, 2026-10-21)
@@ -193,3 +193,28 @@ stats (lifts, sessions, session editor, body), report (dashboard, share), librar
 settings (main, data, import preview, restore, delete all), menu sheet, guide, migration failed.
 Dark: the main screens (setup start, Today, workout, plan, stats lifts, settings data); the rest
 follow the same tokens.
+
+
+### Android workout widget prototype
+
+`SessionWidget.dc.html` and `DarkSessionWidget.dc.html` cover active, paused,
+all-sets-logged, idle and compact states. System light/dark colours are generated
+from the app tokens. Android launcher RemoteViews use native sans-serif/condensed
+fonts; custom font loading is restricted by the host. Full controls need at least
+250 x 220 dp at normal text size. A smaller card opens the saved session, with no clipped steppers.
+The header shares rows for session/progress and exercise/clock. Add, Pause/Resume and Done share one 48 dp action row. Larger text requires a larger host size before controls appear.
+The clock reports elapsed time since a known set completion; it gives no rest advice.
+
+Idle, completed and undersized widgets use a short horizontal card with an open
+arrow. The host-sized root is transparent; only measured content paints a surface,
+including in the active layout. Minimum resize height is 48 dp, while full editing needs 220 dp at normal text size. The picker uses the actual compact card. Live controls retain 48 dp touch targets.
+
+The initial widget and picker now use the short card in a 4 x 1 cell slot. Default
+height is 80 dp; minimum resize height is 48 dp to fit a landscape grid row too.
+At 48-79 dp the widget uses a single-line title and a 48 dp open button; at 80 dp
+it adds the session detail. Expanding to 220 dp reveals the existing full controls.
+This changes reserved grid space, not only the painted background.
+
+Compact titles and details each use one ellipsized line. The compact threshold grows from 80 to 120 dp at 200% text. The open control is a centered 24 dp vector in a 48 dp button, independent of font metrics. Cached text sizes and responsive thresholds use the same font configuration; live font changes refresh both together.
+
+The compact card fills a minimum one-row host, with content centered vertically, to remove the blank band inside the launcher's resize outline. At taller host sizes it remains content-sized. The compact canvas example uses the measured 104 dp Pixel Launcher row; actual cell dimensions vary by launcher.

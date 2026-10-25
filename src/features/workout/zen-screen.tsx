@@ -22,6 +22,7 @@ import { canComplete, currentSet, shownValue } from '@/lib/logic/sets'
 import { fmtSeconds } from '@/lib/logic/units'
 import type { Settings, Workout } from '@/lib/types'
 import { cn } from '@/lib/utils'
+import { useNativeSessionChanges } from './session-notifications'
 import { SetDots } from './set-dots'
 import { useSessionPersist } from './use-session-persist'
 import { useSessionSets } from './use-session-sets'
@@ -53,6 +54,18 @@ const fmt = (n: number): string => (Number.isInteger(n) ? String(n) : n.toFixed(
 export function ZenScreen() {
   const router = useRouter()
   const [loaded, setLoaded] = useState<{ workout: Workout; settings: Settings } | null>(null)
+  const reload = useCallback(() => {
+    let live = true
+    void Promise.all([repo.getActiveWorkout(), repo.getSettings()]).then(([workout, settings]) => {
+      if (!live) return
+      if (workout) setLoaded({ workout, settings })
+      else router.replace('/')
+    })
+    return () => {
+      live = false
+    }
+  }, [router])
+  useNativeSessionChanges(reload)
   useFocusEffect(
     useCallback(() => {
       let live = true
@@ -74,10 +87,12 @@ function ZenBody({ workout, settings }: { workout: Workout; settings: Settings }
   const router = useRouter()
   const openExercise = useOpenExercise()
   const now = useNow(1000)
-  const { persist, flush, latest } = useSessionPersist(workout.id)
+  const { persist, flush } = useSessionPersist(workout.id)
   const sets = useSessionSets(workout.entries, persist)
-  latest.current = sets.entries
   const [pause, setPause] = useState<PauseState>({ pausedAt: workout.pausedAt, pausedMs: workout.pausedMs })
+  useEffect(() => {
+    setPause({ pausedAt: workout.pausedAt, pausedMs: workout.pausedMs })
+  }, [workout.pausedAt, workout.pausedMs])
   // The lift on screen: the first with a set left, until Previous or Next says otherwise.
   const [at, setAt] = useState(() =>
     Math.max(

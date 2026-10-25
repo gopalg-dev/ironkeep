@@ -1,0 +1,34 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent" android:layout_height="match_parent">
+<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
+  android:padding="10dp" android:background="@drawable/widget_surface">
+  <LinearLayout android:id="@+id/widget_header" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+      <TextView android:id="@+id/widget_day" style="@style/WidgetBody" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="IRONKEEP" android:textSize="12sp" android:textColor="@color/widget_muted_foreground" android:maxLines="1" android:ellipsize="end" />
+      <TextView android:id="@+id/widget_progress" style="@style/WidgetBody" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="4dp" android:text="Sets done" android:textSize="12sp" android:textColor="@color/widget_muted_foreground" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+      <TextView android:id="@+id/widget_lift" style="@style/WidgetDisplay" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Workout" android:maxLines="1" android:ellipsize="end" />
+      <Chronometer android:id="@+id/widget_clock" style="@style/WidgetBody" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="4dp" android:gravity="center_vertical" android:textSize="12sp" android:visibility="gone" />
+    </LinearLayout>
+  </LinearLayout>
+  <LinearLayout android:id="@+id/widget_controls" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="4dp">
+    <LinearLayout android:id="@+id/widget_weight_row" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:orientation="horizontal">
+      <Button android:id="@+id/widget_weight_minus" style="@style/WidgetButton" android:text="&#8722;" android:textSize="24sp" android:contentDescription="Decrease weight" />
+      <TextView android:id="@+id/widget_weight" style="@style/WidgetDisplay" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:minHeight="48dp" android:gravity="center" android:text="25 kg" />
+      <Button android:id="@+id/widget_weight_plus" style="@style/WidgetButton" android:text="+" android:textSize="24sp" android:contentDescription="Increase weight" />
+    </LinearLayout>
+    <LinearLayout android:id="@+id/widget_amount_row" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:layout_marginTop="4dp" android:orientation="horizontal">
+      <Button android:id="@+id/widget_amount_minus" style="@style/WidgetButton" android:text="&#8722;" android:textSize="24sp" android:contentDescription="Decrease reps" />
+      <TextView android:id="@+id/widget_amount" style="@style/WidgetDisplay" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:minHeight="48dp" android:gravity="center" android:text="15 reps" />
+      <Button android:id="@+id/widget_amount_plus" style="@style/WidgetButton" android:text="+" android:textSize="24sp" android:contentDescription="Increase reps" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:layout_marginTop="4dp" android:orientation="horizontal">
+      <Button android:id="@+id/widget_add" style="@style/WidgetButton" android:layout_width="0dp" android:layout_weight="1" android:layout_marginEnd="4dp" android:text="+ Set" android:contentDescription="Add set" />
+      <Button android:id="@+id/widget_pause" style="@style/WidgetButton" android:layout_width="0dp" android:layout_weight="1" android:layout_marginEnd="4dp" android:text="Pause" />
+      <Button android:id="@+id/widget_done" style="@style/WidgetButton" android:layout_width="0dp" android:layout_weight="1.4" android:background="@drawable/widget_primary" android:textColor="@color/widget_background" android:text="Done 1/3" />
+    </LinearLayout>
+  </LinearLayout>
+  <Button android:id="@+id/widget_open" style="@style/WidgetButton" android:layout_width="match_parent" android:layout_marginTop="12dp" android:text="Open IronKeep" android:visibility="gone" />
+</LinearLayout>
+</FrameLayout>

@@ -1,0 +1,31 @@
+appId: ${APP_ID}
+name: Widget bodyweight and timed sets
+# Continue the sample-only cold-process test at leg curl set 3 of 4.
+---
+- assertVisible: "Set 3 of 4 done"
+- tapOn: "Set 3 of 4 done"
+- tapOn: "Set 4 of 4 done"
+- assertVisible: "Push-ups"
+- assertNotVisible: "Increase weight"
+- assertVisible: "8 reps"
+- tapOn: "Increase reps"
+- assertVisible: "9 reps"
+- tapOn: "Set 1 of 2 done"
+- tapOn: "Set 2 of 2 done"
+- assertVisible: "Plank"
+- assertVisible: "30 seconds"
+- tapOn: "Increase seconds"
+- assertVisible: "35 seconds"
+- tapOn: "Decrease seconds"
+- assertVisible: "30 seconds"
+- tapOn: "Set 1 of 2 done"
+- tapOn: "Set 2 of 2 done"
+- assertVisible: "All sets logged"
+- assertVisible: "8 of 8 sets done"
+- assertVisible: "Open session"
+- assertNotVisible: "Add set"
+- takeScreenshot: widget-all-logged
+- tapOn: "Open session"
+- extendedWaitUntil:
+    visible: "Leg curl"
+    timeout: 20000

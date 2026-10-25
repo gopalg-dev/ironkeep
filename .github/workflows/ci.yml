@@ -78,6 +78,10 @@ jobs:
       - name: Generate the Android project
         run: bunx expo prebuild --platform android --no-install
 
+      - name: Test native workout notification and widget controls
+        working-directory: android
+        run: ./gradlew :session-notification:testDebugUnitTest
+
       - name: Build the ARM64 release APK
         working-directory: android
         run: ./gradlew :app:assembleRelease -PreactNativeArchitectures=arm64-v8a -Pironkeep.buildAbis=arm64-v8a
@@ -113,16 +117,15 @@ jobs:
       - name: Generate the iOS project
         run: bunx expo prebuild --platform ios --no-install
 
-      - name: Cache CocoaPods dependencies
+      # Prebuild generates ios/ from the current Expo packages. Restoring an older
+      # Pods tree or lockfile can pin incompatible local Expo podspec versions.
+      - name: Cache CocoaPods downloads
         uses: actions/cache@v4
         with:
-          path: |
-            ios/Pods
-            ios/Podfile.lock
-            ~/Library/Caches/CocoaPods
-          key: ${{ runner.os }}-${{ runner.arch }}-pods-${{ hashFiles('bun.lock', 'package.json', 'app.json', 'app.config.ts', 'ios/Podfile') }}
+          path: ~/Library/Caches/CocoaPods
+          key: ${{ runner.os }}-${{ runner.arch }}-cocoapods-downloads-v2-${{ hashFiles('bun.lock', 'package.json', 'app.json', 'app.config.ts', 'ios/Podfile') }}
           restore-keys: |
-            ${{ runner.os }}-${{ runner.arch }}-pods-
+            ${{ runner.os }}-${{ runner.arch }}-cocoapods-downloads-v2-
 
       - name: Install CocoaPods dependencies
         working-directory: ios

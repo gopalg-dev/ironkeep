@@ -455,6 +455,38 @@
    "w": 390,
    "radius": 40,
    "title": "Dark: Report (empty)"
+  },
+  "SessionNotification.dc.html": {
+   "h": 660,
+   "y": 10937,
+   "radius": 24,
+   "title": "Active workout notification",
+   "w": 390,
+   "x": 0
+  },
+  "DarkSessionNotification.dc.html": {
+   "h": 660,
+   "y": 10937,
+   "radius": 24,
+   "title": "Dark: Active workout notification",
+   "w": 390,
+   "x": 470
+  },
+  "SessionWidget.dc.html": {
+   "x": 0,
+   "y": 11677,
+   "w": 390,
+   "h": 904,
+   "radius": 24,
+   "title": "workout widget"
+  },
+  "DarkSessionWidget.dc.html": {
+   "x": 470,
+   "y": 11677,
+   "w": 390,
+   "h": 904,
+   "radius": 24,
+   "title": "Dark: workout widget"
   }
  },
  "order": [
@@ -514,7 +546,11 @@
   "ReportEmpty.dc.html",
   "DarkStatsLiftsEmpty.dc.html",
   "DarkStatsBodyEmpty.dc.html",
-  "DarkReportEmpty.dc.html"
+  "DarkReportEmpty.dc.html",
+  "SessionNotification.dc.html",
+  "DarkSessionNotification.dc.html",
+  "SessionWidget.dc.html",
+  "DarkSessionWidget.dc.html"
  ],
  "v": 3,
  "attachments": {},

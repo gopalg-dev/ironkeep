@@ -9,6 +9,12 @@ import type * as schema from './schema'
 export type AppDb = BaseSQLiteDatabase<'sync' | 'async', unknown, typeof schema>
 
 let override: AppDb | undefined
+let native: { db: AppDb; transaction: (fn: () => Promise<void>) => Promise<void> } | undefined
+
+/** Startup already opens this handle for migrations; repository reads reuse that same instance. */
+export function registerNativeDatabase(db: AppDb, transaction: (fn: () => Promise<void>) => Promise<void>): void {
+  native = { db, transaction }
+}
 
 /** Tests hand in a database so no phone is needed. */
 export function setDbForTests(db: AppDb | undefined): void {
@@ -18,6 +24,7 @@ export function setDbForTests(db: AppDb | undefined): void {
 /** The phone's database, opened on first use so importing the repository never touches native code. */
 export async function getDb(): Promise<AppDb> {
   if (override) return override
+  if (native) return native.db
   const { db } = await import('./client')
   return db
 }
@@ -29,6 +36,10 @@ export async function getDb(): Promise<AppDb> {
 export async function withTransaction(fn: () => Promise<void>): Promise<void> {
   if (override) {
     await fn()
+    return
+  }
+  if (native) {
+    await native.transaction(fn)
     return
   }
   const { sqlite } = await import('./client')

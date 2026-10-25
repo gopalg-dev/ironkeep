@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+  <application>
+    <receiver android:name=".SessionActionReceiver" android:exported="false" android:process=":session_controls" />
+    <receiver android:name=".SessionWidgetProvider" android:process=":session_controls" android:exported="false" android:label="@string/widget_name">
+      <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent-filter>
+      <meta-data android:name="android.appwidget.provider" android:resource="@xml/session_widget" />
+    </receiver>
+  </application>
+</manifest>
