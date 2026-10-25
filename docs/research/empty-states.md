@@ -78,3 +78,15 @@ Direction B (the ghost) was built first and read as a loading skeleton, not an e
 - Material Design, Empty states: https://m2.material.io/design/communication/empty-states.html
 - NN/g-style and practitioner guides on empty-state UX (uxpin, eleken, mobbin, floow.design, babich.biz)
 - Ironkeep's own rules: `CLAUDE.md`, `docs/00-requirements.md` (no nudges, no explanatory copy)
+
+## Selected artwork (2026-10-25)
+
+The user selected the Blender empty-state set only. The barbell, scale/tape, separate measuring tape
+and logbook from `docs/design/illustrations/` are bundled as eight light/dark WebPs in
+`assets/illustrations/empty-states/`.
+`EmptyState` accepts an optional illustration and follows `useThemeScheme`, including Material You.
+Images are decorative and hidden from the accessibility tree; the existing factual text stays.
+Lifts and Report use 152 dp art; Bodyweight and Measurements use 128 dp. Measurements gained a
+separate coiled-tape render on 2026-10-25. Search results keep their existing plain lines.
+Only the selected eight files (68,160 bytes total) are used
+by the app. No runtime renderer, new native module, network request or animation is introduced.

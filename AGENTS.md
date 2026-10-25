@@ -49,7 +49,7 @@ to regenerate the canvas's colour board. Tokens and components: `docs/02-design-
 ## Before you finish
 
 ```sh
-bun run check   # tsc --noEmit && biome ci . --diagnostic-level=info
+bun run check   # Expo Doctor + TypeScript + Biome + colour/contrast checks
 bun run test
 ```
 

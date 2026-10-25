@@ -1,0 +1,12 @@
+{
+  "light": {
+    "background": "#f6f6f4",
+    "foreground": "#17191c",
+    "muted-foreground": "#646971"
+  },
+  "dark": {
+    "background": "#121315",
+    "foreground": "#f2f2ef",
+    "muted-foreground": "#9aa0a8"
+  }
+}

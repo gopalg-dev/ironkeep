@@ -63,7 +63,8 @@ export function highlights(report: Report, period: Period, units: Units): Highli
   for (const b of [...report.bests].sort((a, b) => b.weight - a.weight || b.score - a.score)) {
     const set = fmtSet(b.loadType, b, units)
     out.push({
-      id: `best:${b.exerciseId}`,
+      // One lift can break its record more than once in the same report.
+      id: `best:${b.exerciseId}:${b.date}:${b.score}`,
       label: `${b.name} ${set}`,
       win: { caption: 'New best', big: b.name, small: set },
     })

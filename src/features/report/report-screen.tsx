@@ -155,9 +155,15 @@ export function ReportScreen() {
       </View>
 
       {firstReport ? (
-        <EmptyState line={`Your first ${unit}ly report comes on ${longDate(firstReport.toISOString())}.`} />
+        <EmptyState
+          illustration="report"
+          line={`Your first ${unit}ly report comes on ${longDate(firstReport.toISOString())}.`}
+        />
       ) : !report.enough ? (
-        <EmptyState line={`Not enough sessions: ${report.sessions.done} of ${MIN_SESSIONS[kind]} for a ${unit}.`} />
+        <EmptyState
+          illustration="report"
+          line={`Not enough sessions: ${report.sessions.done} of ${MIN_SESSIONS[kind]} for a ${unit}.`}
+        />
       ) : (
         <>
           <View className="mt-4 rounded-xl bg-card px-4 pt-5 pb-4">

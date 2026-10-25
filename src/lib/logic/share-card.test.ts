@@ -59,9 +59,9 @@ describe('share card', () => {
   it('offers the highlights best first: the count, each best heaviest first, the streak, nothing', () => {
     expect(highlights(report, week, 'kg').map((h) => [h.id, h.label])).toEqual([
       ['bests', '3 new bests'],
-      ['best:hack-squat', 'Hack Squat 90 kg × 12'],
-      ['best:face-pull', 'Face Pull 45 kg × 13'],
-      ['best:rope-pushdown', 'Rope Pushdown 35 kg × 10'],
+      ['best:hack-squat:2026-10-07T18:00:00Z:1080', 'Hack Squat 90 kg × 12'],
+      ['best:face-pull:2026-10-07T18:00:00Z:585', 'Face Pull 45 kg × 13'],
+      ['best:rope-pushdown:2026-10-07T18:00:00Z:350', 'Rope Pushdown 35 kg × 10'],
       ['streak', '3 weeks in a row'],
       ['none', 'Nothing'],
     ])
@@ -75,6 +75,17 @@ describe('share card', () => {
       big: 'Hack Squat',
       small: '90 kg × 12',
     })
+  })
+
+  it('selects each record independently when the same lift improves twice in a period', () => {
+    const repeated = { ...report, bests: [best('Hack Squat', 90, 12), best('Hack Squat', 100, 12)] }
+    const choices = highlights(repeated, week, 'kg').filter((h) => h.id.startsWith('best:'))
+    expect(choices).toHaveLength(2)
+    expect(new Set(choices.map((h) => h.id)).size).toBe(2)
+    for (const choice of choices) {
+      expect(shareCardContent(repeated, week, [], 'kg', 'Sam', { highlight: choice.id }).win).toEqual(choice.win)
+    }
+    expect(choices.map((h) => h.win?.small)).toEqual(['100 kg \u00d7 12', '90 kg \u00d7 12'])
   })
 
   it('offers every session done when the plan was met, and no count for a single best', () => {

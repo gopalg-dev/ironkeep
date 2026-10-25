@@ -1,0 +1,21 @@
+appId: app.ironkeep
+name: Weekly and monthly report images
+---
+- launchApp:
+    stopApp: false
+- openLink: "ironkeep:///"
+- extendedWaitUntil:
+    visible: "Today"
+    timeout: 180000
+- runFlow:
+    file: report-share.yaml
+    env:
+      PERIOD: week
+      REPORT_DATE: 2026-10-12
+      ARTIFACTS: week
+- runFlow:
+    file: report-share.yaml
+    env:
+      PERIOD: month
+      REPORT_DATE: 2026-09-01
+      ARTIFACTS: month

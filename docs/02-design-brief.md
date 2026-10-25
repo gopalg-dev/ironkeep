@@ -129,8 +129,30 @@ Set logger (the hero):
 
 - Secondary actions are icon buttons: icon-only circles where the meaning is unmistakable (add a set, swap, previous, next, dismiss, share), icon plus a short label everywhere else (Pick a day, Skip or done, Log, Finish workout, Undo set 2, Tick all, Restore, Save changes).
 - Rows that open something carry a leading icon: every Settings row, every Guide section, the plan actions (add a day, bring your own plan, reset), the export row on Stats.
-- Icon source order: lucide first; custom pictures (Blender or generated SVG, the user picks) only for the logo, the eleven day kinds, the four effort faces and the three progression methods.
+- Icon source order: lucide first. Fold remains the logo; Blender pictures are used only for the four selected empty-state subjects (user decision, 2026-10-25). Day, effort and progression controls keep their existing icons.
 - One ink button per screen stays the rule; icon buttons are surface or soft.
+
+### Selected illustrations (2026-10-25)
+
+The unused SVG comparison, day/effort/progression experiments and preview pages were removed
+before commit. `design/illustrations/empty-states.blend` contains only the eight light/dark scenes
+for the four selected subjects. Their lossless source PNGs live in `design/illustrations/renders/`.
+Colours come from `src/global.css` through `bun scripts/design-illustration-palette.ts`.
+`design/illustrations/render-empty-states.py` rebuilds those Blender scenes and PNGs.
+
+Selected 2026-10-25: **Blender empty states only**. The app uses the barbell on Stats Lifts, the
+scale on the empty Bodyweight card, a separate coiled measuring tape on Measurements, and the logbook on both Report empty branches.
+The existing text stays in place. The artwork is decorative, static and bundled, with no animation
+or extra dependency. Graphite/chalk variants follow the theme registry's scheme, including Material
+You; neutral materials intentionally stay independent of wallpaper accent colours.
+
+The eight WebP files total 68,160 bytes. Illustrations occupy 152 dp on Lifts/Report and 128 dp in the
+Bodyweight and Measurements cards, with a 16 dp gap before the existing fact. The day, effort and progression concepts
+were not selected. No rejected concepts or duplicate WebP exports remain in the source folder.
+
+`bun scripts/design-empty-states.ts` converts the eight source PNGs directly into the app WebPs and synchronises the corresponding
+light/dark canvas artboards with embedded images. Local captures are in `design/screens/`; shared
+canvas publication remains pending while the canvas is inaccessible to the available browser tools.
 
 ## Principles
 
@@ -149,7 +171,7 @@ for that reason.
 
 ## What changes from the web app, screen by screen
 
-- Day kinds get a picture: a rounded tile in the family colour with the kind's glyph (push, pull, legs, upper, lower, full, chest, back, shoulders, arms, core). It sits beside the screen title, in day lists, the day picker, the add-a-day grid, the past-day sheet and Zen. The glyph tiles on the canvas are placeholders for Blender renders of the same eleven kinds in light and dark (review feedback 2026-10-21).
+- Day kinds use a rounded tile in the family colour with the kind's glyph (push, pull, legs, upper, lower, full, chest, back, shoulders, arms, core). It sits beside the screen title, in day lists, the day picker, the add-a-day grid, the past-day sheet and Zen. The proposed Blender replacements were not selected; these glyphs remain (2026-10-25).
 - Hairline lists become grouped surfaces with gaps.
 - The set logger becomes two big numbers with steppers under them instead of a row of small fields; sets are dots below.
 - The side menu becomes a menu sheet from a round button at the top right (Report, Library, Guide, Settings, Look).
@@ -159,8 +181,8 @@ for that reason.
 - Thumbnails (12px radius, 40px) on Today, Plan and Library rows, and in the swap sheet (review feedback: Plan keeps its pictures).
 - Dialogs become bottom sheets except destructive confirmations, which stay centred.
 - The exercise editor's name field states where the name came from: a thumbnail plus a Library badge when it is linked to the library, a pencil plus a Custom badge when it was typed (review feedback: the web app left this ambiguous).
-- Zen mode is variant B (user pick, 2026-10-21); A stays on the canvas for the record. A keeps every set in a table (set, last time, today) under the logger, the current set marked by a day-colour dot and bold text, no row fill. B shows one set at a time: a lift progress strip, one pill per set with two lines: today's value on top (done in green, current reads Now, upcoming a dash) and last session's value for that set underneath in grey, the plan's rep range inside the Reps label, weight and reps stacked so a three-digit weight fits, no "last time" sentence (the pills carry it), a 56px photo beside the title, a 72px done button in the thumb zone. After a set the same screen moves to the next set with Undo at hand. There is no rest timer and no rest advice: the header shows the session time and the time since the last set, a fact the user can use however they like (user rule, 2026-10-21). Research behind B: `research/zen-mode.md`.
-- Font: Plus Jakarta Sans is the choice. Eight alternatives stay on the canvas for the record (Plus Jakarta Sans, Outfit, Instrument Sans, Figtree, Sora, DM Sans, Bricolage Grotesque, Urbanist), each as a Today screen and a set-logger screen, plus a one-page comparison in `design/font-options.png`. Pending the user's pick.
+- Zen mode is variant B (user pick, 2026-10-21); The unused A comparison has been removed. A keeps every set in a table (set, last time, today) under the logger, the current set marked by a day-colour dot and bold text, no row fill. B shows one set at a time: a lift progress strip, one pill per set with two lines: today's value on top (done in green, current reads Now, upcoming a dash) and last session's value for that set underneath in grey, the plan's rep range inside the Reps label, weight and reps stacked so a three-digit weight fits, no "last time" sentence (the pills carry it), a 56px photo beside the title, a 72px done button in the thumb zone. After a set the same screen moves to the next set with Undo at hand. There is no rest timer and no rest advice: the header shows the session time and the time since the last set, a fact the user can use however they like (user rule, 2026-10-21). Research behind B: `research/zen-mode.md`.
+- Font: Barlow for body text and Barlow Condensed for titles and large numbers, selected 2026-10-23. Superseded font-option artboards, comparison sheets and measurement scripts were removed after selection.
 
 ## Screens on the canvas
 

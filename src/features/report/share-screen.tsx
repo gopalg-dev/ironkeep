@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router'
 import { Check, Share2, X } from 'lucide-react-native'
-import { useState } from 'react'
-import { Pressable, Share, View } from 'react-native'
+import { type ComponentRef, useRef, useState } from 'react'
+import { Alert, Pressable, View } from 'react-native'
 
 import { BTN, BTN_TEXT } from '@/components/button-styles'
 import { Chip, Chips } from '@/components/chip'
@@ -12,34 +12,25 @@ import { BODY, CAPTION, H2 } from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
-import { highlights, type ShareCardContent, shareCardContent } from '@/lib/logic/share-card'
+import { errorMessage } from '@/lib/format'
+import { highlights, shareCardContent } from '@/lib/logic/share-card'
 import { cn } from '@/lib/utils'
 import { getShare } from './share-handoff'
+import { shareReportImage } from './share-report-image'
 
 type Look = 'ink' | 'paper'
 
-/** The card as a message, for the share sheet's text slot. */
-export function cardText(card: ShareCardContent): string {
-  const lines = [card.title, `${card.sessions.value} ${card.sessions.label}`]
-  if (card.sessions.change) lines.push(card.sessions.change)
-  if (card.win) lines.push(`${card.win.caption}: ${card.win.big}, ${card.win.small}`)
-  if (card.bodyweight)
-    lines.push(`Bodyweight ${card.bodyweight.value}${card.bodyweight.change ? `, ${card.bodyweight.change}` : ''}`)
-  lines.push('IronKeep')
-  return lines.join('\n')
-}
-
-/**
- * The share card (canvas: Report, share): a preview, the look, the highlight to put on it, whether
- * the bodyweight goes on, and Share, which hands the card's words to the phone's share sheet. The
- * `/share` sheet, from the Report.
- */
+/** Preview and share the selected report card as a PNG through the phone's share sheet. */
 export function ShareScreen() {
   const router = useRouter()
   const handoff = getShare()
   const [look, setLook] = useState<Look>('ink')
   const [highlight, setHighlight] = useState<string | undefined>(undefined)
   const [withBodyweight, setWithBodyweight] = useState(false)
+  const cardRef = useRef<ComponentRef<typeof View>>(null)
+  const sharingRef = useRef(false)
+  const [ready, setReady] = useState(false)
+  const [sharing, setSharing] = useState(false)
   if (!handoff) return <SheetBody>{null}</SheetBody>
   const { report, period, days, units } = handoff
   const options = highlights(report, period, units)
@@ -52,6 +43,20 @@ export function ShareScreen() {
   const fg = ink ? 'text-background' : 'text-foreground'
   const dim = ink ? 'text-background opacity-70' : 'text-muted-foreground'
 
+  async function share(): Promise<void> {
+    if (sharingRef.current || !ready || !cardRef.current) return
+    sharingRef.current = true
+    setSharing(true)
+    try {
+      await shareReportImage(cardRef.current, period)
+    } catch (error) {
+      Alert.alert('Could not share report', errorMessage(error, 'Please try again.'))
+    } finally {
+      sharingRef.current = false
+      setSharing(false)
+    }
+  }
+
   return (
     <SheetBody>
       <View className="flex-row items-center justify-between gap-3">
@@ -60,6 +65,9 @@ export function ShareScreen() {
       </View>
       <View className="items-center">
         <View
+          ref={cardRef}
+          collapsable={false}
+          onLayout={() => setReady(true)}
           accessibilityRole="image"
           accessibilityLabel="Share card preview"
           className={cn(
@@ -99,7 +107,7 @@ export function ShareScreen() {
           <View className="flex-row items-center justify-between">
             <Text className={cn('text-xs font-bold', fg)}>IronKeep</Text>
             <Text className={cn('text-xs font-semibold', dim)}>
-              {card.bodyweight ? `${card.bodyweight.value} ${units}` : `${report.sets.now} hard sets`}
+              {card.bodyweight ? card.bodyweight.value : `${report.sets.now} hard sets`}
             </Text>
           </View>
         </View>
@@ -113,7 +121,7 @@ export function ShareScreen() {
           onPress={() => setLook('paper')}
         />
       </View>
-      <View className="gap-2">
+      <View testID="report-highlights" className="gap-2">
         <Text className={cn(CAPTION, 'px-1')}>Highlight</Text>
         <Chips>
           {options.map((o) => {
@@ -150,7 +158,12 @@ export function ShareScreen() {
           <Text className={BODY}>Bodyweight on the card</Text>
         </Pressable>
       ) : null}
-      <Button className={BTN} onPress={() => void Share.share({ message: cardText(card) })}>
+      <Button
+        className={BTN}
+        disabled={!ready || sharing}
+        accessibilityState={{ disabled: !ready || sharing, busy: sharing }}
+        onPress={() => void share()}
+      >
         <Icon as={Share2} className="size-4.5 text-primary-foreground" />
         <Text className={BTN_TEXT}>Share</Text>
       </Button>

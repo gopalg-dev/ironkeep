@@ -67,8 +67,7 @@ const inkAccent: Record<Family, string> = {
   mixed: 'accent-day-mixed-ink',
 }
 
-/** A glyph per day type: what the session is about, at a glance. */
-/** Lucide stand-ins until the custom day glyphs exist; the less dated of the set (the IconsLucide board shows the rest). */
+/** The selected Lucide glyph per day type: what the session is about, at a glance. */
 const icon: Record<DayType, LucideIcon> = {
   push: ChevronsUp,
   pull: ChevronsDown,

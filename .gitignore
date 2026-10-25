@@ -53,3 +53,7 @@ example
 modules/*/android/build/
 modules/*/android/.gradle/
 **/.gradle/
+
+# Local device/test captures; canonical design reference images remain tracked
+/e2e/screenshots/
+/docs/design/screens/report-sharing/

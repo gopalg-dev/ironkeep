@@ -1,0 +1,556 @@
+{
+  "app": "ironkeep",
+  "version": 1,
+  "exportedAt": "2026-10-23T12:00:00.000Z",
+  "settings": {
+    "units": "kg",
+    "trainingAge": "over1",
+    "setupDone": true,
+    "split": "custom",
+    "plate": 2.5,
+    "dumbbellStep": 5,
+    "stackStep": 10,
+    "bar": 45,
+    "sameStep": false,
+    "bodyweight": 72.5,
+    "joinedAt": "2026-01-01T12:00:00.000Z",
+    "schedule": "weekday",
+    "goal": "hold",
+    "keepAwake": false
+  },
+  "plans": [
+    {
+      "split": "custom",
+      "updatedAt": "2026-10-01T12:00:00.000Z",
+      "days": [
+        {
+          "id": "pull",
+          "name": "Pull",
+          "type": "pull",
+          "weekday": 1,
+          "exercises": [
+            {
+              "id": "row",
+              "name": "Barbell Row",
+              "sets": 3,
+              "repMin": 6,
+              "repMax": 10,
+              "muscle": "back",
+              "loadType": "weight",
+              "note": "Pause",
+              "alternates": ["Cable Row"]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "workouts": [
+    {
+      "id": "report-fixture-0",
+      "dayId": "pull",
+      "dayName": "Pull",
+      "dayType": "pull",
+      "startedAt": "2026-09-07T12:00:00.000Z",
+      "finishedAt": "2026-09-07T13:00:00.000Z",
+      "status": "done",
+      "effort": 3,
+      "note": "Synthetic report-sharing fixture",
+      "entries": [
+        {
+          "exerciseId": "row",
+          "name": "Barbell Row",
+          "muscle": "back",
+          "loadType": "weight",
+          "repMin": 6,
+          "repMax": 10,
+          "equipment": "barbell",
+          "plateLoaded": true,
+          "sets": [
+            {
+              "weight": 40.0,
+              "reps": 10,
+              "done": true
+            },
+            {
+              "weight": 40.0,
+              "reps": 10,
+              "done": true
+            },
+            {
+              "weight": 40.0,
+              "reps": 10,
+              "done": true
+            }
+          ]
+        },
+        {
+          "exerciseId": "pull-up",
+          "name": "Pull-up",
+          "muscle": "back",
+          "loadType": "bodyweight",
+          "repMin": 6,
+          "repMax": 12,
+          "sets": [
+            {
+              "reps": 7,
+              "done": true
+            }
+          ]
+        },
+        {
+          "exerciseId": "plank",
+          "name": "Plank",
+          "muscle": "abs",
+          "loadType": "time",
+          "repMin": 20,
+          "repMax": 60,
+          "sets": [
+            {
+              "seconds": 45,
+              "done": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "report-fixture-1",
+      "dayId": "pull",
+      "dayName": "Pull",
+      "dayType": "pull",
+      "startedAt": "2026-09-14T12:00:00.000Z",
+      "finishedAt": "2026-09-14T13:00:00.000Z",
+      "status": "done",
+      "effort": 3,
+      "note": "Synthetic report-sharing fixture",
+      "entries": [
+        {
+          "exerciseId": "row",
+          "name": "Barbell Row",
+          "muscle": "back",
+          "loadType": "weight",
+          "repMin": 6,
+          "repMax": 10,
+          "equipment": "barbell",
+          "plateLoaded": true,
+          "sets": [
+            {
+              "weight": 42.5,
+              "reps": 10,
+              "done": true
+            },
+            {
+              "weight": 42.5,
+              "reps": 10,
+              "done": true
+            },
+            {
+              "weight": 42.5,
+              "reps": 10,
+              "done": true
+            }
+          ]
+        },
+        {
+          "exerciseId": "pull-up",
+          "name": "Pull-up",
+          "muscle": "back",
+          "loadType": "bodyweight",
+          "repMin": 6,
+          "repMax": 12,
+          "sets": [
+            {
+              "reps": 7,
+              "done": true
+            }
+          ]
+        },
+        {
+          "exerciseId": "plank",
+          "name": "Plank",
+          "muscle": "abs",
+          "loadType": "time",
+          "repMin": 20,
+          "repMax": 60,
+          "sets": [
+            {
+              "seconds": 45,
+              "done": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "report-fixture-2",
+      "dayId": "pull",
+      "dayName": "Pull",
+      "dayType": "pull",
+      "startedAt": "2026-09-21T12:00:00.000Z",
+      "finishedAt": "2026-09-21T13:00:00.000Z",
+      "status": "done",
+      "effort": 3,
+      "note": "Synthetic report-sharing fixture",
+      "entries": [
+        {
+          "exerciseId": "row",
+          "name": "Barbell Row",
+          "muscle": "back",
+          "loadType": "weight",
+          "repMin": 6,
+          "repMax": 10,
+          "equipment": "barbell",
+          "plateLoaded": true,
+          "sets": [
+            {
+              "weight": 45.0,
+              "reps": 10,
+              "done": true
+            },
+            {
+              "weight": 45.0,
+              "reps": 10,
+              "done": true
+            },
+            {
+              "weight": 45.0,
+              "reps": 10,
+              "done": true
+            }
+          ]
+        },
+        {
+          "exerciseId": "pull-up",
+          "name": "Pull-up",
+          "muscle": "back",
+          "loadType": "bodyweight",
+          "repMin": 6,
+          "repMax": 12,
+          "sets": [
+            {
+              "reps": 7,
+              "done": true
+            }
+          ]
+        },
+        {
+          "exerciseId": "plank",
+          "name": "Plank",
+          "muscle": "abs",
+          "loadType": "time",
+          "repMin": 20,
+          "repMax": 60,
+          "sets": [
+            {
+              "seconds": 45,
+              "done": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "report-fixture-3",
+      "dayId": "pull",
+      "dayName": "Pull",
+      "dayType": "pull",
+      "startedAt": "2026-10-05T12:00:00.000Z",
+      "finishedAt": "2026-10-05T13:00:00.000Z",
+      "status": "done",
+      "effort": 3,
+      "note": "Synthetic report-sharing fixture",
+      "entries": [
+        {
+          "exerciseId": "row",
+          "name": "Barbell Row",
+          "muscle": "back",
+          "loadType": "weight",
+          "repMin": 6,
+          "repMax": 10,
+          "equipment": "barbell",
+          "plateLoaded": true,
+          "sets": [
+            {
+              "weight": 47.5,
+              "reps": 10,
+              "done": true
+            },
+            {
+              "weight": 47.5,
+              "reps": 10,
+              "done": true
+            },
+            {
+              "weight": 47.5,
+              "reps": 10,
+              "done": true
+            }
+          ]
+        },
+        {
+          "exerciseId": "pull-up",
+          "name": "Pull-up",
+          "muscle": "back",
+          "loadType": "bodyweight",
+          "repMin": 6,
+          "repMax": 12,
+          "sets": [
+            {
+              "reps": 7,
+              "done": true
+            }
+          ]
+        },
+        {
+          "exerciseId": "plank",
+          "name": "Plank",
+          "muscle": "abs",
+          "loadType": "time",
+          "repMin": 20,
+          "repMax": 60,
+          "sets": [
+            {
+              "seconds": 45,
+              "done": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "report-fixture-4",
+      "dayId": "pull",
+      "dayName": "Pull",
+      "dayType": "pull",
+      "startedAt": "2026-10-12T12:00:00.000Z",
+      "finishedAt": "2026-10-12T13:00:00.000Z",
+      "status": "done",
+      "effort": 3,
+      "note": "Synthetic report-sharing fixture",
+      "entries": [
+        {
+          "exerciseId": "row",
+          "name": "Barbell Row",
+          "muscle": "back",
+          "loadType": "weight",
+          "repMin": 6,
+          "repMax": 10,
+          "equipment": "barbell",
+          "plateLoaded": true,
+          "sets": [
+            {
+              "weight": 50.0,
+              "reps": 10,
+              "done": true
+            },
+            {
+              "weight": 50.0,
+              "reps": 10,
+              "done": true
+            },
+            {
+              "weight": 50.0,
+              "reps": 10,
+              "done": true
+            }
+          ]
+        },
+        {
+          "exerciseId": "pull-up",
+          "name": "Pull-up",
+          "muscle": "back",
+          "loadType": "bodyweight",
+          "repMin": 6,
+          "repMax": 12,
+          "sets": [
+            {
+              "reps": 7,
+              "done": true
+            }
+          ]
+        },
+        {
+          "exerciseId": "plank",
+          "name": "Plank",
+          "muscle": "abs",
+          "loadType": "time",
+          "repMin": 20,
+          "repMax": 60,
+          "sets": [
+            {
+              "seconds": 45,
+              "done": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "report-fixture-5",
+      "dayId": "pull",
+      "dayName": "Pull",
+      "dayType": "pull",
+      "startedAt": "2026-10-14T12:00:00.000Z",
+      "finishedAt": "2026-10-14T13:00:00.000Z",
+      "status": "done",
+      "effort": 3,
+      "note": "Synthetic report-sharing fixture",
+      "entries": [
+        {
+          "exerciseId": "row",
+          "name": "Barbell Row",
+          "muscle": "back",
+          "loadType": "weight",
+          "repMin": 6,
+          "repMax": 10,
+          "equipment": "barbell",
+          "plateLoaded": true,
+          "sets": [
+            {
+              "weight": 52.5,
+              "reps": 10,
+              "done": true
+            },
+            {
+              "weight": 52.5,
+              "reps": 10,
+              "done": true
+            },
+            {
+              "weight": 52.5,
+              "reps": 10,
+              "done": true
+            }
+          ]
+        },
+        {
+          "exerciseId": "pull-up",
+          "name": "Pull-up",
+          "muscle": "back",
+          "loadType": "bodyweight",
+          "repMin": 6,
+          "repMax": 12,
+          "sets": [
+            {
+              "reps": 7,
+              "done": true
+            }
+          ]
+        },
+        {
+          "exerciseId": "plank",
+          "name": "Plank",
+          "muscle": "abs",
+          "loadType": "time",
+          "repMin": 20,
+          "repMax": 60,
+          "sets": [
+            {
+              "seconds": 45,
+              "done": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "report-fixture-6",
+      "dayId": "pull",
+      "dayName": "Pull",
+      "dayType": "pull",
+      "startedAt": "2026-10-17T12:00:00.000Z",
+      "finishedAt": "2026-10-17T13:00:00.000Z",
+      "status": "done",
+      "effort": 3,
+      "note": "Synthetic report-sharing fixture",
+      "entries": [
+        {
+          "exerciseId": "row",
+          "name": "Barbell Row",
+          "muscle": "back",
+          "loadType": "weight",
+          "repMin": 6,
+          "repMax": 10,
+          "equipment": "barbell",
+          "plateLoaded": true,
+          "sets": [
+            {
+              "weight": 55.0,
+              "reps": 10,
+              "done": true
+            },
+            {
+              "weight": 55.0,
+              "reps": 10,
+              "done": true
+            },
+            {
+              "weight": 55.0,
+              "reps": 10,
+              "done": true
+            }
+          ]
+        },
+        {
+          "exerciseId": "pull-up",
+          "name": "Pull-up",
+          "muscle": "back",
+          "loadType": "bodyweight",
+          "repMin": 6,
+          "repMax": 12,
+          "sets": [
+            {
+              "reps": 7,
+              "done": true
+            }
+          ]
+        },
+        {
+          "exerciseId": "plank",
+          "name": "Plank",
+          "muscle": "abs",
+          "loadType": "time",
+          "repMin": 20,
+          "repMax": 60,
+          "sets": [
+            {
+              "seconds": 45,
+              "done": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "bodyweights": [
+    {
+      "id": "report-weight-0",
+      "date": "2026-09-07T07:00:00.000Z",
+      "day": "2026-09-07",
+      "weight": 72.0
+    },
+    {
+      "id": "report-weight-1",
+      "date": "2026-09-21T07:00:00.000Z",
+      "day": "2026-09-21",
+      "weight": 72.2
+    },
+    {
+      "id": "report-weight-2",
+      "date": "2026-10-05T07:00:00.000Z",
+      "day": "2026-10-05",
+      "weight": 72.4
+    },
+    {
+      "id": "report-weight-3",
+      "date": "2026-10-17T07:00:00.000Z",
+      "day": "2026-10-17",
+      "weight": 72.6
+    }
+  ],
+  "measurements": [],
+  "prefs": {
+    "look": "system"
+  }
+}

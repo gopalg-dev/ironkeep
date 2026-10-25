@@ -105,7 +105,7 @@ export function BodyPanel({ data, onChanged }: { data: StatsData; onChanged: () 
             </View>
           </>
         ) : (
-          <EmptyState small line="Nothing logged yet." />
+          <EmptyState small illustration="body" line="Nothing logged yet." />
         )}
       </View>
 
@@ -156,7 +156,7 @@ export function BodyPanel({ data, onChanged }: { data: StatsData; onChanged: () 
             ) : null}
           </>
         ) : (
-          <Text className={cn(SECONDARY, 'mt-3')}>Nothing logged yet.</Text>
+          <EmptyState small illustration="measurements" line="Nothing logged yet." />
         )}
       </View>
 

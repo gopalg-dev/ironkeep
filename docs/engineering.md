@@ -34,7 +34,7 @@ instead of Mongo, React Native components instead of the DOM.
 ## The check
 
 ```sh
-bun run check       # tsc --noEmit && biome ci . --diagnostic-level=info
+bun run check       # Expo Doctor + TypeScript + Biome + colour/contrast checks
 bun run check:fix   # biome check --write .
 bun run test        # jest
 ```
@@ -43,6 +43,12 @@ bun run test        # jest
 the same script. Fix what a diagnostic points at, never the diagnostic: no `biome-ignore`, no
 `@ts-expect-error`, no `@ts-ignore`, no `!`, no `as any` to quiet one. A suppression is allowed only
 when the rule is genuinely wrong for that line, with the reason written on the same line.
+
+Expo Doctor is a development dependency resolved by `bun.lock` and runs first in `check`, including
+Expo SDK dependency compatibility validation. It uses Expo's online metadata; do not disable the
+check or exclude mismatched packages to make CI pass. Use `bun expo install --fix --bun` to align
+SDK packages, review any requested config-plugin changes, then rerun the check and unit tests.
+GitHub quality checks and the EAS post-install hook both call this same command.
 
 ## TypeScript
 

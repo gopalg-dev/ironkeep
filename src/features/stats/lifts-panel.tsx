@@ -53,7 +53,7 @@ export function LiftsPanel({ data }: { data: StatsData }) {
 
   // Before the first session there is nothing to chart: a calm illustration and a plain fact, not a
   // blank tab (docs/research/empty-states.md).
-  if (lifts.length === 0) return <EmptyState line="Nothing logged yet." />
+  if (lifts.length === 0) return <EmptyState illustration="lifts" line="Nothing logged yet." />
 
   const weeks = selected ? selected.weeks.slice(-SHOWN_WEEKS) : []
   const latest = weeks[weeks.length - 1]

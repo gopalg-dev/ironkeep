@@ -1,0 +1,80 @@
+appId: app.ironkeep
+name: Report image sharing and cancellation
+# Restore fixtures/report-sharing.json on a disposable emulator before running.
+# Override PERIOD=month and REPORT_DATE=2026-09-01 for the monthly report.
+---
+- openLink: "ironkeep://report?period=${PERIOD}&at=${REPORT_DATE}"
+- extendedWaitUntil:
+    visible: "Share"
+    timeout: 20000
+- waitForAnimationToEnd
+- retry:
+    maxRetries: 2
+    commands:
+      - tapOn: "Share"
+      - extendedWaitUntil:
+          visible: "Share your ${PERIOD}"
+          timeout: 10000
+- assertVisible: "Share card preview"
+- takeScreenshot: "${ARTIFACTS}-ink"
+- tapOn: "Share"
+- extendedWaitUntil:
+    visible: "Sharing image"
+    timeout: 20000
+- takeScreenshot: "${ARTIFACTS}-chooser"
+- pressKey: Back
+- assertVisible: "Share your ${PERIOD}"
+- tapOn: "Paper"
+- repeat:
+    times: 12
+    while:
+      notVisible: "Nothing"
+    commands:
+      - swipe:
+          from:
+            id: "report-highlights"
+          direction: LEFT
+- tapOn: "Nothing"
+- runFlow:
+    when:
+      visible: "Share your week"
+    commands:
+      - tapOn: "Bodyweight on the card"
+- runFlow:
+    when:
+      visible: "Share your month"
+    commands:
+      - assertNotVisible: "Bodyweight on the card"
+- takeScreenshot: "${ARTIFACTS}-paper-options"
+- tapOn: "Share"
+- extendedWaitUntil:
+    visible: "Sharing image"
+    timeout: 20000
+- pressKey: Back
+- assertVisible: "Share your ${PERIOD}"
+- tapOn: "Ink"
+- runFlow:
+    when:
+      visible: "Share your week"
+    commands:
+      - tapOn: "Bodyweight on the card"
+- repeat:
+    times: 12
+    while:
+      notVisible: "Barbell Row .*"
+    commands:
+      - swipe:
+          from:
+            id: "report-highlights"
+          direction: RIGHT
+- tapOn: "Barbell Row .*"
+- takeScreenshot: "${ARTIFACTS}-selected-best"
+- tapOn: "Share"
+- extendedWaitUntil:
+    visible: "Sharing image"
+    timeout: 20000
+- pressKey: Back
+- assertVisible: "Share your ${PERIOD}"
+- tapOn: "Close"
+- tapOn: "Back"
+- assertVisible: "Today"

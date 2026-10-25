@@ -58,7 +58,7 @@ bun run release:check   # checks the release APK (no INTERNET permission, size)
 Before any change is called done, the check must be clean:
 
 ```sh
-bun run check           # tsc + Biome + the colour-literal check
+bun run check           # Expo Doctor + TypeScript + Biome + colour/contrast checks
 bun run test            # Jest unit suites
 ```
 

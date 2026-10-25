@@ -1,0 +1,54 @@
+appId: app.ironkeep
+name: Blender empty states on Stats and Report
+# Use a disposable emulator with no workouts, weigh-ins or measurements.
+# This flow never resets app data. Fresh setup skips the initial weigh-in.
+env:
+  ARTIFACTS: empty-states
+---
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible: "Start fresh|Today"
+    timeout: 180000
+- runFlow:
+    when:
+      visible: "Start fresh"
+    commands:
+      - tapOn: "Start fresh"
+      - assertVisible: "Units"
+      - tapOn: "Continue"
+      - assertVisible: "Which split?"
+      - tapOn: "Continue"
+      - assertVisible: "What do you weigh today?"
+      - tapOn: "Skip"
+      - assertVisible: "How long have you been lifting?"
+      - tapOn: "Start training"
+- tapOn: "Stats"
+- tapOn: "Lifts"
+- assertVisible: "Nothing logged yet."
+- takeScreenshot: "${ARTIFACTS}-lifts"
+- tapOn: "Body"
+- assertVisible: "Bodyweight"
+- assertVisible: "Measurements"
+- assertVisible:
+    text: "Nothing logged yet."
+    index: 0
+- takeScreenshot: "${ARTIFACTS}-body"
+- scrollUntilVisible:
+    element:
+      text: "Nothing logged yet."
+      index: 1
+    direction: DOWN
+    centerElement: false
+- takeScreenshot: "${ARTIFACTS}-measurements"
+- tapOn: "Menu"
+- tapOn: "Report"
+- tapOn: "Week"
+- assertVisible: "Your first weekly report comes on .*"
+- takeScreenshot: "${ARTIFACTS}-report-week"
+- tapOn: "Month"
+- assertVisible: "Your first monthly report comes on .*"
+- takeScreenshot: "${ARTIFACTS}-report-month"
+- tapOn: "Back"
+- tapOn: "Today"
+- assertVisible: "Today"
