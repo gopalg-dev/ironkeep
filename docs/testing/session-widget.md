@@ -1,5 +1,44 @@
 # Workout widget prototype verification
 
+## Twin tiles redesign - 2026-10-26
+
+The user selected concept B. Weight and reps now occupy separate rounded panels,
+with independent 48 dp steppers. Bodyweight and timed exercises expand their one
+remaining panel to the full width. Android button elevation is disabled to match
+the flat design. Compact cards show the current load and reps/seconds.
+
+Every layout now fills its launcher allocation, including idle/completed cards.
+The old intermediate content-height variant and full-layout wrap-content surface
+caused the reported resizing dead zones. Flexible panel height uses extra room
+while the action row stays at the bottom. Full controls need 280 x 224 dp at
+normal font size; font-aware thresholds still protect labels and touch targets.
+The launcher continues to own grid snapping and the outer allocated slot.
+
+Native regression: 58 passing tests (42 transaction tests across API 24/35,
+12 widget tests and 4 notification tests, including concurrent notification work). The new resize sweep covers four widths, 15 heights from 48
+to 600 dp, and idle/weighted/bodyweight/timed states. Existing tests cover long
+names, large values, 100/130/200% fonts, both themes and centered open icons.
+App checks: 314 tests / 37 suites and Expo Doctor 20/20 pass.
+
+Final flat-style native suite and x86_64 build pass. The separate preview was
+installed in the API 35 emulator with synthetic data. Both maintained Maestro
+flows passed: weight/reps edits, adding a set, pause/resume, completion, bodyweight,
+timed sets, advancement and opening the completed session. The control flow was
+also repeated after the final flat-button change.
+
+Reviewed actual launcher captures at 360/412 dp, light/dark. A density change
+briefly restarted the launcher; the 412 dp captures were repeated after it settled.
+The actual resize sequence passed: three rows (344 dp), down to the minimum one
+row (104 dp), back to two rows (224 dp), with controls restored. Native geometry
+also covers the intermediate heights unavailable on this launcher's grid.
+
+Local light/dark canvas boards and reference captures are updated. Captures and
+test logs are in the OS temporary directory, not tracked. Shared-canvas publication
+and broader release gates remain pending. The new build has not been installed on
+the physical phone. No production data was accessed.
+
+## Earlier prototype evidence - 2026-10-25
+
 2026-10-25. The compact-widget fixes are verified; this is still a prototype, not
 completion of all release gates.
 

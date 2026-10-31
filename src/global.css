@@ -231,3 +231,129 @@
     }
   }
 }
+
+@layer theme {
+  :root {
+    @variant latte {
+      --chart-1: hsla(220, 91%, 54%, 1); /* #1f66f4 */
+      --chart-2: hsla(109, 58%, 40%, 1); /* #41a12b */
+      --chart-3: hsla(35, 77%, 49%, 1); /* #dd8d1d */
+      --color-background: hsla(220, 23%, 95%, 1); /* #eff1f5 */
+      --color-logo-background: oklch(0 0 0); /* #000000 */
+      --color-foreground: hsla(234, 16%, 35%, 1); /* #4b4e68 */
+      --color-card: hsla(220, 23%, 95%, 1); /* #eff1f5 */
+      --color-card-foreground: hsla(234, 16%, 35%, 1); /* #4b4e68 */
+      --color-popover: hsla(220, 22%, 92%, 1); /* #e6e9ef */
+      --color-popover-foreground: hsla(234, 16%, 35%, 1); /* #4b4e68 */
+      --color-primary: hsla(220, 91%, 54%, 1); /* #1f66f4 */
+      --color-primary-foreground: hsla(0, 0%, 100%, 1); /* #ffffff */
+      --color-secondary: hsla(223, 16%, 83%, 1); /* #cdd1db */
+      --color-secondary-foreground: hsla(234, 16%, 35%, 1); /* #4b4e68 */
+      --color-muted: hsla(223, 16%, 83%, 1); /* #cdd1db */
+      --color-muted-foreground: hsla(234, 16%, 35%, 1); /* #4b4f68 */
+      --color-accent: hsla(223, 16%, 83%, 1); /* #cdd1db */
+      --color-accent-foreground: hsla(234, 16%, 35%, 1); /* #4b4e68 */
+      --color-destructive: oklch(0.551 0.187 27.1); /* #c8322e */
+      --color-destructive-surface: oklch(0.551 0.187 27.1); /* #c8322e */
+      --color-border: hsla(225, 14%, 77%, 1); /* #bcc0cd */
+      --color-input: hsla(228, 11%, 65%, 1); /* #9ca0b0 */
+      --color-ring: hsla(220, 91%, 54%, 1); /* #1f66f4 */
+      --color-scrim: oklch(0 0 0 / 0.5); /* the sheet and dialog backdrop */
+
+      --color-day-push: oklch(0.578 0.188 25.3); /* #d23b3b */
+      --color-day-push-ink: oklch(1 0 0); /* #ffffff */
+      --color-day-pull: oklch(0.523 0.169 262); /* #2f63c9 */
+      --color-day-pull-ink: oklch(1 0 0); /* #ffffff */
+      --color-day-legs: oklch(0.748 0.153 85.2); /* #d9a400 */
+      --color-day-legs-ink: oklch(0.213 0.007 258.4); /* #17191c */
+      --color-day-mixed: oklch(0.52 0.014 259.8); /* #646971 */
+      --color-day-mixed-ink: oklch(0.973 0.003 106.4); /* #f6f6f4 */
+      --color-success: oklch(0.52 0.134 152.5); /* #047e40, white ink reads 5.17:1 */
+      --color-success-foreground: oklch(1 0 0); /* #ffffff */
+    }
+  }
+}
+
+@layer theme {
+  :root {
+    @variant lime {
+      --chart-1: oklch(0.87 0 0); /* #d4d4d4 */
+      --chart-2: oklch(0.556 0 0); /* #737373 */
+      --chart-3: oklch(0.439 0 0); /* #525252 */
+      --color-background: oklch(0.145 0 0); /* #0a0a0a */
+      --color-logo-background: oklch(0 0 0); /* #000000 */
+      --color-foreground: oklch(0.985 0 0); /* #fafafa */
+      --color-card: oklch(0.205 0 0); /* #171717 */
+      --color-card-foreground: oklch(0.985 0 0); /* #fafafa */
+      --color-popover: oklch(0.205 0 0); /* #171717 */
+      --color-popover-foreground: oklch(0.985 0 0); /* #fafafa */
+      --color-primary: oklch(0.768 0.233 130.85); /* #7ccf00 */
+      --color-primary-foreground: oklch(0.405 0.101 131.063); /* #35530e */
+      --color-secondary: oklch(0.274 0.006 286.033); /* #27272a */
+      --color-secondary-foreground: oklch(0.985 0 0); /* #fafafa */
+      --color-muted: oklch(0.269 0 0); /* #262626 */
+      --color-muted-foreground: oklch(0.708 0 0); /* #a1a1a1 */
+      --color-accent: oklch(0.269 0 0); /* #262626 */
+      --color-accent-foreground: oklch(0.985 0 0); /* #fafafa */
+      --color-destructive: oklch(0.64 0.17 25.7); /* #e15a53, red text on dark reads 4.6:1 */
+      --color-destructive-surface: oklch(0.56 0.19 25.7); /* #cc3334, white button text reads 5.1:1 */
+      --color-border: oklch(1 0 0 / 10%); /* oklch(1 0 0 / 10%) */
+      --color-input: oklch(1 0 0 / 15%); /* oklch(1 0 0 / 15%) */
+      --color-ring: oklch(0.556 0 0); /* #737373 */
+      --color-scrim: oklch(0 0 0 / 0.5); /* the sheet and dialog backdrop */
+
+      --color-day-push: oklch(0.58 0.168 23.1); /* #cb4649, white ink reads 4.65:1 */
+      --color-day-push-ink: oklch(1 0 0); /* #ffffff */
+      --color-day-pull: oklch(0.57 0.15 262.8); /* #4673cf, white ink reads 4.55:1 */
+      --color-day-pull-ink: oklch(1 0 0); /* #ffffff */
+      --color-day-legs: oklch(0.814 0.155 90.7); /* #e8bd2e */
+      --color-day-legs-ink: oklch(0.186 0.004 264.5); /* #121315 */
+      --color-day-mixed: oklch(0.703 0.014 255.5); /* #9aa0a8 */
+      --color-day-mixed-ink: oklch(0.186 0.004 264.5); /* #121315 */
+      --color-success: oklch(0.684 0.146 153.6); /* #3fb36e */
+      --color-success-foreground: oklch(0.186 0.004 264.5); /* #121315 */
+    }
+  }
+}
+
+@layer theme {
+  :root {
+    @variant dracula {
+      --chart-1: hsla(191, 97%, 77%, 1); /* #8be8fd */
+      --chart-2: hsla(135, 94%, 65%, 1); /* #52fa7c */
+      --chart-3: hsla(65, 92%, 76%, 1); /* #f1fa89 */
+      --color-background: hsla(231, 15%, 18%, 1); /* #272935 */
+      --color-logo-background: oklch(0 0 0); /* #000000 */
+      --color-foreground: hsla(60, 30%, 96%, 1); /* #f8f8f2 */
+      --color-card: hsla(230, 15%, 24%, 1); /* #343746 */
+      --color-card-foreground: hsla(60, 30%, 96%, 1); /* #f8f8f2 */
+      --color-popover: hsla(230, 15%, 24%, 1); /* #343746 */
+      --color-popover-foreground: hsla(60, 30%, 96%, 1); /* #f8f8f2 */
+      --color-primary: hsla(265, 89%, 78%, 1); /* #bf95f9 */
+      --color-primary-foreground: hsla(231, 15%, 18%, 1); /* #272935 */
+      --color-secondary: hsla(232, 14%, 31%, 1); /* #44475a */
+      --color-secondary-foreground: hsla(60, 30%, 96%, 1); /* #f8f8f2 */
+      --color-muted: hsla(232, 14%, 31%, 1); /* #44475a */
+      --color-muted-foreground: hsla(60, 6%, 72%, 1); /* #bcbcb3 */
+      --color-accent: hsla(232, 14%, 31%, 1); /* #44475a */
+      --color-accent-foreground: hsla(60, 30%, 96%, 1); /* #f8f8f2 */
+      --color-destructive: hsla(0, 100%, 77%, 1); /* #ff8a8a */
+      --color-destructive-surface: oklch(0.56 0.19 25.7); /* #cc3334, white button text reads 5.1:1 */
+      --color-border: hsla(232, 14%, 31%, 1); /* #44475a */
+      --color-input: hsla(225, 27%, 51%, 1); /* #6071a4 */
+      --color-ring: hsla(265, 89%, 78%, 1); /* #bf95f9 */
+      --color-scrim: oklch(0 0 0 / 0.5); /* the sheet and dialog backdrop */
+
+      --color-day-push: oklch(0.58 0.168 23.1); /* #cb4649, white ink reads 4.65:1 */
+      --color-day-push-ink: oklch(1 0 0); /* #ffffff */
+      --color-day-pull: oklch(0.57 0.15 262.8); /* #4673cf, white ink reads 4.55:1 */
+      --color-day-pull-ink: oklch(1 0 0); /* #ffffff */
+      --color-day-legs: oklch(0.814 0.155 90.7); /* #e8bd2e */
+      --color-day-legs-ink: oklch(0.186 0.004 264.5); /* #121315 */
+      --color-day-mixed: oklch(0.703 0.014 255.5); /* #9aa0a8 */
+      --color-day-mixed-ink: oklch(0.186 0.004 264.5); /* #121315 */
+      --color-success: oklch(0.684 0.146 153.6); /* #3fb36e */
+      --color-success-foreground: oklch(0.186 0.004 264.5); /* #121315 */
+    }
+  }
+}

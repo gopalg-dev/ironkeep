@@ -120,7 +120,7 @@ export function ExerciseCard({
                 </Button>
               ) : null}
               {/* The design offers it once every set is logged, where the sets are all in view. */}
-              {allDone && total > 1 ? (
+              {total > 1 && !entry.sets[total - 1]?.done ? (
                 <Button
                   variant="secondary"
                   className={BTN_SM2}

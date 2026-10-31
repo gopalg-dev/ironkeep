@@ -8,17 +8,17 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap">
 <style>body{margin:0;background:#ffffff}</style>
 </helmet>
-<div style="width: 1180px; box-sizing: border-box; padding: 40px; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 24px; background: #ffffff; color: #17191c">
+<div style="width: 1180px; box-sizing: border-box; padding: 40px; font-family: 'Barlow', system-ui, sans-serif; display: flex; flex-direction: column; gap: 24px; background: #ffffff; color: #17191c">
   <div style="display: flex; flex-direction: column; gap: 6px">
     <div style="font-size: 34px; font-weight: 800; letter-spacing: -0.02em">Colour tokens</div>
     <div style="font-size: 15px; opacity: 0.7">Generated from src/global.css by scripts/design-tokens-board.ts. OKLCH is the source value; hex is for reference.</div>
   </div>
-  <div style="display: flex; gap: 24px; align-items: flex-start">
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: flex-start">
     <div style="flex: 1; background: oklch(0.973 0.003 106.4); color: oklch(0.213 0.007 258.4); border-radius: 24px; padding: 28px">
-    <div style="font-size: 22px; font-weight: 800">Light</div>
+    <div style="font-size: 22px; font-weight: 800">Slate · light</div>
     <div style="display: flex; flex-direction: column; gap: 4px">
       <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Surfaces and text</div>
       <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
@@ -256,7 +256,1127 @@
     </div>
   </div>
     <div style="flex: 1; background: oklch(0.186 0.004 264.5); color: oklch(0.96 0.004 106.5); border-radius: 24px; padding: 28px">
-    <div style="font-size: 22px; font-weight: 800">Dark</div>
+    <div style="font-size: 22px; font-weight: 800">Slate · dark</div>
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Surfaces and text</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.186 0.004 264.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">background</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.186 0.004 264.5) · #121315</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.96 0.004 106.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.96 0.004 106.5) · #f2f2ef</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.234 0.007 258.4); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">card</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.234 0.007 258.4) · #1c1e21</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.96 0.004 106.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">card-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.96 0.004 106.5) · #f2f2ef</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.234 0.007 258.4); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">popover</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.234 0.007 258.4) · #1c1e21</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.96 0.004 106.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">popover-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.96 0.004 106.5) · #f2f2ef</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Actions</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.96 0.004 106.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">primary</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.96 0.004 106.5) · #f2f2ef</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.186 0.004 264.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">primary-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.186 0.004 264.5) · #121315</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.28 0.009 255.6); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">secondary</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.28 0.009 255.6) · #26292d</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.96 0.004 106.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">secondary-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.96 0.004 106.5) · #f2f2ef</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.28 0.009 255.6); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">accent</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.28 0.009 255.6) · #26292d</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.96 0.004 106.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">accent-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.96 0.004 106.5) · #f2f2ef</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.644 0.15 262.8); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">ring</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.644 0.15 262.8) · #5b8ae8</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Quiet</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.28 0.009 255.6); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">muted</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.28 0.009 255.6) · #26292d</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.703 0.014 255.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">muted-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.703 0.014 255.5) · #9aa0a8</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.312 0.01 260.7); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">border</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.312 0.01 260.7) · #2e3136</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.312 0.01 260.7); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">input</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.312 0.01 260.7) · #2e3136</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Day families</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(1 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-push-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(1 0 0) · #ffffff</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(1 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-pull-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(1 0 0) · #ffffff</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.814 0.155 90.7); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-legs</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.814 0.155 90.7) · #e8bd2e</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.186 0.004 264.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-legs-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.186 0.004 264.5) · #121315</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.703 0.014 255.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-mixed</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.703 0.014 255.5) · #9aa0a8</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.186 0.004 264.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-mixed-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.186 0.004 264.5) · #121315</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Charts</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(216, 75%, 61%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">chart-1</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(216, 75%, 61%, 1) · #518de6</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(145, 53%, 46%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">chart-2</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(145, 53%, 46%, 1) · #37b36b</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(47, 86%, 56%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">chart-3</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(47, 86%, 56%, 1) · #efc52e</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Done</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.684 0.146 153.6); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">success</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.684 0.146 153.6) · #3fb36e</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.186 0.004 264.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">success-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.186 0.004 264.5) · #121315</span>
+        </span>
+      </div>
+    </div>
+  </div>
+    <div style="flex: 1; background: hsla(220, 23%, 95%, 1); color: hsla(234, 16%, 35%, 1); border-radius: 24px; padding: 28px">
+    <div style="font-size: 22px; font-weight: 800">Catppuccin Latte · light</div>
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Surfaces and text</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(220, 23%, 95%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">background</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(220, 23%, 95%, 1) · #eff1f5</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(234, 16%, 35%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(234, 16%, 35%, 1) · #4b4e68</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(220, 23%, 95%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">card</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(220, 23%, 95%, 1) · #eff1f5</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(234, 16%, 35%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">card-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(234, 16%, 35%, 1) · #4b4e68</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(220, 22%, 92%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">popover</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(220, 22%, 92%, 1) · #e6e9ef</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(234, 16%, 35%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">popover-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(234, 16%, 35%, 1) · #4b4e68</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Actions</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(220, 91%, 54%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">primary</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(220, 91%, 54%, 1) · #1f66f4</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(0, 0%, 100%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">primary-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(0, 0%, 100%, 1) · #ffffff</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(223, 16%, 83%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">secondary</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(223, 16%, 83%, 1) · #cdd1db</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(234, 16%, 35%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">secondary-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(234, 16%, 35%, 1) · #4b4e68</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(223, 16%, 83%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">accent</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(223, 16%, 83%, 1) · #cdd1db</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(234, 16%, 35%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">accent-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(234, 16%, 35%, 1) · #4b4e68</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.551 0.187 27.1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">destructive</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.551 0.187 27.1) · #c8322e</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.551 0.187 27.1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">destructive-surface</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.551 0.187 27.1) · #c8322e</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(220, 91%, 54%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">ring</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(220, 91%, 54%, 1) · #1f66f4</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Quiet</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(223, 16%, 83%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">muted</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(223, 16%, 83%, 1) · #cdd1db</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(234, 16%, 35%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">muted-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(234, 16%, 35%, 1) · #4b4f68</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(225, 14%, 77%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">border</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(225, 14%, 77%, 1) · #bcc0cd</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(228, 11%, 65%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">input</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(228, 11%, 65%, 1) · #9ca0b0</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Day families</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.578 0.188 25.3); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-push</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.578 0.188 25.3) · #d23b3b</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(1 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-push-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(1 0 0) · #ffffff</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.523 0.169 262); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-pull</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.523 0.169 262) · #2f63c9</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(1 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-pull-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(1 0 0) · #ffffff</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.748 0.153 85.2); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-legs</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.748 0.153 85.2) · #d9a400</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.213 0.007 258.4); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-legs-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.213 0.007 258.4) · #17191c</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.52 0.014 259.8); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-mixed</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.52 0.014 259.8) · #646971</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.973 0.003 106.4); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-mixed-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.973 0.003 106.4) · #f6f6f4</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Charts</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(220, 91%, 54%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">chart-1</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(220, 91%, 54%, 1) · #1f66f4</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(109, 58%, 40%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">chart-2</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(109, 58%, 40%, 1) · #41a12b</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(35, 77%, 49%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">chart-3</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(35, 77%, 49%, 1) · #dd8d1d</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Done</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(1 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">success-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(1 0 0) · #ffffff</span>
+        </span>
+      </div>
+    </div>
+  </div>
+    <div style="flex: 1; background: oklch(0.145 0 0); color: oklch(0.985 0 0); border-radius: 24px; padding: 28px">
+    <div style="font-size: 22px; font-weight: 800">Lime · dark</div>
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Surfaces and text</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.145 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">background</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.145 0 0) · #0a0a0a</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.985 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.985 0 0) · #fafafa</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.205 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">card</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.205 0 0) · #171717</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.985 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">card-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.985 0 0) · #fafafa</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.205 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">popover</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.205 0 0) · #171717</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.985 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">popover-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.985 0 0) · #fafafa</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Actions</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.768 0.233 130.85); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">primary</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.768 0.233 130.85) · #7ccf00</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.405 0.101 131.063); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">primary-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.405 0.101 131.063) · #35530e</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.274 0.006 286.033); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">secondary</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.274 0.006 286.033) · #27272a</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.985 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">secondary-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.985 0 0) · #fafafa</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.269 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">accent</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.269 0 0) · #262626</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.985 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">accent-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.985 0 0) · #fafafa</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.556 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">ring</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.556 0 0) · #737373</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Quiet</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.269 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">muted</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.269 0 0) · #262626</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.708 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">muted-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.708 0 0) · #a1a1a1</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Day families</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(1 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-push-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(1 0 0) · #ffffff</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(1 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-pull-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(1 0 0) · #ffffff</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.814 0.155 90.7); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-legs</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.814 0.155 90.7) · #e8bd2e</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.186 0.004 264.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-legs-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.186 0.004 264.5) · #121315</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.703 0.014 255.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-mixed</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.703 0.014 255.5) · #9aa0a8</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.186 0.004 264.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-mixed-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.186 0.004 264.5) · #121315</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Charts</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.87 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">chart-1</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.87 0 0) · #d4d4d4</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.556 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">chart-2</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.556 0 0) · #737373</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.439 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">chart-3</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.439 0 0) · #525252</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Done</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.684 0.146 153.6); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">success</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.684 0.146 153.6) · #3fb36e</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.186 0.004 264.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">success-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.186 0.004 264.5) · #121315</span>
+        </span>
+      </div>
+    </div>
+  </div>
+    <div style="flex: 1; background: hsla(231, 15%, 18%, 1); color: hsla(60, 30%, 96%, 1); border-radius: 24px; padding: 28px">
+    <div style="font-size: 22px; font-weight: 800">Dracula · dark</div>
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Surfaces and text</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(231, 15%, 18%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">background</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(231, 15%, 18%, 1) · #272935</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(60, 30%, 96%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(60, 30%, 96%, 1) · #f8f8f2</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(230, 15%, 24%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">card</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(230, 15%, 24%, 1) · #343746</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(60, 30%, 96%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">card-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(60, 30%, 96%, 1) · #f8f8f2</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(230, 15%, 24%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">popover</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(230, 15%, 24%, 1) · #343746</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(60, 30%, 96%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">popover-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(60, 30%, 96%, 1) · #f8f8f2</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Actions</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(265, 89%, 78%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">primary</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(265, 89%, 78%, 1) · #bf95f9</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(231, 15%, 18%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">primary-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(231, 15%, 18%, 1) · #272935</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(232, 14%, 31%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">secondary</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(232, 14%, 31%, 1) · #44475a</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(60, 30%, 96%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">secondary-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(60, 30%, 96%, 1) · #f8f8f2</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(232, 14%, 31%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">accent</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(232, 14%, 31%, 1) · #44475a</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(60, 30%, 96%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">accent-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(60, 30%, 96%, 1) · #f8f8f2</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(0, 100%, 77%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">destructive</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(0, 100%, 77%, 1) · #ff8a8a</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(265, 89%, 78%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">ring</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(265, 89%, 78%, 1) · #bf95f9</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Quiet</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(232, 14%, 31%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">muted</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(232, 14%, 31%, 1) · #44475a</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(60, 6%, 72%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">muted-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(60, 6%, 72%, 1) · #bcbcb3</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(232, 14%, 31%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">border</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(232, 14%, 31%, 1) · #44475a</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(225, 27%, 51%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">input</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(225, 27%, 51%, 1) · #6071a4</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Day families</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(1 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-push-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(1 0 0) · #ffffff</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(1 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-pull-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(1 0 0) · #ffffff</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.814 0.155 90.7); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-legs</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.814 0.155 90.7) · #e8bd2e</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.186 0.004 264.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-legs-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.186 0.004 264.5) · #121315</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.703 0.014 255.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-mixed</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.703 0.014 255.5) · #9aa0a8</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.186 0.004 264.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-mixed-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.186 0.004 264.5) · #121315</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Charts</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(191, 97%, 77%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">chart-1</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(191, 97%, 77%, 1) · #8be8fd</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(135, 94%, 65%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">chart-2</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(135, 94%, 65%, 1) · #52fa7c</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(65, 92%, 76%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">chart-3</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(65, 92%, 76%, 1) · #f1fa89</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Done</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.684 0.146 153.6); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">success</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.684 0.146 153.6) · #3fb36e</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.186 0.004 264.5); flex: none; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">success-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.186 0.004 264.5) · #121315</span>
+        </span>
+      </div>
+    </div>
+  </div>
+    <div style="flex: 1; background: oklch(0.973 0.003 106.4); color: oklch(0.213 0.007 258.4); border-radius: 24px; padding: 28px">
+    <div style="font-size: 22px; font-weight: 800">Your phone · light</div>
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Surfaces and text</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.973 0.003 106.4); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">background</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.973 0.003 106.4) · #f6f6f4</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.213 0.007 258.4); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.213 0.007 258.4) · #17191c</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(1 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">card</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(1 0 0) · #ffffff</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.213 0.007 258.4); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">card-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.213 0.007 258.4) · #17191c</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(1 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">popover</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(1 0 0) · #ffffff</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.213 0.007 258.4); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">popover-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.213 0.007 258.4) · #17191c</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Actions</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.213 0.007 258.4); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">primary</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.213 0.007 258.4) · #17191c</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.973 0.003 106.4); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">primary-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.973 0.003 106.4) · #f6f6f4</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.948 0.004 106.5); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">secondary</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.948 0.004 106.5) · #eeeeeb</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.213 0.007 258.4); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">secondary-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.213 0.007 258.4) · #17191c</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.948 0.004 106.5); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">accent</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.948 0.004 106.5) · #eeeeeb</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.213 0.007 258.4); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">accent-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.213 0.007 258.4) · #17191c</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.551 0.187 27.1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">destructive</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.551 0.187 27.1) · #c8322e</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.551 0.187 27.1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">destructive-surface</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.551 0.187 27.1) · #c8322e</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.523 0.169 262); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">ring</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.523 0.169 262) · #2f63c9</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Quiet</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.948 0.004 106.5); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">muted</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.948 0.004 106.5) · #eeeeeb</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.52 0.014 259.8); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">muted-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.52 0.014 259.8) · #646971</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.915 0.005 106.5); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">border</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.915 0.005 106.5) · #e3e3df</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.915 0.005 106.5); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">input</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.915 0.005 106.5) · #e3e3df</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Day families</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.578 0.188 25.3); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-push</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.578 0.188 25.3) · #d23b3b</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(1 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-push-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(1 0 0) · #ffffff</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.523 0.169 262); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-pull</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.523 0.169 262) · #2f63c9</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(1 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-pull-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(1 0 0) · #ffffff</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.748 0.153 85.2); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-legs</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.748 0.153 85.2) · #d9a400</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.213 0.007 258.4); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-legs-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.213 0.007 258.4) · #17191c</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.52 0.014 259.8); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-mixed</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.52 0.014 259.8) · #646971</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(0.973 0.003 106.4); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">day-mixed-ink</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(0.973 0.003 106.4) · #f6f6f4</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Charts</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(216, 72%, 44%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">chart-1</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(216, 72%, 44%, 1) · #1f60c1</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(146, 65%, 34%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">chart-2</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(146, 65%, 34%, 1) · #1e8f4f</span>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: hsla(48, 96%, 45%, 1); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">chart-3</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">hsla(48, 96%, 45%, 1) · #e1b505</span>
+        </span>
+      </div>
+    </div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Done</div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
+        <span style="width: 40px; height: 40px; border-radius: 10px; background: oklch(1 0 0); flex: none; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08)"></span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-size: 14px; font-weight: 700">success-foreground</span>
+          <span style="font-size: 12px; opacity: 0.7; font-variant-numeric: tabular-nums">oklch(1 0 0) · #ffffff</span>
+        </span>
+      </div>
+    </div>
+  </div>
+    <div style="flex: 1; background: oklch(0.186 0.004 264.5); color: oklch(0.96 0.004 106.5); border-radius: 24px; padding: 28px">
+    <div style="font-size: 22px; font-weight: 800">Your phone · dark</div>
     <div style="display: flex; flex-direction: column; gap: 4px">
       <div style="font-size: 13px; font-weight: 600; opacity: 0.6; margin-top: 12px">Surfaces and text</div>
       <div style="display: flex; align-items: center; gap: 12px; min-height: 48px">
@@ -475,7 +1595,7 @@
   </div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1180,"height":1400}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1180,"height":5600}}'>
 class Component extends DCLogic {
   renderVals() { return {}; }
 }

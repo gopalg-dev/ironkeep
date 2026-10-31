@@ -6,7 +6,8 @@ interface SessionNotificationNative {
   cancel(): void
   beginWrite(): void
   endWrite(): void
-  claimPermissionPrompt(): boolean
+  notificationsAllowed(): boolean
+  openNotificationSettings(): void
   addListener(event: 'onSessionChanged', listener: () => void): { remove(): void }
 }
 

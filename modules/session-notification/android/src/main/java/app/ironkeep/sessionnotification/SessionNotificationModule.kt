@@ -4,6 +4,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.app.NotificationManager
+import android.os.Build
+import android.provider.Settings
+import android.net.Uri
 import androidx.core.content.ContextCompat
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
@@ -46,13 +50,21 @@ class SessionNotificationModule : Module() {
       }
       Unit
     }
-    Function("claimPermissionPrompt") {
-      val context = appContext.reactContext ?: return@Function false
-      val prefs = context.getSharedPreferences("session-notification", 0)
-      if (prefs.getBoolean("asked", false)) false else {
-        prefs.edit().putBoolean("asked", true).apply()
-        true
+    Function("notificationsAllowed") {
+      appContext.reactContext?.let { SessionNotification.allowed(it) } ?: false
+    }
+    Function("openNotificationSettings") {
+      appContext.reactContext?.let { context ->
+        val manager = context.getSystemService(NotificationManager::class.java)
+        val intent = if (Build.VERSION.SDK_INT >= 26) {
+          if (manager.areNotificationsEnabled() && manager.getNotificationChannel(SessionNotification.CHANNEL)?.importance == NotificationManager.IMPORTANCE_NONE) {
+            Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_CHANNEL_ID, SessionNotification.CHANNEL)
+          } else Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+        } else Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${context.packageName}"))
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
       }
+      Unit
     }
     Function("cancel") { appContext.reactContext?.let { SessionNotification.cancel(it); SessionWidget.unavailable(it) }; Unit }
   }

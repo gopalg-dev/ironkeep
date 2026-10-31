@@ -3,11 +3,10 @@ import { AlertCircle, ArrowLeft, Check, ChevronDown, Download, Upload } from 'lu
 import { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import * as XLSX from 'xlsx'
-
 import { BTN, BTN_TEXT } from '@/components/button-styles'
-import { DayIcon, dayBorderClass } from '@/components/day-icon'
 import { IconButton } from '@/components/icon-button'
 import { useBigTitle } from '@/components/page-bar'
+import { ReplaceDialog } from '@/components/replace-dialog'
 import { Group, Row, RowBody, RowSub, RowTitle, RowValue } from '@/components/row'
 import { Screen } from '@/components/screen'
 import { BODY, H2, NUMBER, SECONDARY, TITLE } from '@/components/typography'
@@ -15,15 +14,16 @@ import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
 import * as repo from '@/db/repo'
-import { pickFile, shareBytes } from '@/features/data/files'
+import { pickFile, shareBackup, shareBytes } from '@/features/data/files'
 import { setPick } from '@/features/stats/pick-sheet'
 import { buildSplitFrom, planSourceInfo, splitInfoOf, splitInfos } from '@/lib/content'
-import { errorMessage, LOAD_LABEL, targetOf } from '@/lib/format'
+import { errorMessage } from '@/lib/format'
 import { type ParsedPlan, parseRows, type SheetRow, splitFromMarker } from '@/lib/logic/plan-sheet'
 import { planWorkbook } from '@/lib/plan-workbook'
 import { BUNDLED_SPLITS } from '@/lib/splits'
 import { MAX_EXERCISES_PER_DAY, type Plan, type Settings, type SplitId } from '@/lib/types'
 import { cn } from '@/lib/utils'
+import { PlanPreviewEditor } from './plan-preview-editor'
 
 const CURRENT = 'current'
 const TEMPLATE = 'Template'
@@ -59,6 +59,7 @@ export function PlanImportScreen() {
   const [fileName, setFileName] = useState<string | null>(null)
   const [parsed, setParsed] = useState<ParsedPlan | null>(null)
   const [busy, setBusy] = useState(false)
+  const [confirm, setConfirm] = useState(false)
   const [problem, setProblem] = useState<string | null>(null)
   useEffect(() => {
     let live = true
@@ -162,13 +163,24 @@ export function PlanImportScreen() {
       bar={bar}
       footer={
         parsed ? (
-          <Button className={BTN} disabled={busy || blocker !== null} onPress={applyPlan}>
+          <Button className={BTN} disabled={busy || blocker !== null} onPress={() => setConfirm(true)}>
             <Icon as={Check} className="size-4.5 text-primary-foreground" />
             <Text className={BTN_TEXT}>Use this plan</Text>
           </Button>
         ) : undefined
       }
     >
+      <ReplaceDialog
+        open={confirm}
+        title="Replace the plan?"
+        consequence="These days replace the selected plan slot. Logged workouts stay."
+        onClose={() => setConfirm(false)}
+        onExport={shareBackup}
+        onConfirm={async () => {
+          await applyPlan()
+          setConfirm(false)
+        }}
+      />
       <View className="min-h-11" />
       <View className="mt-4" onLayout={(e) => measure(e.nativeEvent.layout)}>
         <Text accessibilityRole="header" className={cn(TITLE, 'text-3xl leading-10')}>
@@ -205,30 +217,7 @@ export function PlanImportScreen() {
             </Text>
             <Text className={cn(SECONDARY, NUMBER)}>{countLine}</Text>
           </View>
-          {parsed.days.map((d, i) => (
-            <Group key={d.id} className={cn('border-l-4', i === 0 ? 'mt-3' : 'mt-2', dayBorderClass(d.type))}>
-              <Row accessibilityLabel={d.name}>
-                <DayIcon type={d.type} size="sm" />
-                <RowBody>
-                  <RowTitle>{d.name}</RowTitle>
-                </RowBody>
-                <RowValue>{d.type}</RowValue>
-              </Row>
-              {d.exercises.map((e) => {
-                const about = `${LOAD_LABEL[e.loadType]}, ${e.muscle}`
-                const target = `${e.sets} × ${targetOf(e)}`
-                return (
-                  <Row key={e.id} accessibilityLabel={e.name}>
-                    <RowBody>
-                      <RowTitle>{e.name}</RowTitle>
-                      <RowSub>{about}</RowSub>
-                    </RowBody>
-                    <RowValue className={NUMBER}>{target}</RowValue>
-                  </Row>
-                )
-              })}
-            </Group>
-          ))}
+          <PlanPreviewEditor parsed={parsed} onChange={setParsed} />
           {parsed.warnings.length > 0 ? (
             <Group className="mt-4 bg-card">
               {parsed.warnings.slice(0, 20).map((w) => {

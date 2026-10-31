@@ -46,7 +46,7 @@ class SessionWidgetTest {
     assertEquals(View.VISIBLE, view.findViewById<View>(R.id.widget_controls).visibility)
     assertEquals(View.VISIBLE, view.findViewById<View>(R.id.widget_progress).visibility)
     assertEquals(View.GONE, view.findViewById<View>(R.id.widget_open).visibility)
-    assertEquals("25 kg", view.findViewById<TextView>(R.id.widget_weight).text.toString())
+    assertEquals("25 kg", view.findViewById<TextView>(R.id.widget_weight).contentDescription.toString())
     state.apply("pause", 1792922400000)
     SessionWidget.views(context, state).reapply(context, view)
     assertFalse(view.findViewById<Button>(R.id.widget_done).isEnabled)
@@ -69,13 +69,13 @@ class SessionWidgetTest {
     val state = state("time")
     val view = SessionWidget.views(context, state).apply(context, null)
     assertEquals(View.GONE, view.findViewById<View>(R.id.widget_weight_row).visibility)
-    assertEquals("15 seconds", view.findViewById<TextView>(R.id.widget_amount).text.toString())
+    assertEquals("15 seconds", view.findViewById<TextView>(R.id.widget_amount).contentDescription.toString())
     assertEquals(View.GONE, view.findViewById<View>(R.id.widget_clock).visibility)
     state.lastCompletedAt = System.currentTimeMillis() - 90000
     SessionWidget.views(context, state).reapply(context, view)
     assertEquals(View.VISIBLE, view.findViewById<View>(R.id.widget_clock).visibility)
     SessionWidget.views(context, state("bodyweight")).reapply(context, view)
-    assertEquals("15 reps", view.findViewById<TextView>(R.id.widget_amount).text.toString())
+    assertEquals("15 reps", view.findViewById<TextView>(R.id.widget_amount).contentDescription.toString())
     assertEquals(View.GONE, view.findViewById<View>(R.id.widget_clock).visibility)
     SessionWidget.views(context, state()).reapply(context, view)
     assertEquals(View.VISIBLE, view.findViewById<View>(R.id.widget_weight_row).visibility)
@@ -141,14 +141,14 @@ class SessionWidgetTest {
   }
 
   @org.robolectric.annotation.GraphicsMode(org.robolectric.annotation.GraphicsMode.Mode.NATIVE)
-  @Test fun idleCardDoesNotPaintAnEmptyPanelAcrossALargeSlot() {
+  @Test fun idleCardFillsTheSpaceChosenByTheUser() {
     val density = context.resources.displayMetrics.density
     val root = SessionWidget.views(context, null).apply(context, null) as android.view.ViewGroup
     root.measure(View.MeasureSpec.makeMeasureSpec((250 * density).toInt(), View.MeasureSpec.EXACTLY),
       View.MeasureSpec.makeMeasureSpec((340 * density).toInt(), View.MeasureSpec.EXACTLY))
     root.layout(0, 0, root.measuredWidth, root.measuredHeight)
     assertNull(root.background)
-    assertTrue("Idle card should fit one short row", root.getChildAt(0).height <= 80 * density)
+    assertEquals(root.height, root.getChildAt(0).height)
     assertEquals("No active session", root.findViewById<TextView>(R.id.widget_day).text.toString())
     val small = SessionWidget.views(context, null).apply(context, null) as android.view.ViewGroup
     small.measure(View.MeasureSpec.makeMeasureSpec((180 * density).toInt(), View.MeasureSpec.EXACTLY),
@@ -262,7 +262,7 @@ class SessionWidgetTest {
   @Test fun oneRowCardFillsTheLauncherMinimumWithoutGrowingTheSlot() {
     val density = context.resources.displayMetrics.density
     for (height in listOf(80, 96, 104, 120)) for (state in listOf(null, state())) {
-      val root = SessionWidget.views(context, state, compact = true, fillCard = true).apply(context, null)
+      val root = SessionWidget.views(context, state, compact = true).apply(context, null)
       root.measure(View.MeasureSpec.makeMeasureSpec((320 * density).toInt(), View.MeasureSpec.EXACTLY),
         View.MeasureSpec.makeMeasureSpec((height * density).toInt(), View.MeasureSpec.EXACTLY))
       root.layout(0, 0, root.measuredWidth, root.measuredHeight)
@@ -276,7 +276,38 @@ class SessionWidgetTest {
       root.measure(View.MeasureSpec.makeMeasureSpec((320 * density).toInt(), View.MeasureSpec.EXACTLY),
         View.MeasureSpec.makeMeasureSpec((340 * density).toInt(), View.MeasureSpec.EXACTLY))
       root.layout(0, 0, root.measuredWidth, root.measuredHeight)
-      assertTrue("Expanding must release the filled height", card.height <= 80 * density)
+      assertEquals("Expanding must fill the new height", root.height, card.height)
     }
   }
+  @org.robolectric.annotation.GraphicsMode(org.robolectric.annotation.GraphicsMode.Mode.NATIVE)
+  @Config(qualifiers = "420dpi")
+  @Test fun resizeFillsEverySlotAndTilesShareTheAvailableWidth() {
+    val density = context.resources.displayMetrics.density
+    for (width in listOf(180, 280, 360, 412)) for (height in listOf(48, 79, 80, 104, 127, 128, 160, 219, 220, 223, 224, 240, 340, 480, 600)) {
+      for (state in listOf(null, state(), state("bodyweight"), state("time"))) {
+        val compact = width < 280 || height < 224
+        val root = SessionWidget.views(context, state, compact = compact, strip = height < 80)
+          .apply(context, null) as android.view.ViewGroup
+        root.measure(View.MeasureSpec.makeMeasureSpec((width * density).toInt(), View.MeasureSpec.EXACTLY),
+          View.MeasureSpec.makeMeasureSpec((height * density).toInt(), View.MeasureSpec.EXACTLY))
+        root.layout(0, 0, root.measuredWidth, root.measuredHeight)
+        val card = root.findViewById<View>(R.id.widget_card)
+        assertEquals("width=$width height=$height", root.height, card.height)
+        assertEquals(root.width, card.width)
+        if (!compact && state != null) {
+          val done = root.findViewById<View>(R.id.widget_done)
+          val bounds = android.graphics.Rect(0, 0, done.width, done.height)
+          root.offsetDescendantRectToMyCoords(done, bounds)
+          assertEquals("Actions stay at the bottom", root.height - card.paddingBottom, bounds.bottom)
+          val weight = root.findViewById<View>(R.id.widget_weight_row)
+          val amount = root.findViewById<View>(R.id.widget_amount_row)
+          if (weight.visibility == View.VISIBLE) {
+            assertEquals(weight.width.toFloat(), amount.width.toFloat(), 1f)
+            assertTrue(weight.right <= amount.left)
+          } else assertEquals(card.width - card.paddingLeft - card.paddingRight, amount.width)
+        }
+      }
+    }
+  }
+
 }

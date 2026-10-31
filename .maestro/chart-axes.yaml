@@ -1,0 +1,58 @@
+appId: ${APP_ID}
+name: Chart axes and range controls on synthetic history
+# Restore the synthetic chart fixture on a disposable emulator first.
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Stats"
+    timeout: 30000
+- tapOn: "Stats"
+- assertVisible: "Lifts"
+- assertVisible: "Barbell Row"
+- assertNotVisible: "Barbell Row, [0-9]+ weeks of history.*"
+- takeScreenshot: "${OUT}-lifts-collapsed"
+- tapOn: "Barbell Row"
+- assertVisible: "Barbell Row, [0-9]+ weeks of history.*"
+- takeScreenshot: "${OUT}-lifts"
+- tapOn: "Barbell Row"
+- assertNotVisible: "Barbell Row, [0-9]+ weeks of history.*"
+- tapOn: "Body"
+- assertVisible: "Bodyweight"
+- tapOn: "4 weeks"
+- takeScreenshot: "${OUT}-body-4-weeks"
+- tapOn: "12 weeks"
+- takeScreenshot: "${OUT}-body-12-weeks"
+- scrollUntilVisible:
+    element: "Measurements"
+    direction: DOWN
+- scrollUntilVisible:
+    element: "6 months"
+    direction: DOWN
+- tapOn: "6 months"
+- assertVisible: "1 year"
+- takeScreenshot: "${OUT}-tape-6-months"
+- tapOn: "1 year"
+- takeScreenshot: "${OUT}-tape-1-year"
+- scrollUntilVisible:
+    element: "Sessions"
+    direction: UP
+- tapOn: "Sessions"
+- scrollUntilVisible:
+    element: "Hard sets this week"
+    direction: DOWN
+- takeScreenshot: "${OUT}-sessions"
+- openLink: "ironkeep://report?period=week&at=2026-10-12"
+- extendedWaitUntil:
+    visible: "Share"
+    timeout: 10000
+- scrollUntilVisible:
+    element: "Sessions by period:.*"
+    direction: DOWN
+    centerElement: true
+- takeScreenshot: "${OUT}-report-sessions"
+- tapOn:
+    text: "Hard sets"
+    below:
+      text: "Last 8 weeks"
+- assertVisible: "Hard sets by period:.*"
+- takeScreenshot: "${OUT}-report-sets"

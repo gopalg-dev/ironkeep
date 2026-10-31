@@ -164,7 +164,8 @@ describe('report', () => {
       ['back', 0.7, 3],
     ])
     expect(september.attention.tooMuch).toBe(1)
-    expect(september.attention.stuck).toEqual([])
+    // The last two bench sessions match; an earlier PR does not make the latest session climb.
+    expect(september.attention.stuck).toEqual(['Bench'])
     expect(september.effort.counts).toEqual([0, 1, 1, 1])
     expect(september.effort.prevCounts).toEqual([0, 2, 0, 0])
     expect(september.effort.left).toBe(0.5)

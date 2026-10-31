@@ -2,9 +2,7 @@ import { addDatabaseChangeListener } from 'expo-sqlite'
 import { useEffect } from 'react'
 import { AppState } from 'react-native'
 
-import * as repo from '@/db/repo'
 import { sessionNotification } from '../../../modules/session-notification'
-import { requestNotificationPermission } from './notification-permission'
 
 /** One subscription at the database gate: event-driven updates, never a polling timer. */
 export function useSessionNotifications(ready: boolean): void {
@@ -23,18 +21,8 @@ export function useSessionNotifications(ready: boolean): void {
       try {
         do {
           again = false
-          const workout = await repo.getActiveWorkout()
           if (disposed) return
           await sessionNotification?.refresh()
-          if (
-            workout &&
-            !disposed &&
-            AppState.currentState === 'active' &&
-            sessionNotification?.claimPermissionPrompt()
-          ) {
-            await requestNotificationPermission()
-            again = true
-          }
         } while (again && !disposed)
       } catch (error) {
         // A notification failure cannot block a workout or leave stale actionable controls behind.
@@ -49,7 +37,7 @@ export function useSessionNotifications(ready: boolean): void {
       timer = setTimeout(() => void refresh(), 100)
     }
     const writes = addDatabaseChangeListener((event) => {
-      if (event.tableName === 'workouts' || event.tableName === 'settings') schedule()
+      if (event.tableName === 'workouts' || event.tableName === 'settings' || event.tableName === 'prefs') schedule()
     })
     const state = AppState.addEventListener('change', (next) => {
       if (next === 'active') schedule()

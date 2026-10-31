@@ -1,5 +1,5 @@
-import { useFocusEffect } from 'expo-router'
-import { useCallback, useState } from 'react'
+import { useFocusEffect, useLocalSearchParams } from 'expo-router'
+import { useCallback, useEffect, useState } from 'react'
 import { View } from 'react-native'
 
 import { useBigTitle } from '@/components/page-bar'
@@ -23,8 +23,12 @@ const TAB_OPTIONS: { value: Tab; label: string }[] = [
 /** The footer-less tab (canvas: Stats lifts, sessions, body): one segmented switch, three panels, data reloaded on every visit. */
 export function StatsScreen() {
   const measure = useBigTitle()
+  const params = useLocalSearchParams<{ tab?: string; log?: string }>()
   const [data, setData] = useState<repo.StatsData | null>(null)
   const [tab, setTab] = useState<Tab>('lifts')
+  useEffect(() => {
+    if (params.tab === 'body' || params.tab === 'sessions' || params.tab === 'lifts') setTab(params.tab)
+  }, [params.tab])
   const load = useCallback(() => {
     let live = true
     repo.getStatsData().then((d) => {
@@ -58,8 +62,8 @@ export function StatsScreen() {
       {data ? (
         <>
           {tab === 'lifts' ? <LiftsPanel data={data} /> : null}
-          {tab === 'sessions' ? <SessionsPanel data={data} /> : null}
-          {tab === 'body' ? <BodyPanel data={data} onChanged={refresh} /> : null}
+          {tab === 'sessions' ? <SessionsPanel data={data} onChanged={refresh} /> : null}
+          {tab === 'body' ? <BodyPanel data={data} onChanged={refresh} openTape={params.log === 'tape'} /> : null}
         </>
       ) : null}
     </Screen>

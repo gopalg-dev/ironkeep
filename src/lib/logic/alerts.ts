@@ -1,6 +1,8 @@
 import type { BodyweightLog, Goal, Units, Workout } from '../types'
+import { liftIdentity } from './lift-identity'
+import { improvedDuring, performanceHistory } from './lift-performance'
 import { PERIOD_KINDS, type ReportData, reviewCard } from './report'
-import { addDays, bestSet, dayKey, finished, setScore, startOfWeek } from './stats'
+import { addDays, dayKey, startOfWeek } from './stats'
 
 /**
  * Something on Today that asks for a look: a lift that stopped moving, a week slipping, a scale not moving, or the
@@ -49,31 +51,19 @@ function inRange(iso: string, start: Date, end: Date): boolean {
   return t >= start.getTime() && t < end.getTime()
 }
 
-/** Lifts trained at least three times in the four weeks before `now` whose best set never beat the best from before those weeks. */
+/** Four weeks without a session improvement, with an older baseline and three recent sessions. */
 function stalledLifts(workouts: Workout[], now: Date): { id: string; name: string }[] {
   const since = addDays(now, -STALL_WEEKS * 7)
-  const end = addDays(now, 1)
-  const recentBest = new Map<string, { name: string; sessions: number; score: number }>()
-  const olderBest = new Map<string, number>()
-  for (const w of finished(workouts)) {
-    const recent = inRange(w.finishedAt, since, end)
-    for (const e of w.entries) {
-      const b = bestSet(e)
-      if (!b) continue
-      const score = setScore(e, b, w.bodyweight)
-      if (recent) {
-        const cur = recentBest.get(e.exerciseId) ?? { name: e.name, sessions: 0, score: 0 }
-        recentBest.set(e.exerciseId, { name: e.name, sessions: cur.sessions + 1, score: Math.max(cur.score, score) })
-      } else {
-        olderBest.set(e.exerciseId, Math.max(olderBest.get(e.exerciseId) ?? 0, score))
-      }
-    }
-  }
+  const names = new Map(
+    workouts.flatMap((w) => w.entries.map((e) => [liftIdentity(e), { id: e.exerciseId, name: e.name }] as const)),
+  )
   const stuck: { id: string; name: string }[] = []
-  for (const [id, r] of recentBest) {
-    const before = olderBest.get(id)
-    if (before === undefined || r.sessions < STALL_MIN_SESSIONS || r.score > before) continue
-    stuck.push({ id, name: r.name })
+  for (const [id, history] of performanceHistory(workouts, now)) {
+    const older = history.some((p) => Date.parse(p.date) < since.getTime())
+    const recent = history.filter((p) => Date.parse(p.date) >= since.getTime())
+    if (!older || recent.length < STALL_MIN_SESSIONS || improvedDuring(history, since, now)) continue
+    const ex = names.get(id)
+    if (ex) stuck.push(ex)
   }
   return stuck
 }

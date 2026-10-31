@@ -10,5 +10,5 @@ module.exports = withUniwindConfig(config, {
   cssEntryFile: './src/global.css',
   dtsFile: './src/uniwind-types.d.ts',
   // The two themes the phone's colours are written onto at runtime (src/theme/look.ts).
-  extraThemes: ['you-light', 'you-dark'],
+  extraThemes: ['you-light', 'you-dark', 'latte', 'lime', 'dracula'],
 })

@@ -1,6 +1,7 @@
 import { monthYear, shortDate } from '../format'
 import type { BodyweightLog, DayType, Muscle, Plan, Settings, Units, Workout, WorkoutEntry } from '../types'
 import { deloadHint } from './effort'
+import { groupedWorkouts } from './lift-identity'
 import {
   addDays,
   averageWeight,
@@ -206,7 +207,8 @@ export interface Mover {
 }
 
 /** The lifts trained in the span that were stuck or slipping as it ended, by name. */
-function fadingAt(ws: Workout[], start: Date, end: Date): { stuck: string[]; slipping: string[] } {
+function fadingAt(workouts: Workout[], start: Date, end: Date): { stuck: string[]; slipping: string[] } {
+  const ws = groupedWorkouts(workouts)
   const upTo = ws.filter((w) => w.finishedAt && new Date(w.finishedAt).getTime() < end.getTime())
   const at = new Date(end.getTime() - 1)
   const seen = new Set<string>()

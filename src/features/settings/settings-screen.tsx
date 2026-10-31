@@ -44,6 +44,7 @@ import { BUNDLED_SPLITS } from '@/lib/splits'
 import type { Goal, Plan, Schedule, Settings, TrainingAge, Units } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { applyLook, currentLook, type Look, lookOptions } from '@/theme/look'
+import { NotificationSetting } from './notification-setting'
 
 const UNIT_LABEL: Record<Units, string> = { kg: 'Kilograms', lb: 'Pounds' }
 const AGE_LABEL: Record<TrainingAge, string> = { under1: 'Under a year', over1: 'A year or more' }
@@ -248,6 +249,7 @@ export function SettingsScreen() {
 
       <Text className={cn(CAPTION, 'mt-6 px-1')}>Phone</Text>
       <Group className="mt-2">
+        <NotificationSetting />
         <Setting
           icon={Sun}
           title="Screen during a session"

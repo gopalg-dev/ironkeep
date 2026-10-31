@@ -5,12 +5,12 @@ import { useCallback, useState } from 'react'
 import { View } from 'react-native'
 
 import { BTN, BTN_SM2, BTN_SM2_TEXT, BTN_TEXT } from '@/components/button-styles'
-import { Dialog } from '@/components/dialog'
 import { IconButton } from '@/components/icon-button'
 import { useBigTitle } from '@/components/page-bar'
+import { ReplaceDialog } from '@/components/replace-dialog'
 import { Group, Row, RowBody, RowSub, RowTitle } from '@/components/row'
 import { Screen } from '@/components/screen'
-import { BODY, H2, NUMBER, SECONDARY, TITLE } from '@/components/typography'
+import { BODY, NUMBER, SECONDARY, TITLE } from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
@@ -18,7 +18,15 @@ import { restoreBackup } from '@/db/backup'
 import { announce } from '@/lib/announce'
 import { errorMessage, longDate } from '@/lib/format'
 import { cn } from '@/lib/utils'
-import { listSnapshots, readSnapshot, SNAPSHOT_EVERY_DAYS, SNAPSHOTS_KEPT, type Snapshot, writeSnapshot } from './files'
+import {
+  listSnapshots,
+  readSnapshot,
+  SNAPSHOT_EVERY_DAYS,
+  SNAPSHOTS_KEPT,
+  type Snapshot,
+  shareBackup,
+  writeSnapshot,
+} from './files'
 
 const WRITE_NOW = 'Write a snapshot now'
 const HOW = `Written every ${SNAPSHOT_EVERY_DAYS} days when the app opens. The last ${SNAPSHOTS_KEPT} are kept.`
@@ -154,27 +162,18 @@ export function SnapshotsScreen() {
         <Text className={cn(BTN_TEXT, 'text-foreground')}>{WRITE_NOW}</Text>
       </Button>
 
-      <Dialog open={ask !== null} onClose={() => setAsk(null)}>
-        <View className="gap-1">
-          <Text accessibilityRole="header" className={H2}>
-            Restore this snapshot?
-          </Text>
-          <Text className={cn(BODY, NUMBER, 'text-muted-foreground')}>
-            {ask
-              ? `Everything on the phone becomes what it was on ${longDate(ask.at)}. A snapshot of today is written first.`
-              : ''}
-          </Text>
-        </View>
-        <View className="gap-2">
-          <Button className={BTN} disabled={busy} onPress={() => ask && restore(ask)}>
-            <Icon as={RotateCcw} className="size-4.5 text-primary-foreground" />
-            <Text className={BTN_TEXT}>Restore</Text>
-          </Button>
-          <Button variant="ghost" className="h-12" onPress={() => setAsk(null)}>
-            <Text className="text-lg font-semibold text-foreground">Cancel</Text>
-          </Button>
-        </View>
-      </Dialog>
+      <ReplaceDialog
+        open={ask !== null}
+        title="Restore this snapshot?"
+        consequence={
+          ask ? `Training data becomes what it was on ${longDate(ask.at)}. A recovery snapshot is saved first.` : ''
+        }
+        onClose={() => setAsk(null)}
+        onExport={shareBackup}
+        onConfirm={async () => {
+          if (ask) await restore(ask)
+        }}
+      />
     </Screen>
   )
 }

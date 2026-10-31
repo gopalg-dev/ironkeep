@@ -1,0 +1,32 @@
+appId: ${APP_ID}
+name: Visible report chart scales
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Today|Share"
+    timeout: 30000
+- openLink: "ironkeep://report?period=week&at=2026-10-12"
+- extendedWaitUntil:
+    visible: "Share"
+    timeout: 30000
+- scrollUntilVisible:
+    element: "Sessions by period:.*"
+    direction: DOWN
+    centerElement: true
+- takeScreenshot: "${OUT}-report-sessions-visible"
+- tapOn:
+    text: "Hard sets"
+    below:
+      text: "Last 8 weeks"
+- assertVisible: "Hard sets by period:.*"
+- takeScreenshot: "${OUT}-report-sets-visible"
+- scrollUntilVisible:
+    element: "Hard sets per muscle"
+    direction: DOWN
+    centerElement: true
+- takeScreenshot: "${OUT}-report-muscles-visible"
+- scrollUntilVisible:
+    element: "Bodyweight by report period.*"
+    direction: DOWN
+    centerElement: true
+- takeScreenshot: "${OUT}-report-weight-visible"

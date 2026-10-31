@@ -53,7 +53,7 @@ export function SwapScreen() {
   const line = plan?.days.find((d) => d.id === workout?.dayId)?.exercises.find((e) => e.id === id)
   const alternates = (line?.alternates ?? []).flatMap((name) => {
     const row = findLibraryByName(LIBRARY, name)
-    return row ? [row] : []
+    return [{ name, detail: row ? `${MUSCLE_LABEL[row.muscle]}, ${EQUIPMENT_LABEL[row.equipment]}` : 'Custom' }]
   })
   const skip = new Set([entry?.name, ...alternates.map((a) => a.name)])
   const rows = searchLibrary({ query: query.trim() }, LIBRARY)
@@ -117,7 +117,19 @@ export function SwapScreen() {
       {alternates.length > 0 && !query.trim() ? (
         <View className="gap-2">
           <Text className={CAPTION}>Alternates on the plan</Text>
-          <Group>{alternates.map((a) => lift(a, true))}</Group>
+          <Group>
+            {alternates.map((a) => (
+              <Row key={a.name} onPress={() => void use(a.name)} accessibilityLabel={`Use ${a.name}`}>
+                <RowBody>
+                  <RowTitle>{a.name}</RowTitle>
+                  <RowSub>{a.detail}</RowSub>
+                </RowBody>
+                <Button disabled={busy} onPress={() => void use(a.name)}>
+                  <Text>Use</Text>
+                </Button>
+              </Row>
+            ))}
+          </Group>
         </View>
       ) : null}
       <View className="gap-2">

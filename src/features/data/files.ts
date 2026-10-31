@@ -1,3 +1,4 @@
+import { getDocumentAsync } from 'expo-document-picker'
 import { Directory, File, Paths } from 'expo-file-system'
 import * as MailComposer from 'expo-mail-composer'
 import * as Sharing from 'expo-sharing'
@@ -168,8 +169,15 @@ export async function logsWorkbook(layout: ExportLayout, units: Units): Promise<
     })
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows, { header: setHeaders(units) }), 'Sets')
   }
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(bodyweightsToRows(data.bodyweights)), 'Weigh-ins')
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(measurementsToRows(data.measurements)), 'Tape')
+  const weights = XLSX.utils.json_to_sheet(bodyweightsToRows(data.bodyweights))
+  XLSX.utils.sheet_add_aoa(weights, [['Date', `Weight (${units})`]], { origin: 'A1' })
+  const tape = XLSX.utils.json_to_sheet(measurementsToRows(data.measurements))
+  const length = units === 'kg' ? 'cm' : 'in'
+  XLSX.utils.sheet_add_aoa(tape, [['Date', `Arm (${length})`, `Chest (${length})`, `Waist (${length})`]], {
+    origin: 'A1',
+  })
+  XLSX.utils.book_append_sheet(wb, weights, 'Bodyweight')
+  XLSX.utils.book_append_sheet(wb, tape, 'Measurements')
   return wb
 }
 
@@ -214,17 +222,12 @@ export interface PickedFile {
 
 /** The system's file picker, for a backup, an Excel file or a CSV. Null when nothing was picked. */
 export async function pickFile(): Promise<PickedFile | null> {
-  try {
-    // The options form, not the bare call: that one resolves to the (uri, mimeType) overload and a bare File.
-    const picked = await File.pickFileAsync({})
-    if (picked.canceled) return null
-    const file = picked.result
-    // A content URI's file may carry no name; the URI's last part stands in, so the kind can still be read off it.
-    const name = file.name || decodeURIComponent(file.uri.split('/').pop() ?? '') || 'file'
-    return { name, text: () => file.text(), bytes: () => file.bytes() }
-  } catch {
-    return null
-  }
+  const picked = await getDocumentAsync({ copyToCacheDirectory: true, multiple: false })
+  if (picked.canceled) return null
+  const asset = picked.assets[0]
+  if (!asset) throw new Error('The selected file could not be opened.')
+  const file = new File(asset.uri)
+  return { name: asset.name || file.name || 'file', text: () => file.text(), bytes: () => file.bytes() }
 }
 
 /** Every sheet of a workbook as rows keyed by its headers. */

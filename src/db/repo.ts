@@ -13,7 +13,7 @@ import {
   swapLine,
   updateExerciseIn,
 } from '@/lib/logic/day-edit'
-import { FACT_SESSIONS, liftStart, type PastEntry } from '@/lib/logic/facts'
+import { FACT_SESSIONS, lastTimeSet, liftStart, type PastEntry } from '@/lib/logic/facts'
 import { nextDayId, rollingCursor } from '@/lib/logic/next-day'
 import { assertPlanRanges } from '@/lib/logic/plan-ranges'
 import { barOf, stepsOf } from '@/lib/logic/progression'
@@ -181,19 +181,21 @@ export async function resetPlan(): Promise<Plan> {
  * With `empty`, the split starts as its days with no lifts, in place of whatever plan it had.
  */
 export async function applySplit(split: SplitId, { empty = false } = {}): Promise<Plan> {
-  if (split === 'custom') {
-    // The plan of your own has no template: it can only be returned to, never started from here.
-    const own = await findPlan('custom')
-    if (!own) throw new Error('No plan of your own yet')
+  return withTransaction(async () => {
+    if (split === 'custom') {
+      // The plan of your own has no template: it can only be returned to, never started from here.
+      const own = await findPlan('custom')
+      if (!own) throw new Error('No plan of your own yet')
+      await saveSettings({ split })
+      return own
+    }
+    // Read the template first: an unknown id throws before anything is written.
+    const template = splitTemplate(split)
     await saveSettings({ split })
-    return own
-  }
-  // Read the template first: an unknown id throws before anything is written.
-  const template = splitTemplate(split)
-  await saveSettings({ split })
-  if (empty) return savePlanFor(split, emptyDays(template))
-  const existing = await findPlan(split)
-  return existing ?? savePlanFor(split, template)
+    if (empty) return savePlanFor(split, emptyDays(template))
+    const existing = await findPlan(split)
+    return existing ?? savePlanFor(split, template)
+  })
 }
 
 /** Every split the user has a plan for, with its day count. */
@@ -205,13 +207,15 @@ export async function planSlots(): Promise<{ split: PlanSource; days: number }[]
 
 /** Rolling or by weekday. Going by weekday gives every day without one a sensible weekday. */
 export async function setSchedule(schedule: Schedule): Promise<{ settings: Settings; plan: Plan }> {
-  const saved = await saveSettings({ schedule })
-  let plan = await getPlan()
-  if (schedule === 'weekday') {
-    const days = assignWeekdays(plan.days)
-    if (days !== plan.days) plan = await savePlan({ ...plan, days })
-  }
-  return { settings: saved, plan }
+  return withTransaction(async () => {
+    const saved = await saveSettings({ schedule })
+    let plan = await getPlan()
+    if (schedule === 'weekday') {
+      const days = assignWeekdays(plan.days)
+      if (days !== plan.days) plan = await savePlan({ ...plan, days })
+    }
+    return { settings: saved, plan }
+  })
 }
 
 export async function setDayWeekday(dayId: string, weekday: number): Promise<Plan> {
@@ -227,12 +231,14 @@ export async function setDayWeekday(dayId: string, weekday: number): Promise<Pla
  * slot; without one the plan is custom. Logged workouts are untouched.
  */
 export async function replacePlan(days: PlanDay[], split?: SplitId): Promise<Plan> {
-  if (days.length === 0) throw new Error('The plan needs at least one day')
-  assertPlanRanges(days)
-  if (split) splitTemplate(split) // an unknown template id throws here
-  const source: PlanSource = split ?? 'custom'
-  await saveSettings({ split: source })
-  return savePlanFor(source, days)
+  return withTransaction(async () => {
+    if (days.length === 0) throw new Error('The plan needs at least one day')
+    assertPlanRanges(days)
+    if (split) splitTemplate(split) // an unknown template id throws here
+    const source: PlanSource = split ?? 'custom'
+    await saveSettings({ split: source })
+    return savePlanFor(source, days)
+  })
 }
 
 export type { ExercisePatch }
@@ -514,30 +520,32 @@ async function sessionEntries(plan: Plan, s: Settings, exercises: Exercise[], at
 }
 
 export async function startWorkout(dayId: string): Promise<Workout> {
-  const [plan, s] = await Promise.all([getPlan(), getSettings()])
-  const day = plan.days.find((d) => d.id === dayId)
-  if (!day) throw new Error('Day not found')
-  if (day.exercises.length === 0) throw new Error(`${day.name} has no lifts yet. Add some on Plan first.`)
-  const db = await getDb()
-  await db.delete(workouts).where(eq(workouts.status, 'in_progress'))
-  const entries = await sessionEntries(plan, s, day.exercises)
-  const row: WorkoutRow = {
-    id: newId(),
-    dayId: day.id,
-    dayName: day.name,
-    dayType: day.type,
-    startedAt: new Date().toISOString(),
-    finishedAt: null,
-    pausedAt: null,
-    pausedMs: null,
-    status: 'in_progress',
-    effort: null,
-    note: null,
-    entries,
-    historyRevision: HISTORY_REVISION,
-  }
-  await db.insert(workouts).values(row)
-  return toWorkout(row)
+  return withTransaction(async () => {
+    const [plan, s] = await Promise.all([getPlan(), getSettings()])
+    const day = plan.days.find((d) => d.id === dayId)
+    if (!day) throw new Error('Day not found')
+    if (day.exercises.length === 0) throw new Error(`${day.name} has no lifts yet. Add some on Plan first.`)
+    const db = await getDb()
+    await db.delete(workouts).where(eq(workouts.status, 'in_progress'))
+    const entries = await sessionEntries(plan, s, day.exercises)
+    const row: WorkoutRow = {
+      id: newId(),
+      dayId: day.id,
+      dayName: day.name,
+      dayType: day.type,
+      startedAt: new Date().toISOString(),
+      finishedAt: null,
+      pausedAt: null,
+      pausedMs: null,
+      status: 'in_progress',
+      effort: null,
+      note: null,
+      entries,
+      historyRevision: HISTORY_REVISION,
+    }
+    await db.insert(workouts).values(row)
+    return toWorkout(row)
+  })
 }
 
 /**
@@ -564,28 +572,33 @@ export async function syncSession(): Promise<{ workout: Workout; kept: string[] 
  * A lift the plan day no longer holds (removed mid-session, with sets ticked) takes the set for today only.
  */
 export async function acceptRamp(workoutId: string, exerciseId: string): Promise<WorkoutEntry> {
-  const db = await getDb()
-  const row = await rowById(db, workoutId)
-  if (row?.status !== 'in_progress') throw new Error('Workout not found')
-  const entry = row.entries.find((e) => e.exerciseId === exerciseId)
-  if (!entry?.rampOffer) throw new Error('No set to add')
-  const plan = await getPlan()
-  const ex = plan.days.find((d) => d.id === row.dayId)?.exercises.find((e) => e.id === exerciseId)
-  if (ex) {
-    ex.ramp = { base: ex.ramp?.base ?? ex.sets, at: dayKey(startOfWeek(new Date())) }
-    ex.sets += 1
-    await savePlan(plan)
-  }
-  const last = entry.sets.length - 1
-  entry.sets = [...entry.sets, { done: false }]
-  const lastStart = entry.prefill?.[last]
-  if (entry.prefill && lastStart) entry.prefill = [...entry.prefill, { ...lastStart }]
-  delete entry.rampOffer
-  await db.update(workouts).set({ entries: row.entries }).where(eq(workouts.id, row.id))
-  return must(
-    toWorkout(row).entries.find((e) => e.exerciseId === exerciseId),
-    'the entry that took the extra set',
-  )
+  return withTransaction(async () => {
+    const db = await getDb()
+    const row = await rowById(db, workoutId)
+    if (row?.status !== 'in_progress') throw new Error('Workout not found')
+    const entry = row.entries.find((e) => e.exerciseId === exerciseId)
+    if (!entry?.rampOffer) throw new Error('No set to add')
+    const plan = await getPlan()
+    const ex = plan.days.find((d) => d.id === row.dayId)?.exercises.find((e) => e.id === exerciseId)
+    if (ex) {
+      ex.ramp = { base: ex.ramp?.base ?? ex.sets, at: dayKey(startOfWeek(new Date())) }
+      ex.sets += 1
+      await savePlan(plan)
+    }
+    const last = entry.sets.length - 1
+    entry.sets = [...entry.sets, { done: false }]
+    const lastStart = entry.prefill?.[last]
+    if (entry.prefill && lastStart) {
+      const added = lastTimeSet(await recentEntries(exerciseId, { loadType: entry.loadType }), last + 1) ?? lastStart
+      entry.prefill = [...entry.prefill, { ...added }]
+    }
+    delete entry.rampOffer
+    await db.update(workouts).set({ entries: row.entries }).where(eq(workouts.id, row.id))
+    return must(
+      toWorkout(row).entries.find((e) => e.exerciseId === exerciseId),
+      'the entry that took the extra set',
+    )
+  })
 }
 
 /**
@@ -600,42 +613,44 @@ export async function swapSessionExercise(
   newName: string,
   alsoPlan: boolean,
 ): Promise<Workout> {
-  const db = await getDb()
-  const row = await rowById(db, workoutId)
-  if (row?.status !== 'in_progress') throw new Error('Workout not found')
-  const entry = row.entries.find((e) => e.exerciseId === exerciseId)
-  if (!entry) throw new Error('Exercise not found')
-  const [plan, s] = await Promise.all([getPlan(), getSettings()])
-  const { library } = readContent()
-  const day = plan.days.find((d) => d.id === row.dayId)
-  const planned = day?.exercises.find((e) => e.id === exerciseId)
-  // The line the new lift is built from: the plan's, or the session's own when the plan no longer has the lift.
-  const line = planned ?? lineOf(entry, entry.sets.length)
-  // The new id must be free on the session and on the day, so a later "Plan and today" finds the same lift. The old
-  // lift's own id is free only when it goes; with sets ticked it stays, and the new lift must not share its id.
-  const ticked = entry.sets.some((set) => set.done)
-  const taken = [...row.entries.map((e) => e.exerciseId), ...(day?.exercises.map((e) => e.id) ?? [])].filter(
-    (id) => ticked || id !== exerciseId,
-  )
-  const swapped = swapLine(line, newName, library, taken)
-  // With sets ticked, only what was left goes to the new lift.
-  if (ticked) swapped.sets = setsLeft(entry)
-  const built = must((await sessionEntries(plan, s, [swapped]))[0], 'the swapped-in lift')
-  const onPlan = alsoPlan && planned !== undefined && day !== undefined
-  // The ramp raises the plan's number of sets: a lift here for today only has no plan line to raise.
-  const { rampOffer: _offer, ...forToday } = built
-  const entries = swapEntries(row.entries, exerciseId, onPlan ? built : forToday)
-  await db.update(workouts).set({ entries }).where(eq(workouts.id, row.id))
-  if (onPlan) {
-    await editDay(day.id, (d) => {
-      const next = swapExerciseIn(d, exerciseId, newName, library)
-      // The plan's line takes the session's id, so the ramp and the next session find one lift, not two.
-      const at = d.exercises.findIndex((e) => e.id === exerciseId)
-      must(next.exercises[at], 'the swapped plan line').id = swapped.id
-      return next
-    })
-  }
-  return toWorkout({ ...row, entries })
+  return withTransaction(async () => {
+    const db = await getDb()
+    const row = await rowById(db, workoutId)
+    if (row?.status !== 'in_progress') throw new Error('Workout not found')
+    const entry = row.entries.find((e) => e.exerciseId === exerciseId)
+    if (!entry) throw new Error('Exercise not found')
+    const [plan, s] = await Promise.all([getPlan(), getSettings()])
+    const { library } = readContent()
+    const day = plan.days.find((d) => d.id === row.dayId)
+    const planned = day?.exercises.find((e) => e.id === exerciseId)
+    // The line the new lift is built from: the plan's, or the session's own when the plan no longer has the lift.
+    const line = planned ?? lineOf(entry, entry.sets.length)
+    // The new id must be free on the session and on the day, so a later "Plan and today" finds the same lift. The old
+    // lift's own id is free only when it goes; with sets ticked it stays, and the new lift must not share its id.
+    const ticked = entry.sets.some((set) => set.done)
+    const taken = [...row.entries.map((e) => e.exerciseId), ...(day?.exercises.map((e) => e.id) ?? [])].filter(
+      (id) => ticked || id !== exerciseId,
+    )
+    const swapped = swapLine(line, newName, library, taken)
+    // With sets ticked, only what was left goes to the new lift.
+    if (ticked) swapped.sets = setsLeft(entry)
+    const built = must((await sessionEntries(plan, s, [swapped]))[0], 'the swapped-in lift')
+    const onPlan = alsoPlan && planned !== undefined && day !== undefined
+    // The ramp raises the plan's number of sets: a lift here for today only has no plan line to raise.
+    const { rampOffer: _offer, ...forToday } = built
+    const entries = swapEntries(row.entries, exerciseId, onPlan ? built : forToday)
+    await db.update(workouts).set({ entries }).where(eq(workouts.id, row.id))
+    if (onPlan) {
+      await editDay(day.id, (d) => {
+        const next = swapExerciseIn(d, exerciseId, newName, library)
+        // The plan's line takes the session's id, so the ramp and the next session find one lift, not two.
+        const at = d.exercises.findIndex((e) => e.id === exerciseId)
+        must(next.exercises[at], 'the swapped plan line').id = swapped.id
+        return next
+      })
+    }
+    return toWorkout({ ...row, entries })
+  })
 }
 
 /** Pauses or resumes the session in progress (see `lib/logic/session-time.ts`). Returns the pause fields. */
@@ -689,35 +704,37 @@ export async function finishWorkout(
   workoutId: string,
   extra: FinishExtra = {},
 ): Promise<{ finished: boolean; summary?: SessionSummary }> {
-  const db = await getDb()
-  const row = await rowById(db, workoutId)
-  if (!row) throw new Error('Workout not found')
-  const anyDone = row.entries.some((e) => e.sets.some((set) => set.done))
-  if (!anyDone) {
-    await db.delete(workouts).where(eq(workouts.id, row.id))
-    return { finished: false }
-  }
-  const now = new Date()
-  const patch: Partial<WorkoutRow> = { status: 'done', finishedAt: now.toISOString() }
-  if (extra.effort !== undefined) patch.effort = extra.effort
-  if (extra.note) patch.note = extra.note
-  // A session finished while paused: the pause ends with it, so its minutes read right.
-  if (row.pausedAt) {
-    patch.pausedMs = setPaused(toWorkout(row), false, now).pausedMs ?? 0
-    patch.pausedAt = null
-  }
-  // Earlier sessions are read before this one joins them: the year for the week's count, and every session before
-  // it for the bests, so "new best" means better than ever, not better than this year.
-  const [past, older, s, plan, weighIns] = await Promise.all([
-    listWorkouts({ sinceDays: 365 }),
-    olderSessions(365),
-    getSettings(),
-    getPlan(),
-    listBodyweights(ALL_LOGS),
-  ])
-  await db.update(workouts).set(patch).where(eq(workouts.id, row.id))
-  const done = toWorkout({ ...row, ...patch })
-  return { finished: true, summary: finishSummary(done, [...past, ...older], weighIns, plan, s, now) }
+  return withTransaction(async () => {
+    const db = await getDb()
+    const row = await rowById(db, workoutId)
+    if (!row) throw new Error('Workout not found')
+    const anyDone = row.entries.some((e) => e.sets.some((set) => set.done))
+    if (!anyDone) {
+      await db.delete(workouts).where(eq(workouts.id, row.id))
+      return { finished: false }
+    }
+    const now = new Date()
+    const patch: Partial<WorkoutRow> = { status: 'done', finishedAt: now.toISOString() }
+    if (extra.effort !== undefined) patch.effort = extra.effort
+    if (extra.note) patch.note = extra.note
+    // A session finished while paused: the pause ends with it, so its minutes read right.
+    if (row.pausedAt) {
+      patch.pausedMs = setPaused(toWorkout(row), false, now).pausedMs ?? 0
+      patch.pausedAt = null
+    }
+    // Earlier sessions are read before this one joins them: the year for the week's count, and every session before
+    // it for the bests, so "new best" means better than ever, not better than this year.
+    const [past, older, s, plan, weighIns] = await Promise.all([
+      listWorkouts({ sinceDays: 365 }),
+      olderSessions(365),
+      getSettings(),
+      getPlan(),
+      listBodyweights(ALL_LOGS),
+    ])
+    await db.update(workouts).set(patch).where(eq(workouts.id, row.id))
+    const done = toWorkout({ ...row, ...patch })
+    return { finished: true, summary: finishSummary(done, [...past, ...older], weighIns, plan, s, now) }
+  })
 }
 
 export async function discardWorkout(workoutId: string): Promise<void> {
@@ -904,20 +921,22 @@ export async function logBodyweight(
   day?: string,
   date = new Date(),
 ): Promise<BodyweightLog & { replaced: boolean }> {
-  const db = await getDb()
-  const key = day ?? localDay(date)
-  const existing = (
-    await db.select({ id: bodyweights.id }).from(bodyweights).where(eq(bodyweights.day, key)).limit(1)
-  )[0]
-  if (existing) {
-    await db.update(bodyweights).set({ weight, date: date.toISOString() }).where(eq(bodyweights.id, existing.id))
+  return withTransaction(async () => {
+    const db = await getDb()
+    const key = day ?? localDay(date)
+    const existing = (
+      await db.select({ id: bodyweights.id }).from(bodyweights).where(eq(bodyweights.day, key)).limit(1)
+    )[0]
+    if (existing) {
+      await db.update(bodyweights).set({ weight, date: date.toISOString() }).where(eq(bodyweights.id, existing.id))
+      await syncSettingsWeight()
+      return { id: existing.id, date: date.toISOString(), day: key, weight, replaced: true }
+    }
+    const row = { id: newId(), date: date.toISOString(), day: key, weight }
+    await db.insert(bodyweights).values(row)
     await syncSettingsWeight()
-    return { id: existing.id, date: date.toISOString(), day: key, weight, replaced: true }
-  }
-  const row = { id: newId(), date: date.toISOString(), day: key, weight }
-  await db.insert(bodyweights).values(row)
-  await syncSettingsWeight()
-  return { ...row, replaced: false }
+    return { ...row, replaced: false }
+  })
 }
 
 export async function updateBodyweight(id: string, weight: number): Promise<void> {
@@ -1001,12 +1020,14 @@ async function lastMeasurementAt(): Promise<string | null> {
 
 /** Wipes the plans, settings and every log. Device preferences (the look) stay; setup runs again. */
 export async function startFresh(): Promise<void> {
-  const db = await getDb()
-  await db.delete(settings)
-  await db.delete(plans)
-  await db.delete(workouts)
-  await db.delete(bodyweights)
-  await db.delete(measurements)
+  return withTransaction(async () => {
+    const db = await getDb()
+    await db.delete(settings)
+    await db.delete(plans)
+    await db.delete(workouts)
+    await db.delete(bodyweights)
+    await db.delete(measurements)
+  })
 }
 
 // ---- reminders and alerts ----
@@ -1150,9 +1171,9 @@ export async function getExportData(): Promise<ExportData> {
   const [s, plan, done, weighIns, tape] = await Promise.all([
     getSettings(),
     getPlan(),
-    listWorkouts({ limit: 5000 }),
-    listBodyweights(5000),
-    listMeasurements(5000),
+    listWorkouts({ limit: -1 }),
+    listBodyweights(-1),
+    listMeasurements(-1),
   ])
   return { settings: s, plan, workouts: done, bodyweights: weighIns, measurements: tape }
 }

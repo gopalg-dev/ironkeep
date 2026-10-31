@@ -110,8 +110,8 @@ export function TodayScreen() {
   }
   // A review alert carries the report's own path; the others go to Plan or Stats.
   const onAlert = (a: Alert) =>
-    router.push(a.kind === 'review' ? (a.to as Href) : a.kind === 'stall' ? '/plan' : '/stats')
-  const onLog = (n: Nudge) => (n.kind === 'weight' ? setPanel('weigh') : router.push('/stats'))
+    router.push(a.kind === 'review' ? (a.to as Href) : a.kind === 'stall' ? '/plan' : '/stats?tab=body')
+  const onLog = (n: Nudge) => (n.kind === 'weight' ? setPanel('weigh') : router.push('/stats?tab=body&log=tape'))
 
   // The blocks under the summary: the first sits 24 below it, the next ones 16 apart.
   const blocks: ReactNode[] = []
@@ -252,7 +252,7 @@ export function TodayScreen() {
           day={day}
           next={dayAfter(plan.days, day.id)}
           onSkip={skip}
-          onLog={() => router.push('/stats')}
+          onLog={() => router.push('/stats?tab=sessions')}
         />
       ) : null}
       <LogWeightDialog

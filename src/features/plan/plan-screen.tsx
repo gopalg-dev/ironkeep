@@ -41,13 +41,16 @@ export function PlanScreen() {
   const router = useRouter()
   const measure = useBigTitle()
   const openExercise = useOpenExercise()
-  const [data, setData] = useState<{ plan: Plan; settings: Settings } | null>(null)
+  const [data, setData] = useState<{ plan: Plan; settings: Settings; activeDayId: string | null } | null>(null)
   const [openDay, setOpenDay] = useState<string | null>(null)
   const [resetOpen, setResetOpen] = useState(false)
   const [ask, setAsk] = useState<{ dayName: string } | null>(null)
   const [busy, setBusy] = useState(false)
   const load = useCallback(
-    () => Promise.all([repo.getPlan(), repo.getSettings()]).then(([plan, settings]) => setData({ plan, settings })),
+    () =>
+      Promise.all([repo.getPlan(), repo.getSettings(), repo.activeDayId()]).then(([plan, settings, activeDayId]) =>
+        setData({ plan, settings, activeDayId }),
+      ),
     [],
   )
   useFocusEffect(
@@ -105,7 +108,10 @@ export function PlanScreen() {
             >
               <DayIcon type={day.type} />
               <RowBody>
-                <RowTitle>{day.name}</RowTitle>
+                <RowTitle>
+                  {day.name}
+                  {data.activeDayId === day.id ? ' ? In progress' : ''}
+                </RowTitle>
                 <RowSub>{sub}</RowSub>
               </RowBody>
               <IconButton

@@ -29,19 +29,35 @@ export async function getDb(): Promise<AppDb> {
   return db
 }
 
-/**
- * Runs `fn` inside one SQLite transaction on the phone, so a restore lands whole or not at all. The
- * tests' proxy driver has no transactions; there `fn` simply runs.
- */
-export async function withTransaction(fn: () => Promise<void>): Promise<void> {
-  if (override) {
-    await fn()
-    return
+type Transaction = (fn: () => Promise<void>) => Promise<void>
+const testTransactions = new WeakMap<AppDb, Transaction>()
+let pending: Promise<unknown> = Promise.resolve()
+
+/** The test driver supplies real BEGIN/COMMIT/ROLLBACK, just as the phone does. */
+export function registerTestTransaction(db: AppDb, transaction: Transaction): void {
+  testTransactions.set(db, transaction)
+}
+
+/** Serializes multi-row operations and commits all their writes or rolls them back. */
+export function withTransaction<T>(fn: () => Promise<T>): Promise<T> {
+  const run = async (): Promise<T> => {
+    let outcome: { value: T } | undefined
+    const work = async () => {
+      outcome = { value: await fn() }
+    }
+    if (override) {
+      const transaction = testTransactions.get(override)
+      if (!transaction) throw new Error('The test database needs a transaction adapter')
+      await transaction(work)
+    } else if (native) await native.transaction(work)
+    else {
+      const { sqlite } = await import('./client')
+      await sqlite.withTransactionAsync(work)
+    }
+    if (!outcome) throw new Error('The transaction did not finish')
+    return outcome.value
   }
-  if (native) {
-    await native.transaction(fn)
-    return
-  }
-  const { sqlite } = await import('./client')
-  await sqlite.withTransactionAsync(fn)
+  const result = pending.then(run, run)
+  pending = result.catch(() => undefined)
+  return result
 }

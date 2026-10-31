@@ -78,8 +78,7 @@ export function useSessionSets(initial: WorkoutEntry[], save: SaveSets) {
       exerciseId,
       (sets) => {
         const last = sets[sets.length - 1]
-        const allDone = sets.every((s) => s.done)
-        return sets.length > 1 && (!last?.done || allDone) ? sets.slice(0, -1) : sets
+        return sets.length > 1 && !last?.done ? sets.slice(0, -1) : sets
       },
       true,
     )

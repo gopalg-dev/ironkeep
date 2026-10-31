@@ -87,10 +87,46 @@ and WAL were inspected after actions; no SQL fixture writes were made on the pho
   status `done`, all four Pull-up sets at 7 reps, and Barbell Row sets 25 x 7, 30 x 6, and 35 x 7.
 - Every inspected snapshot returned `PRAGMA integrity_check = ok`. The release package was untouched.
 
-## Remaining checks
+## Settings permission control (2026-10-26)
+
+The Settings switch now owns permission requests; the earlier first-workout prompt evidence above
+describes the previous implementation. This change preserves existing grants and persists an off
+preference in SQLite. The native renderer also checks the preference, so a native action/refresh
+cannot recreate a disabled notification. Widget rendering is independent.
+
+Five new JavaScript tests cover existing grants, denied and blocked permission requests, persistent
+off, re-enabling and malformed preferences. Native regression tests cover reopening the preference,
+widget actions while notifications are off, cancellation of an existing card, and app/channel blocks.
+The updated Settings artboard and PNG are in the maintained design folders. Shared publication is
+still pending from the earlier canvas access/approval limitation.
+
+Verification used the separate, self-contained `app.ironkeep.debug` client on the API 35 Pixel 6a
+emulator. The production installation and its data were untouched.
+- `.maestro/notification-settings.yaml` passed: starting a workout did not request permission;
+  the switch requested it, Deny kept it off, Allow enabled it, and off/on persisted across leaving
+  and reopening Settings. Re-enabling an existing grant did not request permission again.
+- Android's notification records confirmed that switching off removed card 4101. A separate
+  cold-restart Maestro check confirmed the off preference survived force-stop/relaunch; enabling
+  it again restored card 4101 without a prompt.
+- Blocking only the `active-workout` channel in Android removed the card and made the app switch
+  read off. Enabling it showed the consequence warning; Open settings went directly to that
+  channel. Allowing the channel and returning made the switch read on again.
+- The Settings row was inspected at 360 and 412 dp in both light and dark themes, with no clipping
+  of the new label or switch. Temporary captures are verification evidence, not maintained art.
+- `.maestro/session-notification.yaml` passed with the new Settings permission entry: increase
+  reps to 7, complete set 1 and advance to set 2, pause/resume, open review, save the workout, and
+  remove its notification. The flow now uses a full-height shade gesture for the 1080 x 2400
+  Pixel 6a emulator; the earlier short-gesture failure is not passing evidence.
+- `bun run check`, all 314 JavaScript tests (37 suites), and all 58 native tests passed. The
+  standalone debug APK built successfully for ARM64 and x86_64.
+
+The new client is also installed on the physical Pixel. Verification of this new switch there
+remains pending an unlocked phone; the earlier physical notification-control evidence is separate.
+
+## Remaining release checks
 
 - Timed-exercise controls on the physical Pixel (native automated coverage exists).
-- Channel disabled independently of the app-wide permission.
+- Repeat the new Settings permission/channel flow on the physical Pixel.
 - Discard, restore, and delete-data paths; stale buttons cannot mutate a new or restored session.
 - Refresh local design boards if device review changes the layout; shared-canvas publication.
 

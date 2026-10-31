@@ -1,7 +1,9 @@
+import { MAX_BACKUP_BYTES } from '@/lib/backup'
 import {
   backupFromJson,
   type ImportWarning,
   logRowsToWorkouts,
+  measurementValue,
   rowsToBodyweights,
   rowsToMeasurements,
   type SheetRow,
@@ -15,7 +17,7 @@ function kindOf(rows: SheetRow[]): 'log' | 'tracker' | 'weights' | 'tape' | null
   const keys = Object.keys(rows[0] ?? {})
   if (keys.includes('Exercise') && keys.includes('Set')) return 'log'
   if (keys.includes('Exercise') && keys.some((k) => /^Set \d+$/.test(k))) return 'tracker'
-  if (keys.includes('Arm') || keys.includes('Chest') || keys.includes('Waist')) return 'tape'
+  if (['arm', 'chest', 'waist'].some((site) => measurementValue(rows[0] ?? {}, site) !== undefined)) return 'tape'
   if (keys.includes('Date') && keys.some((k) => k.toLowerCase().startsWith('weight'))) return 'weights'
   return null
 }
@@ -31,6 +33,7 @@ export async function readImport(file: PickedFile): Promise<PendingImport> {
   // JSON by its name, or by its first byte when the picker gave no name: a backup starts with "{".
   const looksJson = name.toLowerCase().endsWith('.json') || (!/\.(xlsx|xls|csv)$/i.test(name) && bytes[0] === 0x7b)
   if (looksJson) {
+    if (bytes.length > MAX_BACKUP_BYTES) throw new Error('Backup files must be 20 MB or smaller.')
     const backup = backupFromJson(JSON.parse(new TextDecoder().decode(bytes)))
     if (!backup) throw new Error('This JSON file is not a backup of this app.')
     return { kind: 'backup', name, backup }

@@ -1,10 +1,10 @@
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker'
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router'
 import { ArrowLeft, ChevronLeft, ChevronRight, Dumbbell, Scale, Share2, TrendingUp } from 'lucide-react-native'
 import { useCallback, useState } from 'react'
-import { View } from 'react-native'
-
+import { Pressable, View } from 'react-native'
 import { BTN, BTN_TEXT } from '@/components/button-styles'
-import { DayIcon, dayColourClass, FAMILY_DAY } from '@/components/day-icon'
+import { DayIcon, FAMILY_DAY } from '@/components/day-icon'
 import { EmptyState } from '@/components/empty-state'
 import { IconButton } from '@/components/icon-button'
 import { useBigTitle } from '@/components/page-bar'
@@ -25,6 +25,7 @@ import {
   finishedPeriod,
   firstReportOn,
   hasNext,
+  history,
   lastFinished,
   MIN_SESSIONS,
   type PeriodKind,
@@ -34,6 +35,7 @@ import {
 import { addDays, noon } from '@/lib/logic/stats'
 import { fmtSet, fmtWeight } from '@/lib/logic/units'
 import { cn } from '@/lib/utils'
+import { ReportCalendar, ReportCharts } from './report-charts'
 import { attentionRows, bodyweightCaption, liftIdsByName, liftTypes } from './report-model'
 import { setShare } from './share-handoff'
 
@@ -129,9 +131,24 @@ export function ReportScreen() {
         className="mt-4 flex-row items-center justify-between gap-3"
         onLayout={(e) => measure(e.nativeEvent.layout)}
       >
-        <Text className="shrink text-3xl font-condensed-semibold leading-11.5 text-foreground" numberOfLines={1}>
-          {periodLabel(period)}
-        </Text>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="Pick report period"
+          className="shrink"
+          onPress={() =>
+            DateTimePickerAndroid.open({
+              value: period.start,
+              minimumDate: earliest,
+              maximumDate: lastFinished(kind, now),
+              mode: 'date',
+              onValueChange: (_event, date) => setAnchor(date),
+            })
+          }
+        >
+          <Text className="text-3xl font-condensed-semibold leading-11.5 text-foreground" numberOfLines={1}>
+            {periodLabel(period)}
+          </Text>
+        </Pressable>
         <View className="flex-row gap-2">
           <IconButton
             as={ChevronLeft}
@@ -178,22 +195,21 @@ export function ReportScreen() {
             <Text className={cn(SECONDARY, NUMBER, 'mt-2')}>
               {compared(report.sessions.done, report.sessions.prev, before)}
             </Text>
-            <View
-              className="mt-4 flex-row gap-1"
-              accessibilityRole="image"
-              accessibilityLabel={`${days.filter((d) => d.dayType).length} of ${days.length} days trained`}
-            >
-              {days.map((d) => (
-                <View
-                  key={d.key}
-                  className={cn('h-2 flex-1 rounded-sm', d.dayType ? dayColourClass(d.dayType) : 'bg-secondary')}
-                />
-              ))}
-            </View>
+            <ReportCalendar days={days} />
           </View>
           <View className="mt-2 flex-row gap-2">
-            <Tile icon={Dumbbell} value={String(report.sets.now)} label="hard sets" />
-            <Tile icon={TrendingUp} value={String(report.bests.length)} label="new bests" />
+            <Tile
+              icon={Dumbbell}
+              value={String(report.sets.now)}
+              label="hard sets"
+              change={compared(report.sets.now, report.sets.prev, before)}
+            />
+            <Tile
+              icon={TrendingUp}
+              value={String(report.bests.length)}
+              label="new bests"
+              change={compared(report.bests.length, report.prevBestCount, before)}
+            />
             <Tile icon={Scale} value={bw ? fmtWeight(bw.to) : '–'} label={bodyweightCaption(report, units)} />
           </View>
 
@@ -259,6 +275,7 @@ export function ReportScreen() {
               </Group>
             </>
           ) : null}
+          <ReportCharts units={units} report={report} history={history(data, period)} kind={kind} />
         </>
       )}
     </Screen>
@@ -266,7 +283,17 @@ export function ReportScreen() {
 }
 
 /** One of the three numbers under the sessions: an icon, the number, what it is. */
-function Tile({ icon, value, label }: { icon: typeof Dumbbell; value: string; label: string }) {
+function Tile({
+  icon,
+  value,
+  label,
+  change,
+}: {
+  icon: typeof Dumbbell
+  value: string
+  label: string
+  change?: string
+}) {
   return (
     <View className="flex-1 gap-1 rounded-xl bg-card px-3.5 pt-3.5 pb-3">
       <Icon as={icon} strokeWidth={1.75} className="size-4.5 text-muted-foreground" />
@@ -274,6 +301,7 @@ function Tile({ icon, value, label }: { icon: typeof Dumbbell; value: string; la
         {value}
       </Text>
       <Text className={CAPTION}>{label}</Text>
+      {change ? <Text className={CAPTION}>{change}</Text> : null}
     </View>
   )
 }

@@ -1,3 +1,5 @@
+import { THEMES } from '../src/theme/themes'
+
 /**
  * Writes the design canvas's colour board from `src/global.css`, so the canvas shows exactly the
  * tokens the app uses. Run after any token change: `bun scripts/design-tokens-board.ts`, then
@@ -35,7 +37,7 @@ function tokensOf(block: string): Token[] {
   return tokens
 }
 
-const themes = ['light', 'dark'].map((name) => ({ name, tokens: tokensOf(variantBlock(name)) }))
+const themes = Object.keys(THEMES).map((name) => ({ name, tokens: tokensOf(variantBlock(name)) }))
 
 const GROUPS: Array<{ title: string; match: (name: string) => boolean }> = [
   { title: 'Surfaces and text', match: (n) => /^(background|foreground|card|popover)/.test(n) },
@@ -56,7 +58,8 @@ const swatch = (t: Token, dark: boolean): string =>
       </div>`
 
 const column = (theme: { name: string; tokens: Token[] }): string => {
-  const dark = theme.name === 'dark'
+  const info = Object.entries(THEMES).find(([name]) => name === theme.name)?.[1]
+  const dark = info?.scheme === 'dark'
   const bg = theme.tokens.find((t) => t.name === 'background')?.value ?? 'white'
   const fg = theme.tokens.find((t) => t.name === 'foreground')?.value ?? 'black'
   const groups = GROUPS.map((g) => {
@@ -67,7 +70,7 @@ const column = (theme: { name: string; tokens: Token[] }): string => {
     </div>`
   }).join('\n')
   return `<div style="flex: 1; background: ${bg}; color: ${fg}; border-radius: 24px; padding: 28px">
-    <div style="font-size: 22px; font-weight: 800">${dark ? 'Dark' : 'Light'}</div>
+    <div style="font-size: 22px; font-weight: 800">${info?.label ?? theme.name} · ${info?.scheme ?? theme.name}</div>
     ${groups}
   </div>`
 }
@@ -82,20 +85,20 @@ const html = `<!doctype html>
 <body>
 <x-dc>
 <helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap">
 <style>body{margin:0;background:#ffffff}</style>
 </helmet>
-<div style="width: 1180px; box-sizing: border-box; padding: 40px; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; display: flex; flex-direction: column; gap: 24px; background: #ffffff; color: #17191c">
+<div style="width: 1180px; box-sizing: border-box; padding: 40px; font-family: 'Barlow', system-ui, sans-serif; display: flex; flex-direction: column; gap: 24px; background: #ffffff; color: #17191c">
   <div style="display: flex; flex-direction: column; gap: 6px">
     <div style="font-size: 34px; font-weight: 800; letter-spacing: -0.02em">Colour tokens</div>
     <div style="font-size: 15px; opacity: 0.7">Generated from src/global.css by scripts/design-tokens-board.ts. OKLCH is the source value; hex is for reference.</div>
   </div>
-  <div style="display: flex; gap: 24px; align-items: flex-start">
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: flex-start">
     ${themes.map(column).join('\n    ')}
   </div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1180,"height":1400}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1180,"height":5600}}'>
 class Component extends DCLogic {
   renderVals() { return {}; }
 }

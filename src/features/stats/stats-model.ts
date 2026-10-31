@@ -1,6 +1,7 @@
 import type { Family } from '@/components/day-icon'
 import { shortDate, signed, timeOfDay, weekdayDate } from '@/lib/format'
 import { EFFORT_LABEL, type Effort } from '@/lib/logic/effort'
+import { type LiftData, liftsFrom, trendsOf } from '@/lib/logic/lift-groups'
 import { NUDGE_EVERY } from '@/lib/logic/nudges'
 import { activeMinutes } from '@/lib/logic/session-time'
 import {
@@ -12,21 +13,9 @@ import {
   MUSCLES,
   startOfWeek,
   type WeeklyPoint,
-  weeklyStrength,
 } from '@/lib/logic/stats'
-import { liftTrend, type Trend } from '@/lib/logic/trend'
 import { fmtWeight } from '@/lib/logic/units'
-import type {
-  BodyweightLog,
-  DayType,
-  Exercise,
-  LoadType,
-  MeasurementLog,
-  Muscle,
-  Plan,
-  Units,
-  Workout,
-} from '@/lib/types'
+import type { BodyweightLog, LoadType, MeasurementLog, Muscle, Units, Workout } from '@/lib/types'
 
 /*
  * What the Stats tabs show, worked out from the data. Pure, so it is tested without a screen. The
@@ -34,42 +23,10 @@ import type {
  * on last week", "Measured Oct 16. Next tape day Nov 13.", "Monday, Oct 19, 6:05 PM, 41 min, effort ok".
  */
 
-/** An exercise with the type of the day it sits on, which gives its chart line the day's plate colour. */
-export type Lift = Pick<Exercise, 'id' | 'name' | 'loadType'> & { type: DayType }
-export interface LiftData {
-  ex: Lift
-  weeks: WeeklyPoint[]
-}
+export type { Lift, LiftData } from '@/lib/logic/lift-groups'
+export { liftsFrom, trendsOf }
+
 type SetLike = Pick<WeeklyPoint, 'weight' | 'reps' | 'seconds'>
-
-/** Every lift with logged weeks: the first lift of each day, then the rest of the plan, then lifts since dropped. */
-export function liftsFrom(plan: Plan, workouts: Workout[]): LiftData[] {
-  const seen = new Set<string>()
-  const planned: Lift[] = plan.days.flatMap((d) => d.exercises.map((e) => ({ ...e, type: d.type })))
-  const keyFirst: Lift[] = plan.days.flatMap((d) => {
-    const first = d.exercises[0]
-    return first ? [{ ...first, type: d.type }] : []
-  })
-  const logged: Lift[] = workouts.flatMap((w) =>
-    w.entries.map((e) => ({ id: e.exerciseId, name: e.name, loadType: e.loadType, type: w.dayType })),
-  )
-  const lifts: LiftData[] = []
-  for (const ex of [...keyFirst, ...planned, ...logged]) {
-    if (seen.has(ex.id)) continue
-    seen.add(ex.id)
-    const weeks = weeklyStrength(workouts, ex.id)
-    if (weeks.length > 0) lifts.push({ ex, weeks })
-  }
-  return lifts
-}
-
-/** What each lift is doing, and how many lifts are doing each thing (for the chips). */
-export function trendsOf(lifts: LiftData[], now: Date): { byLift: Map<string, Trend>; counts: Map<Trend, number> } {
-  const byLift = new Map(lifts.map((l) => [l.ex.id, liftTrend(l.weeks, now)]))
-  const counts = new Map<Trend, number>()
-  for (const t of byLift.values()) counts.set(t, (counts.get(t) ?? 0) + 1)
-  return { byLift, counts }
-}
 
 /** The lift shown first: the one with the longest record among those listed. */
 export function longestRecord(lifts: LiftData[]): LiftData | undefined {

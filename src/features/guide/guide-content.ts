@@ -206,7 +206,7 @@ export const CHAPTERS: Chapter[] = [
       },
       {
         kind: 'more',
-        text: 'Going well means trained at least twice in the last two weeks, every set reached the bottom of its range, every one of those sessions rated and none of them Too much, and the lift is neither holding nor slipping. A lift gains at most one set a week, up to 6. The guide to load steps: the ACSM’s position stand raises the load 2–10% once you beat your target by a rep or two, the lower end for small muscles.',
+        text: 'Going well means trained at least twice in the last two weeks, every set reached the bottom of its range, every one of those sessions rated and none of them Too much, and performance has not clearly declined. Once three weeks of history exist, the latest performance must also be improving. A lift gains at most one set a week, up to 6. The guide to load steps: the ACSM’s position stand raises the load 2–10% once you beat your target by a rep or two, the lower end for small muscles.',
       },
     ],
   },
@@ -244,7 +244,7 @@ export const CHAPTERS: Chapter[] = [
       },
       {
         kind: 'more',
-        text: 'Two hard weeks: each of the last two weeks averaged Hard or worse, counting Easy as 1, OK as 2, Hard as 3 and Too much as 4. Most lifts holding: 3 in every 4 lifts did not beat their best from the two weeks before. That is a shorter look back than the Stuck chip on Stats, which uses four weeks.',
+        text: 'Two hard weeks: each of the last two weeks averaged Hard or worse, counting Easy as 1, OK as 2, Hard as 3 and Too much as 4. Most lifts holding: 3 in every 4 comparable lifts had no completed-set performance improvement in the last two weeks, with a baseline in the preceding two weeks. Stall alerts require three sessions in four weeks without an improvement and an older baseline. The Lifts chips compare the latest session with the previous one.',
       },
     ],
   },
@@ -320,7 +320,7 @@ export const CHAPTERS: Chapter[] = [
       { kind: 'trends' },
       {
         kind: 'text',
-        text: '**Idle** means no session for that lift in 14 days, and **New** means less than three weeks of history. A lift has one trend at a time.',
+        text: 'Trends compare the latest two finished sessions across the same number of completed sets. More reps at the same weight count, even when the best set stays the same. Adding sets alone does not change the trend. Across different weights, estimated performance is compared; holds use seconds. Bodyweight work uses reps, including bodyweight when both sessions have a weigh-in. These describe logged performance, not measured strength. Best-set charts and personal records remain separate. **Idle** means more than 14 days without a session. **New** means fewer than two comparable sessions, including after a logging-mode change. The same named lift in the same logging mode has one combined history across plan days and imported IDs.',
       },
       {
         kind: 'text',
@@ -442,10 +442,9 @@ export const CHAPTERS: Chapter[] = [
             term: 'Snapshots',
             text: 'The app keeps a backup of its own every week and keeps the last eight, so a lost phone is not a lost logbook when they are mirrored to a folder.',
           },
-          { term: 'Start fresh', text: 'In Settings. Wipes your plan and logs; the app starts over with setup.' },
           {
             term: 'Delete everything',
-            text: 'In Your data. Removes everything for good. Export first; the dialog offers it too.',
+            text: 'In Settings. Removes your plan and training history after a typed confirmation. The dialog offers a backup first.',
           },
         ],
       },

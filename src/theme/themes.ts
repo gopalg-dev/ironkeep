@@ -6,6 +6,9 @@
 export const THEMES = {
   light: { label: 'Slate', scheme: 'light' },
   dark: { label: 'Slate', scheme: 'dark' },
+  latte: { label: 'Catppuccin Latte', scheme: 'light' },
+  lime: { label: 'Lime', scheme: 'dark' },
+  dracula: { label: 'Dracula', scheme: 'dark' },
   /** The phone's own colours, one theme per scheme; painted at runtime, see `src/theme/look.ts`. */
   'you-light': { label: 'Your phone', scheme: 'light' },
   'you-dark': { label: 'Your phone', scheme: 'dark' },

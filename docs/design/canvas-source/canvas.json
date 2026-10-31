@@ -1,7 +1,7 @@
 {
  "boards": {
   "DarkPlan.dc.html": {
-   "h": 1309,
+   "h": 1196,
    "y": 8384,
    "radius": 40,
    "title": "Dark: plan",
@@ -18,15 +18,15 @@
   },
   "DarkSetupStart.dc.html": {
    "h": 964,
-   "y": 8384,
+   "y": 10863,
    "radius": 40,
    "title": "Dark: setup start",
    "w": 390,
    "x": 0
   },
   "DarkStatsLifts.dc.html": {
-   "h": 1208,
-   "y": 8384,
+   "h": 940,
+   "y": 8916,
    "radius": 40,
    "title": "Dark: stats lifts",
    "w": 390,
@@ -34,7 +34,7 @@
   },
   "DarkToday.dc.html": {
    "h": 1058,
-   "y": 8384,
+   "y": 9868,
    "radius": 40,
    "title": "Dark: today",
    "w": 390,
@@ -42,7 +42,7 @@
   },
   "DarkWorkout.dc.html": {
    "h": 1082,
-   "y": 8384,
+   "y": 11656,
    "radius": 40,
    "title": "Dark: workout",
    "w": 390,
@@ -58,7 +58,7 @@
   },
   "DataImportPreview.dc.html": {
    "h": 1017,
-   "y": 6910,
+   "y": 7819,
    "radius": 40,
    "title": "Import: preview",
    "w": 390,
@@ -73,7 +73,7 @@
    "x": 2350
   },
   "DesignColors.dc.html": {
-   "h": 1912,
+   "h": 7533,
    "y": -2552,
    "radius": 24,
    "title": "Design system: colour tokens",
@@ -106,7 +106,7 @@
   },
   "Library.dc.html": {
    "h": 1024,
-   "y": 6910,
+   "y": 9759,
    "radius": 40,
    "title": "Library",
    "w": 390,
@@ -114,7 +114,7 @@
   },
   "Main.dc.html": {
    "h": 1058,
-   "y": 2124,
+   "y": 6105,
    "radius": 40,
    "title": "Today: next up",
    "w": 390,
@@ -137,8 +137,8 @@
    "x": 4230
   },
   "Plan.dc.html": {
-   "h": 1309,
-   "y": 3639,
+   "h": 1196,
+   "y": 7243,
    "radius": 40,
    "title": "Plan",
    "w": 390,
@@ -146,22 +146,22 @@
   },
   "PlanAddDay.dc.html": {
    "h": 964,
-   "y": 3639,
+   "y": 8180,
    "radius": 40,
    "title": "Plan: add a day",
    "w": 390,
    "x": 940
   },
   "PlanEditor.dc.html": {
-   "h": 964,
-   "y": 3639,
+   "h": 940,
+   "y": 7243,
    "radius": 40,
    "title": "Plan: exercise editor",
    "w": 390,
    "x": 470
   },
   "PlanImport.dc.html": {
-   "h": 1109,
+   "h": 4100,
    "y": 3639,
    "radius": 40,
    "title": "Plan: bring your own plan",
@@ -177,7 +177,7 @@
    "x": 1410
   },
   "Report.dc.html": {
-   "h": 1098,
+   "h": 1574,
    "y": 5288,
    "radius": 40,
    "title": "Report: week",
@@ -193,8 +193,8 @@
    "x": 3290
   },
   "Settings.dc.html": {
-   "h": 1134,
-   "y": 6910,
+   "h": 1190,
+   "y": 10386,
    "radius": 40,
    "title": "Settings",
    "w": 390,
@@ -218,7 +218,7 @@
   },
   "SetupSplit.dc.html": {
    "h": 1784,
-   "y": 0,
+   "y": 5061,
    "radius": 40,
    "title": "Setup 2: split",
    "w": 390,
@@ -226,7 +226,7 @@
   },
   "SetupStart.dc.html": {
    "h": 964,
-   "y": 0,
+   "y": 5061,
    "radius": 40,
    "title": "Setup: start or restore",
    "w": 390,
@@ -234,7 +234,7 @@
   },
   "SetupUnits.dc.html": {
    "h": 964,
-   "y": 0,
+   "y": 5061,
    "radius": 40,
    "title": "Setup 1: units",
    "w": 390,
@@ -249,7 +249,7 @@
    "x": 1410
   },
   "StatsBody.dc.html": {
-   "h": 1107,
+   "h": 1205,
    "y": 5288,
    "radius": 40,
    "title": "Stats: body",
@@ -257,8 +257,8 @@
    "x": 2350
   },
   "StatsLifts.dc.html": {
-   "h": 1208,
-   "y": 5288,
+   "h": 940,
+   "y": 8519,
    "radius": 40,
    "title": "Stats: lifts",
    "w": 390,
@@ -274,15 +274,15 @@
   },
   "StatsSessionEditor.dc.html": {
    "h": 1082,
-   "y": 5288,
+   "y": 9224,
    "radius": 40,
    "title": "Stats: session editor",
    "w": 390,
    "x": 940
   },
   "StatsSessions.dc.html": {
-   "h": 1620,
-   "y": 5288,
+   "h": 1525,
+   "y": 8263,
    "radius": 40,
    "title": "Stats: sessions",
    "w": 390,
@@ -290,7 +290,7 @@
   },
   "TodayAlerts.dc.html": {
    "h": 1175,
-   "y": 2124,
+   "y": 6925,
    "radius": 40,
    "title": "Today: alerts deck",
    "w": 390,
@@ -353,7 +353,7 @@
    "x": 5170
   },
   "WorkoutSwap.dc.html": {
-   "h": 964,
+   "h": 940,
    "y": 2124,
    "radius": 40,
    "title": "Workout: swap lift",
@@ -361,7 +361,7 @@
    "x": 4230
   },
   "ZenB.dc.html": {
-   "h": 964,
+   "h": 953,
    "y": 2124,
    "radius": 40,
    "title": "Zen mode B: one set at a time",
@@ -369,7 +369,7 @@
    "x": 5640
   },
   "ZenBAfter.dc.html": {
-   "h": 964,
+   "h": 953,
    "y": 2124,
    "radius": 40,
    "title": "Zen mode B: after a set",
@@ -386,7 +386,7 @@
   },
   "MainScrolled.dc.html": {
    "h": 1058,
-   "y": 2124,
+   "y": 6105,
    "radius": 40,
    "title": "Today: scrolled",
    "w": 390,
@@ -434,7 +434,7 @@
   },
   "DarkStatsLiftsEmpty.dc.html": {
    "h": 964,
-   "y": 9813,
+   "y": 11907,
    "x": 0,
    "w": 390,
    "radius": 40,
@@ -442,7 +442,7 @@
   },
   "DarkStatsBodyEmpty.dc.html": {
    "h": 964,
-   "y": 9813,
+   "y": 11006,
    "x": 470,
    "w": 390,
    "radius": 40,
@@ -450,7 +450,7 @@
   },
   "DarkReportEmpty.dc.html": {
    "h": 720,
-   "y": 9813,
+   "y": 12818,
    "x": 940,
    "w": 390,
    "radius": 40,
@@ -458,7 +458,7 @@
   },
   "SessionNotification.dc.html": {
    "h": 660,
-   "y": 10937,
+   "y": 12951,
    "radius": 24,
    "title": "Active workout notification",
    "w": 390,
@@ -466,7 +466,7 @@
   },
   "DarkSessionNotification.dc.html": {
    "h": 660,
-   "y": 10937,
+   "y": 12050,
    "radius": 24,
    "title": "Dark: Active workout notification",
    "w": 390,
@@ -474,7 +474,7 @@
   },
   "SessionWidget.dc.html": {
    "x": 0,
-   "y": 11677,
+   "y": 13691,
    "w": 390,
    "h": 904,
    "radius": 24,
@@ -482,11 +482,27 @@
   },
   "DarkSessionWidget.dc.html": {
    "x": 470,
-   "y": 11677,
+   "y": 12790,
    "w": 390,
    "h": 904,
    "radius": 24,
    "title": "Dark: workout widget"
+  },
+  "DataReplace.dc.html": {
+   "h": 1029,
+   "y": 14675,
+   "radius": 40,
+   "title": "Data replacement confirmation",
+   "w": 390,
+   "x": 0
+  },
+  "LibraryPicker.dc.html": {
+   "h": 940,
+   "y": 13774,
+   "radius": 40,
+   "title": "Full library picker",
+   "w": 390,
+   "x": 470
   }
  },
  "order": [

@@ -24,11 +24,11 @@ const DAY_KINDS: DayType[] = ['push', 'pull', 'legs', 'full']
 
 /** What each trend chip means, in a line. */
 const TREND_LINE: Record<string, string> = {
-  climbing: 'the best of the last four weeks beat the weeks before',
-  stuck: 'the best held',
-  slipping: 'the best fell five percent or more',
+  climbing: 'completed-set performance improved from the previous session',
+  stuck: 'performance held, or the decline was under 5%',
+  slipping: 'completed-set performance fell five percent or more',
   idle: 'no session in two weeks',
-  new: 'under three weeks of history',
+  new: 'fewer than two comparable sessions',
 }
 
 /** One chapter of the guide (canvas: Guide): its lead, then its blocks. The `/guide/[id]` page. */

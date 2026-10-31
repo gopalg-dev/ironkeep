@@ -1,5 +1,6 @@
 import type { Workout } from '../types'
-import { addDays, bestSet, finished, setScore, startOfWeek } from './stats'
+import { improvedDuring, performanceChange, performanceHistory } from './lift-performance'
+import { addDays, finished, startOfWeek } from './stats'
 
 /** How a session felt, picked once at Finish. */
 export type Effort = 1 | 2 | 3 | 4
@@ -35,51 +36,32 @@ export function effortLabel(avg: number): string {
   return EFFORT_LABEL[e]
 }
 
-function bestScores(ws: Workout[], start: Date, end: Date): Map<string, number> {
-  const out = new Map<string, number>()
-  for (const w of finished(ws)) {
-    if (!inRange(w.finishedAt, start, end)) continue
-    for (const e of w.entries) {
-      const b = bestSet(e)
-      if (!b) continue
-      const s = setScore(e, b, w.bodyweight)
-      if (s > (out.get(e.exerciseId) ?? 0)) out.set(e.exerciseId, s)
-    }
+/** Compare only lifts with a compatible baseline in the preceding window. */
+function movement(ws: Workout[], now: Date, days: number): boolean[] {
+  const since = addDays(now, -days)
+  const start = addDays(now, -2 * days)
+  const out: boolean[] = []
+  for (const history of performanceHistory(ws, now).values()) {
+    const before = history.filter((p) => Date.parse(p.date) >= start.getTime() && Date.parse(p.date) < since.getTime())
+    const recent = history.filter((p) => Date.parse(p.date) >= since.getTime())
+    const baseline = before.at(-1)
+    const first = recent[0]
+    if (!baseline || !first || performanceChange(baseline, first) === undefined) continue
+    out.push(improvedDuring([...before, ...recent], since, now))
   }
   return out
 }
 
-/**
- * Did any lift beat its best from the window before? Compares the last `days` days with the `days`
- * before that. Undefined when one of the windows has no data.
- */
+/** Any comparable lift improved during the recent window, including reps beyond its best set. */
 export function strengthMoved(ws: Workout[], now: Date, days = 14): boolean | undefined {
-  const recent = bestScores(ws, addDays(now, -days), addDays(now, 1))
-  const before = bestScores(ws, addDays(now, -2 * days), addDays(now, -days))
-  if (recent.size === 0 || before.size === 0) return undefined
-  for (const [id, score] of recent) {
-    const prev = before.get(id)
-    if (prev !== undefined && score > prev + 1e-9) return true
-  }
-  return false
+  const compared = movement(ws, now, days)
+  return compared.length ? compared.some(Boolean) : undefined
 }
 
-/**
- * The share of lifts trained in the last `days` days that did not beat their best from the `days`
- * before. Undefined when there is nothing to compare.
- */
+/** Share of comparable lifts without a session improvement in the recent window. */
 export function stuckShare(ws: Workout[], now: Date, days = 14): number | undefined {
-  const recent = bestScores(ws, addDays(now, -days), addDays(now, 1))
-  const before = bestScores(ws, addDays(now, -2 * days), addDays(now, -days))
-  let compared = 0
-  let stuck = 0
-  for (const [id, score] of recent) {
-    const prev = before.get(id)
-    if (prev === undefined) continue
-    compared++
-    if (score <= prev + 1e-9) stuck++
-  }
-  return compared === 0 ? undefined : stuck / compared
+  const compared = movement(ws, now, days)
+  return compared.length ? compared.filter((moved) => !moved).length / compared.length : undefined
 }
 
 /** Lifts stuck out of those compared before a deload is called for: three in four. */

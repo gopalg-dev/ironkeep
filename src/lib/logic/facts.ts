@@ -49,6 +49,15 @@ function carried(done: LoggedSet[], n: number): SetTarget[] {
   })
 }
 
+/**
+ * Last time's set at `index`, as the prefill holds it, for a set added once the session has started (the +1 set):
+ * the set done at that place last time, or the last one done when last time had fewer. Undefined on a first session.
+ */
+export function lastTimeSet(history: PastEntry[], index: number): SetTarget | undefined {
+  const done = history.map((h) => doneOf(h.entry)).find((d) => d.length > 0)
+  return done ? carried(done, index + 1)[index] : undefined
+}
+
 const totalReps = (d: LoggedSet[]) => d.reduce((n, s) => n + (s.reps ?? 0), 0)
 const topOf = (d: LoggedSet[]) => Math.max(...d.map((s) => s.weight ?? 0))
 

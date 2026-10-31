@@ -1,5 +1,9 @@
 import type { BodyweightLog, DayType, LoggedSet, Muscle, Plan, TrainingAge, Workout, WorkoutEntry } from '../types'
+import { type LiftPerformance, performanceOf } from './lift-performance'
 import { activeMinutes } from './session-time'
+import { setScore } from './set-score'
+
+export { epley, setScore } from './set-score'
 
 export const MUSCLES: Muscle[] = [
   'chest',
@@ -69,24 +73,6 @@ function inRange(iso: string, start: Date, end: Date): boolean {
 
 export function effectiveSets(entry: WorkoutEntry): LoggedSet[] {
   return entry.sets.filter((s) => s.done && ((s.reps ?? 0) > 0 || (s.seconds ?? 0) > 0))
-}
-
-/** Epley estimate of a one-rep max. */
-export function epley(weight: number, reps: number): number {
-  if (reps <= 0 || weight <= 0) return 0
-  if (reps === 1) return weight
-  return weight * (1 + reps / 30)
-}
-
-/**
- * One number to rank sets by. Weight lifts: the Epley estimate. Bodyweight work: the same estimate
- * at the session's bodyweight when one is known, so 8 pull-ups at 80 kg beat 8 at 70 kg; plain reps
- * when no weigh-in exists. Holds: seconds.
- */
-export function setScore(entry: Pick<WorkoutEntry, 'loadType'>, s: LoggedSet, bodyweight?: number): number {
-  if (entry.loadType === 'weight') return epley(s.weight ?? 0, s.reps ?? 0)
-  if (entry.loadType === 'bodyweight') return bodyweight ? epley(bodyweight, s.reps ?? 0) : (s.reps ?? 0)
-  return s.seconds ?? 0
 }
 
 /**
@@ -253,6 +239,7 @@ export function plannedVolumeByMuscle(plan: Plan, trainingAge: TrainingAge): Rec
 // ---- strength ----
 
 export interface StrengthPoint {
+  performance?: LiftPerformance
   date: string
   weight: number
   reps: number
@@ -269,6 +256,7 @@ export function strengthSeries(ws: Workout[], exerciseId: string): StrengthPoint
     if (!best) continue
     out.push({
       date: w.finishedAt,
+      performance: performanceOf(entry, w.finishedAt, w.bodyweight),
       weight: best.weight ?? 0,
       reps: best.reps ?? 0,
       seconds: best.seconds ?? 0,
@@ -279,6 +267,8 @@ export function strengthSeries(ws: Workout[], exerciseId: string): StrengthPoint
 }
 
 export interface WeeklyPoint {
+  /** Every session, including ties: trends must retain work beyond the best set. */
+  performances?: LiftPerformance[]
   /** Monday of the week, local, YYYY-MM-DD. */
   week: string
   /** 1 for the week this lift was first logged. A week with no session still counts, so a gap shows as a gap. */
@@ -304,9 +294,10 @@ export function weeklyStrength(ws: Workout[], exerciseId: string): WeeklyPoint[]
     const week = dayKey(startOfWeek(new Date(p.date)))
     const cur = byWeek.get(week)
     if (!cur) {
-      byWeek.set(week, { week, weekNo: 0, ...p, sessions: 1 })
+      byWeek.set(week, { week, weekNo: 0, ...p, sessions: 1, performances: p.performance ? [p.performance] : [] })
     } else {
       cur.sessions++
+      if (p.performance) cur.performances?.push(p.performance)
       if (p.score > cur.score) Object.assign(cur, p)
     }
   }

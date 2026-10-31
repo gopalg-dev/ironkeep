@@ -7,6 +7,7 @@ import { BTN, BTN_TEXT } from '@/components/button-styles'
 import { DayIcon } from '@/components/day-icon'
 import { IconButton } from '@/components/icon-button'
 import { useBigTitle } from '@/components/page-bar'
+import { ReplaceDialog } from '@/components/replace-dialog'
 import { Group, Row, RowBody, RowSub, RowTitle, RowValue } from '@/components/row'
 import { Screen } from '@/components/screen'
 import { Stat } from '@/components/stat-tile'
@@ -21,7 +22,7 @@ import { errorMessage, longDate } from '@/lib/format'
 import { dedupe, type ImportPreview, previewOf } from '@/lib/logic/import'
 import type { DayType, Workout } from '@/lib/types'
 import { cn } from '@/lib/utils'
-import { writeSnapshot } from './files'
+import { shareBackup, writeSnapshot } from './files'
 import { getImport, type PendingImport, setImport } from './import-handoff'
 
 const LAYOUT_LABEL = { log: 'Log layout', tracker: 'Tracker layout' } as const
@@ -60,15 +61,31 @@ export function ImportPreviewScreen() {
   const [preview, setPreview] = useState<ImportPreview | null>(null)
   const [kept, setKept] = useState<ReturnType<typeof dedupe> | null>(null)
   const [busy, setBusy] = useState(false)
+  const [confirm, setConfirm] = useState(false)
+  const [needsPhrase, setNeedsPhrase] = useState<boolean | null>(null)
   const [problem, setProblem] = useState<string | null>(null)
 
   useEffect(() => {
     if (!pending) return
     if (pending.kind === 'backup') {
+      let live = true
+      Promise.all([repo.getSettings(), repo.getExportData()])
+        .then(([settings, have]) => {
+          if (live)
+            setNeedsPhrase(
+              settings.setupDone || have.workouts.length + have.bodyweights.length + have.measurements.length > 0,
+            )
+        })
+        .catch((err: unknown) => {
+          if (live) setProblem(errorMessage(err, 'Could not check the data on this phone.'))
+        })
       const b = pending.backup
       setPreview(previewOf({ workouts: b.workouts, bodyweights: b.bodyweights, measurements: b.measurements }, 0))
-      return
+      return () => {
+        live = false
+      }
     }
+    setNeedsPhrase(false)
     let live = true
     repo.getExportData().then((have) => {
       if (!live) return
@@ -98,13 +115,13 @@ export function ImportPreviewScreen() {
   const skippedLine = sessionsLine(preview.duplicates)
 
   async function apply() {
-    if (busy || !pending) return
+    if (busy || !pending || needsPhrase === null) return
     setBusy(true)
     setProblem(null)
     try {
       if (pending.kind === 'backup') {
         // A snapshot of today first, so the phone's own data can come back.
-        if (!setup) await writeSnapshot()
+        if (needsPhrase) await writeSnapshot()
         await restoreBackup(pending.backup)
         announce('Backup restored')
       } else if (kept) {
@@ -124,12 +141,27 @@ export function ImportPreviewScreen() {
     <Screen
       bar={bar}
       footer={
-        <Button className={BTN} disabled={busy || nothing} onPress={apply}>
+        <Button
+          className={BTN}
+          disabled={busy || nothing || needsPhrase === null}
+          onPress={() => (isBackup && needsPhrase ? setConfirm(true) : void apply())}
+        >
           <Icon as={Upload} className="size-4.5 text-primary-foreground" />
           <Text className={BTN_TEXT}>{action}</Text>
         </Button>
       }
     >
+      <ReplaceDialog
+        open={confirm}
+        title="Restore this backup?"
+        consequence="Training data on this phone is replaced. A recovery snapshot is saved first."
+        onClose={() => setConfirm(false)}
+        onExport={shareBackup}
+        onConfirm={async () => {
+          await apply()
+          setConfirm(false)
+        }}
+      />
       <View className="min-h-11" />
       <View className="mt-4" onLayout={(e) => measure(e.nativeEvent.layout)}>
         <Text accessibilityRole="header" className={cn(TITLE, 'text-3xl leading-10')} numberOfLines={2}>

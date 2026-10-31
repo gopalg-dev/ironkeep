@@ -15,6 +15,7 @@ data class SessionState(
   var pausedMs: Long,
   val entries: JSONArray,
   val settings: JSONObject,
+  val notificationsEnabled: Boolean = true,
 ) {
   var controlToken: String = ""
   var lastCompletedAt: Long? = null

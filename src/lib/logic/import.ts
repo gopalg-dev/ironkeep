@@ -1,4 +1,4 @@
-import { BACKUP_APP, BACKUP_VERSION, type Backup, isBackup } from '@/db/backup'
+import { BACKUP_APP, BACKUP_VERSION, type Backup, backupSchema } from '@/lib/backup'
 import type {
   BodyweightLog,
   DayType,
@@ -13,7 +13,7 @@ import type {
 import { DAY_TYPES } from '../types'
 import { EFFORT_LABEL } from './effort'
 import { guessDayType } from './plan-sheet'
-import { MUSCLES } from './stats'
+import { dayKey, effectiveSets, MUSCLES } from './stats'
 
 /*
  * Reading files back in: a backup of this app, the web app's `everything.json` (schema version 0),
@@ -50,13 +50,14 @@ interface WebEverything {
  * carried one plan and no slots. Null for anything else.
  */
 export function backupFromJson(value: unknown): Backup | null {
-  if (isBackup(value)) return value
-  if (!value || typeof value !== 'object') return null
+  const checked = backupSchema.safeParse(value)
+  if (checked.success) return checked.data
+  if (!value || typeof value !== 'object' || 'app' in value || 'version' in value) return null
   const v = value as WebEverything
   if (!Array.isArray(v.workouts) || !v.plan || !Array.isArray(v.plan.days)) return null
   const settings = { ...(v.settings ?? {}) }
   const split = settings.split ?? 'custom'
-  return {
+  const legacy = {
     app: BACKUP_APP,
     version: BACKUP_VERSION,
     exportedAt: v.exportedAt ?? new Date().toISOString(),
@@ -67,6 +68,8 @@ export function backupFromJson(value: unknown): Backup | null {
     measurements: v.measurements ?? [],
     prefs: {},
   }
+  const converted = backupSchema.safeParse(legacy)
+  return converted.success ? converted.data : null
 }
 
 // ---------------------------------------------------------------- the Log layout
@@ -237,16 +240,28 @@ export function rowsToBodyweights(rows: SheetRow[]): BodyweightLog[] {
   return out
 }
 
-/** Tape entries from a "Date, Arm, Chest, Waist" sheet. */
+/** Headers may carry units, as the web exports do: Arm (cm) or Arm (in). */
+export function measurementValue(row: SheetRow, site: string): unknown {
+  const key = Object.keys(row).find(
+    (k) =>
+      k
+        .trim()
+        .replace(/\s*\([^)]*\)$/, '')
+        .toLowerCase() === site.toLowerCase(),
+  )
+  return key ? row[key] : undefined
+}
+
+/** Tape entries from a Date, Arm, Chest, Waist sheet, including unit-labelled headers. */
 export function rowsToMeasurements(rows: SheetRow[]): MeasurementLog[] {
   const out: MeasurementLog[] = []
   for (const row of rows) {
     const day = dayOf(row.Date)
     if (!day) continue
     const m: MeasurementLog = { id: importId('tape', day), date: `${day}T12:00:00.000Z`, day }
-    const arm = num(row.Arm)
-    const chest = num(row.Chest)
-    const waist = num(row.Waist)
+    const arm = num(measurementValue(row, 'arm'))
+    const chest = num(measurementValue(row, 'chest'))
+    const waist = num(measurementValue(row, 'waist'))
     if (arm !== undefined) m.arm = arm
     if (chest !== undefined) m.chest = chest
     if (waist !== undefined) m.waist = waist
@@ -269,7 +284,18 @@ export interface ImportPreview {
 }
 
 /** The day and plan day of a session, the key two imports of one session share. */
-const sessionKey = (w: Workout): string => `${(w.finishedAt ?? w.startedAt).slice(0, 10)} ${w.dayName}`
+const sessionKey = (w: Workout): string =>
+  JSON.stringify([
+    dayKey(w.finishedAt ?? w.startedAt),
+    new Date(w.startedAt).getHours(),
+    new Date(w.startedAt).getMinutes(),
+    w.dayName,
+    w.entries.map((e) => [
+      e.name,
+      e.loadType,
+      effectiveSets(e).map((s) => [s.weight ?? null, s.reps ?? null, s.seconds ?? null]),
+    ]),
+  ])
 
 /** The sessions not already on the phone, by day and plan day; weigh-ins and tape by their day. */
 export function dedupe(
@@ -278,7 +304,13 @@ export function dedupe(
 ): { workouts: Workout[]; bodyweights: BodyweightLog[]; measurements: MeasurementLog[]; duplicates: number } {
   const have = new Set(existing.workouts.map(sessionKey))
   const ids = new Set(existing.workouts.map((w) => w.id))
-  const workouts = incoming.workouts.filter((w) => !have.has(sessionKey(w)) && !ids.has(w.id))
+  const workouts = incoming.workouts.filter((w) => {
+    const key = sessionKey(w)
+    if (have.has(key) || ids.has(w.id)) return false
+    have.add(key)
+    ids.add(w.id)
+    return true
+  })
   const bwDays = new Set(existing.bodyweights.map((b) => b.day ?? b.date.slice(0, 10)))
   const tapeDays = new Set(existing.measurements.map((m) => m.day ?? m.date.slice(0, 10)))
   return {

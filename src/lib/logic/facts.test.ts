@@ -1,5 +1,5 @@
 import { describe, expect, it } from '@jest/globals'
-import { liftStart, type PastEntry } from '@/lib/logic/facts'
+import { lastTimeSet, liftStart, type PastEntry } from '@/lib/logic/facts'
 import { stepsOf } from '@/lib/logic/progression'
 import type { LoggedSet, WorkoutEntry } from '@/lib/types'
 
@@ -148,4 +148,11 @@ describe('liftStart, bodyweight and timed work', () => {
     expect(s.prefill).toEqual([{ seconds: 45 }, { seconds: 45 }])
     expect(s.hint).toBe('Last time 45, 45 s. Top of the range on every set.')
   })
+})
+
+it('prefills an added set from its own historical index, with a last-set fallback', () => {
+  const history = [session(60, [10, 9, 8, 4])]
+  expect(lastTimeSet(history, 3)).toEqual({ weight: 60, reps: 4 })
+  expect(lastTimeSet(history, 4)).toEqual({ weight: 60, reps: 4 })
+  expect(lastTimeSet([], 3)).toBeUndefined()
 })

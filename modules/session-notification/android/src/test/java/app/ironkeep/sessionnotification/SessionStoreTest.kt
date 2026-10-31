@@ -39,6 +39,22 @@ class SessionStoreTest {
   ]""".trimIndent()
 
   private fun read() = requireNotNull(store.transact())
+
+  @Test fun notificationPreferenceSurvivesReopenWithoutDisablingWidgetActions() {
+    assertTrue(read().notificationsEnabled)
+    SQLiteDatabase.openDatabase(file.path, null, SQLiteDatabase.OPEN_READWRITE).use {
+      it.execSQL("INSERT INTO prefs VALUES ('workout-notifications', 'false')")
+    }
+    val disabled = requireNotNull(SessionStore(file).transact())
+    assertFalse(disabled.notificationsEnabled)
+    val changed = requireNotNull(store.transact("done", disabled.id, disabled.token(), now))
+    assertEquals(1, changed.done)
+    assertFalse(changed.notificationsEnabled)
+    SQLiteDatabase.openDatabase(file.path, null, SQLiteDatabase.OPEN_READWRITE).use {
+      it.execSQL("UPDATE prefs SET value = 'true' WHERE key = 'workout-notifications'")
+    }
+    assertTrue(read().notificationsEnabled)
+  }
   private fun act(command: String, time: Long = now): SessionState {
     val state = read()
     return requireNotNull(store.transact(command, state.id, state.token(), time))

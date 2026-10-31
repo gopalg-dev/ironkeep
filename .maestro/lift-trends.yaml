@@ -1,0 +1,38 @@
+appId: app.ironkeep.debug
+name: Lift trend grouping and exclusive filters
+---
+- launchApp
+- extendedWaitUntil:
+    visible: "Stats"
+    timeout: 30000
+- tapOn: "Stats"
+- assertVisible: "All 5"
+- takeScreenshot: "${OUT}-all"
+- tapOn: "Climbing 1"
+- assertVisible: "Conventional Deadlift, Climbing for [0-9]+ weeks"
+- assertNotVisible: "Dead Bug, .*"
+- tapOn: "Conventional Deadlift, Climbing for [0-9]+ weeks"
+- assertVisible: "Conventional Deadlift, [0-9]+ weeks of history.*"
+- takeScreenshot: "${OUT}-deadlift"
+- tapOn: "Conventional Deadlift, Climbing for [0-9]+ weeks"
+- tapOn: "Holding 1"
+- assertVisible: "Dead Bug, Holding for [0-9]+ weeks"
+- assertNotVisible: "Conventional Deadlift, .*"
+- takeScreenshot: "${OUT}-holding"
+- swipe:
+    start: "85%, 26%"
+    end: "15%, 26%"
+    duration: 500
+- tapOn: "Idle 1"
+- assertVisible: "Cable Row, Idle for [0-9]+ weeks"
+- assertNotVisible: "Dead Bug, .*"
+- takeScreenshot: "${OUT}-idle"
+- tapOn: "Slipping 1"
+- assertVisible: "Bench Press, Slipping for [0-9]+ weeks"
+- tapOn: "New 1"
+- assertVisible: "New Curl, New for [0-9]+ weeks"
+- swipe:
+    start: "15%, 26%"
+    end: "85%, 26%"
+    duration: 500
+- tapOn: "All 5"

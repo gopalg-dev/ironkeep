@@ -23,9 +23,8 @@ object SessionWidget {
     for (id in ids) {
       val rendered = if (Build.VERSION.SDK_INT >= 31) {
         RemoteViews(mapOf(
-          SizeF(180f, 48f) to views(context, state, failed, true, true, fillCard = true),
-          SizeF(180f, compactHeight(context)) to views(context, state, failed, true, fillCard = true),
-          SizeF(180f, compactHeight(context) + 48f) to views(context, state, failed, true),
+          SizeF(180f, 48f) to views(context, state, failed, true, true),
+          SizeF(180f, compactHeight(context)) to views(context, state, failed, true),
           SizeF(fullWidth, fullHeight) to views(context, state, failed),
         ))
       } else {
@@ -45,21 +44,14 @@ object SessionWidget {
   // Reserve room for scaled text before offering the controls to a launcher.
   internal fun controlSize(context: Context): Pair<Float, Float> {
     val extra = (context.resources.configuration.fontScale - 1f).coerceAtLeast(0f)
-    return Pair(250f + 100f * extra, 220f + 120f * extra)
+    return Pair(280f + 100f * extra, 224f + 120f * extra)
   }
 
-  internal fun views(context: Context, state: SessionState?, failed: Boolean = false, compact: Boolean = false, strip: Boolean = false, fillCard: Boolean = false): RemoteViews {
+  internal fun views(context: Context, state: SessionState?, failed: Boolean = false, compact: Boolean = false, strip: Boolean = false): RemoteViews {
     val card = strip || compact || state == null || state.current() == null
     val layout = if (strip) R.layout.session_widget_strip else if (card) R.layout.session_widget_compact else R.layout.session_widget
     val views = RemoteViews(context.packageName, layout)
     SessionWidgetConfiguration.resolveText(context, layout, views)
-    if (card && Build.VERSION.SDK_INT >= 31) {
-      // Hosts may reuse this layout after resizing; always reset the previous height.
-      val height = if (fillCard) android.view.ViewGroup.LayoutParams.MATCH_PARENT.toFloat()
-        else if (strip) 48f else android.view.ViewGroup.LayoutParams.WRAP_CONTENT.toFloat()
-      val unit = if (height < 0) android.util.TypedValue.COMPLEX_UNIT_PX else android.util.TypedValue.COMPLEX_UNIT_DIP
-      views.setViewLayoutHeight(R.id.widget_card, height, unit)
-    }
     val launch = context.packageManager.getLaunchIntentForPackage(context.packageName)
     val open = if (state != null) SessionNotification.openIntent(context, state.id, "open")
       else launch?.let { PendingIntent.getActivity(context, 4102, it, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT) }
@@ -95,6 +87,14 @@ object SessionWidget {
     }
     if (card) {
       if (current == null) views.setTextViewText(R.id.widget_day, "${state.done} of ${state.total} sets done")
+      else {
+        val (entry, index) = current
+        val type = entry.getString("loadType")
+        val amount = if (type == "time") "seconds" else "reps"
+        val load = if (type == "weight") "${number(state.value(entry, index, "weight"))} ${state.units} · " else ""
+        val detail = "$load${number(state.value(entry, index, amount))} $amount"
+        views.setTextViewText(R.id.widget_day, if (paused) "$detail · Paused" else detail)
+      }
       views.setViewVisibility(R.id.widget_clock, View.GONE)
       views.setViewVisibility(R.id.widget_progress, View.GONE)
       views.setViewVisibility(R.id.widget_controls, View.GONE)
@@ -106,8 +106,12 @@ object SessionWidget {
     val amount = if (type == "time") "seconds" else "reps"
     val weight = state.value(entry, index, "weight")
     views.setViewVisibility(R.id.widget_weight_row, if (type == "weight") View.VISIBLE else View.GONE)
-    views.setTextViewText(R.id.widget_weight, "${number(weight)} ${state.units}")
-    views.setTextViewText(R.id.widget_amount, "${number(state.value(entry, index, amount))} $amount")
+    views.setTextViewText(R.id.widget_weight_label, "Weight · ${state.units}")
+    views.setTextViewText(R.id.widget_weight, number(weight))
+    views.setContentDescription(R.id.widget_weight, "${number(weight)} ${state.units}")
+    views.setTextViewText(R.id.widget_amount_label, if (type == "time") "Seconds" else "Reps")
+    views.setTextViewText(R.id.widget_amount, number(state.value(entry, index, amount)))
+    views.setContentDescription(R.id.widget_amount, "${number(state.value(entry, index, amount))} $amount")
     views.setTextViewText(R.id.widget_done, "Done ${index + 1}/${entry.getJSONArray("sets").length()}")
     views.setContentDescription(R.id.widget_done, "Set ${index + 1} of ${entry.getJSONArray("sets").length()} done")
     views.setTextViewText(R.id.widget_pause, if (paused) "Resume" else "Pause")

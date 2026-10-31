@@ -9,6 +9,7 @@ import { Chip, Chips } from '@/components/chip'
 import { Dialog } from '@/components/dialog'
 import { ExerciseThumb } from '@/components/exercise-thumb'
 import { IconButton } from '@/components/icon-button'
+import { LibraryPicker } from '@/components/library-picker'
 import { Group, Row, RowBody, RowSub, RowTitle } from '@/components/row'
 import { Segmented } from '@/components/segmented'
 import { SheetBody } from '@/components/sheet'
@@ -80,6 +81,7 @@ function EditorForm({
 }) {
   const [name, setName] = useState(exercise?.name ?? '')
   const [typing, setTyping] = useState(false)
+  const [libraryOpen, setLibraryOpen] = useState(false)
   const [sets, setSets] = useState(exercise?.sets ?? 3)
   const [repMin, setRepMin] = useState(String(exercise?.repMin ?? 8))
   const [repMax, setRepMax] = useState(String(exercise?.repMax ?? 12))
@@ -184,6 +186,10 @@ function EditorForm({
         </Text>
         <IconButton as={X} accessibilityLabel="Close" onPress={onDone} />
       </View>
+      <LibraryPicker open={libraryOpen} onClose={() => setLibraryOpen(false)} onPick={take} />
+      <Button variant="secondary" onPress={() => setLibraryOpen(true)}>
+        <Text>Pick from library</Text>
+      </Button>
       <View className="gap-2">
         {/* The name: the library's picture and what it is when the library knows it, a pencil when it is the lifter's own. */}
         <View className="min-h-16 flex-row items-center gap-2.5 rounded-xl bg-background px-4">

@@ -17,7 +17,7 @@ import java.io.File
 import java.util.concurrent.Executors
 
 object SessionNotification {
-  private const val CHANNEL = "active-workout"
+  const val CHANNEL = "active-workout"
   private const val ID = 4101
   val executor = Executors.newSingleThreadExecutor()
 
@@ -30,9 +30,16 @@ object SessionNotification {
 
   fun cancel(context: Context) = context.getSystemService(NotificationManager::class.java).cancel(ID)
 
+  fun allowed(context: Context): Boolean {
+    val manager = context.getSystemService(NotificationManager::class.java)
+    if (!manager.areNotificationsEnabled()) return false
+    if (Build.VERSION.SDK_INT >= 33 && context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) return false
+    return Build.VERSION.SDK_INT < 26 || manager.getNotificationChannel(CHANNEL)?.importance != NotificationManager.IMPORTANCE_NONE
+  }
+
   fun render(context: Context, state: SessionState?) {
     SessionWidget.renderAll(context, state)
-    if (state == null) { cancel(context); return }
+    if (state == null || !state.notificationsEnabled) { cancel(context); return }
     val manager = context.getSystemService(NotificationManager::class.java)
     if (Build.VERSION.SDK_INT >= 26) {
       manager.createNotificationChannel(NotificationChannel(CHANNEL, "Active workout", NotificationManager.IMPORTANCE_LOW).apply {
@@ -41,8 +48,7 @@ object SessionNotification {
         setShowBadge(false)
       })
     }
-    if (!manager.areNotificationsEnabled() || (Build.VERSION.SDK_INT >= 33 &&
-      context.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)) return
+    if (!allowed(context)) { cancel(context); return }
 
     val icon = context.resources.getIdentifier("ic_notification", "drawable", context.packageName)
     if (icon == 0) return

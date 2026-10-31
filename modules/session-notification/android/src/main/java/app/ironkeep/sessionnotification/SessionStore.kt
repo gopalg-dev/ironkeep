@@ -33,6 +33,9 @@ class SessionStore(private val file: File) {
   }
 
   private fun read(db: SQLiteDatabase): SessionState? {
+    val notificationsEnabled = db.rawQuery("SELECT value FROM prefs WHERE key = 'workout-notifications'", null).use {
+      !it.moveToFirst() || it.getString(0) == "true"
+    }
     val settings = db.rawQuery("SELECT value FROM settings WHERE id = 1", null).use {
       if (it.moveToFirst()) JSONObject(it.getString(0)) else JSONObject()
     }
@@ -41,7 +44,7 @@ class SessionStore(private val file: File) {
     ).use {
       if (!it.moveToFirst()) null else SessionState(
         it.getString(0), it.getString(1), it.getString(2), if (it.isNull(3)) null else it.getString(3),
-        if (it.isNull(4)) 0 else it.getLong(4), JSONArray(it.getString(5)), settings,
+        if (it.isNull(4)) 0 else it.getLong(4), JSONArray(it.getString(5)), settings, notificationsEnabled,
       )
     }
   }

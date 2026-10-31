@@ -211,7 +211,7 @@ describe('backups', () => {
     const own = {
       app: BACKUP_APP,
       version: 1,
-      exportedAt: 'x',
+      exportedAt: '2026-10-13T10:00:00.000Z',
       settings: {},
       plans: [],
       workouts: [],
@@ -219,7 +219,7 @@ describe('backups', () => {
       measurements: [],
       prefs: {},
     }
-    expect(backupFromJson(own)).toBe(own)
+    expect(backupFromJson(own)).toEqual({ ...own, settings: { units: 'kg', trainingAge: 'over1', setupDone: false } })
     expect(backupFromJson({ hello: 'world' })).toBeNull()
     expect(backupFromJson(null)).toBeNull()
     expect(backupFromJson([1, 2])).toBeNull()
@@ -244,4 +244,29 @@ describe('what an import would do', () => {
       to: '2026-10-12',
     })
   })
+})
+
+it('reads the web measurement headers with either length unit', () => {
+  for (const unit of ['cm', 'in']) {
+    expect(
+      rowsToMeasurements([
+        { Date: '2026-10-10', [`Arm (${unit})`]: 35, [`Chest (${unit})`]: 100, [`Waist (${unit})`]: 80 },
+      ])[0],
+    ).toMatchObject({ arm: 35, chest: 100, waist: 80 })
+  }
+})
+
+it('keeps distinct same-name sessions on a day and deduplicates repeated incoming rows', () => {
+  const second = {
+    ...pullA,
+    id: 'another',
+    startedAt: '2026-10-10T20:00:00.000Z',
+    finishedAt: '2026-10-10T21:00:00.000Z',
+  }
+  const kept = dedupe(
+    { workouts: [second, second], bodyweights: [], measurements: [] },
+    { workouts: [pullA], bodyweights: [], measurements: [] },
+  )
+  expect(kept.workouts).toHaveLength(1)
+  expect(kept.workouts[0].id).toBe('another')
 })

@@ -1,0 +1,67 @@
+appId: ${APP_ID}
+name: Workout notification permission and preference
+# Disposable debug installation only; begin with notification permission unset.
+---
+- launchApp:
+    stopApp: false
+    permissions:
+      notifications: unset
+- extendedWaitUntil:
+    visible: "Start fresh|Today"
+    timeout: 180000
+- runFlow:
+    when:
+      visible: "Start fresh"
+    commands:
+      - tapOn: "Start fresh"
+      - tapOn: "Continue"
+      - tapOn: "Continue"
+      - tapOn: "Skip"
+      - tapOn: "Start training"
+- tapOn: "Start Pull A|Start Push A"
+- assertNotVisible: "Allow"
+- tapOn: "Menu"
+- tapOn: "Settings"
+- scrollUntilVisible:
+    element:
+      id: "workout-notifications-toggle"
+    direction: DOWN
+    centerElement: true
+- assertVisible:
+    id: "workout-notifications-toggle"
+    checked: false
+- tapOn:
+    id: "workout-notifications-toggle"
+- tapOn:
+    id: "com.android.permissioncontroller:id/permission_deny_button"
+- assertVisible:
+    id: "workout-notifications-toggle"
+    checked: false
+- tapOn:
+    id: "workout-notifications-toggle"
+- tapOn: "Allow"
+- assertVisible:
+    id: "workout-notifications-toggle"
+    checked: true
+- tapOn:
+    id: "workout-notifications-toggle"
+- assertVisible:
+    id: "workout-notifications-toggle"
+    checked: false
+- tapOn: "Back"
+- tapOn: "Menu"
+- tapOn: "Settings"
+- scrollUntilVisible:
+    element:
+      id: "workout-notifications-toggle"
+    direction: DOWN
+    centerElement: true
+- assertVisible:
+    id: "workout-notifications-toggle"
+    checked: false
+- tapOn:
+    id: "workout-notifications-toggle"
+- assertNotVisible: "Allow"
+- assertVisible:
+    id: "workout-notifications-toggle"
+    checked: true

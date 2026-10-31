@@ -1,6 +1,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent" android:layout_height="match_parent">
-<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
+<LinearLayout android:id="@+id/widget_card" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical"
   android:padding="10dp" android:background="@drawable/widget_surface">
   <LinearLayout android:id="@+id/widget_header" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
@@ -12,16 +12,24 @@
       <Chronometer android:id="@+id/widget_clock" style="@style/WidgetBody" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="4dp" android:gravity="center_vertical" android:textSize="12sp" android:visibility="gone" />
     </LinearLayout>
   </LinearLayout>
-  <LinearLayout android:id="@+id/widget_controls" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="4dp">
-    <LinearLayout android:id="@+id/widget_weight_row" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:orientation="horizontal">
-      <Button android:id="@+id/widget_weight_minus" style="@style/WidgetButton" android:text="&#8722;" android:textSize="24sp" android:contentDescription="Decrease weight" />
-      <TextView android:id="@+id/widget_weight" style="@style/WidgetDisplay" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:minHeight="48dp" android:gravity="center" android:text="25 kg" />
-      <Button android:id="@+id/widget_weight_plus" style="@style/WidgetButton" android:text="+" android:textSize="24sp" android:contentDescription="Increase weight" />
-    </LinearLayout>
-    <LinearLayout android:id="@+id/widget_amount_row" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:layout_marginTop="4dp" android:orientation="horizontal">
-      <Button android:id="@+id/widget_amount_minus" style="@style/WidgetButton" android:text="&#8722;" android:textSize="24sp" android:contentDescription="Decrease reps" />
-      <TextView android:id="@+id/widget_amount" style="@style/WidgetDisplay" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:minHeight="48dp" android:gravity="center" android:text="15 reps" />
-      <Button android:id="@+id/widget_amount_plus" style="@style/WidgetButton" android:text="+" android:textSize="24sp" android:contentDescription="Increase reps" />
+  <LinearLayout android:id="@+id/widget_controls" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="vertical" android:layout_marginTop="4dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal">
+      <LinearLayout android:id="@+id/widget_weight_row" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:padding="6dp" android:background="@drawable/widget_tile" android:layout_marginEnd="8dp">
+        <TextView android:id="@+id/widget_weight_label" style="@style/WidgetCaption" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Weight · kg" />
+        <TextView android:id="@+id/widget_weight" style="@style/WidgetDisplay" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:gravity="center_vertical" android:textSize="28sp" android:fontFeatureSettings="tnum" android:text="25" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+          <Button android:id="@+id/widget_weight_minus" style="@style/WidgetTileButton" android:layout_width="0dp" android:layout_weight="1" android:layout_marginEnd="4dp" android:text="&#8722;" android:contentDescription="Decrease weight" />
+          <Button android:id="@+id/widget_weight_plus" style="@style/WidgetTileButton" android:layout_width="0dp" android:layout_weight="1" android:text="+" android:contentDescription="Increase weight" />
+        </LinearLayout>
+      </LinearLayout>
+      <LinearLayout android:id="@+id/widget_amount_row" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:padding="6dp" android:background="@drawable/widget_tile">
+        <TextView android:id="@+id/widget_amount_label" style="@style/WidgetCaption" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Reps" />
+        <TextView android:id="@+id/widget_amount" style="@style/WidgetDisplay" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:gravity="center_vertical" android:textSize="28sp" android:fontFeatureSettings="tnum" android:text="15" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+          <Button android:id="@+id/widget_amount_minus" style="@style/WidgetTileButton" android:layout_width="0dp" android:layout_weight="1" android:layout_marginEnd="4dp" android:text="&#8722;" android:contentDescription="Decrease amount" />
+          <Button android:id="@+id/widget_amount_plus" style="@style/WidgetTileButton" android:layout_width="0dp" android:layout_weight="1" android:text="+" android:contentDescription="Increase amount" />
+        </LinearLayout>
+      </LinearLayout>
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:layout_marginTop="4dp" android:orientation="horizontal">
       <Button android:id="@+id/widget_add" style="@style/WidgetButton" android:layout_width="0dp" android:layout_weight="1" android:layout_marginEnd="4dp" android:text="+ Set" android:contentDescription="Add set" />

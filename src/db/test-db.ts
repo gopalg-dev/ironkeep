@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
 import { drizzle } from 'drizzle-orm/sqlite-proxy'
 
-import type { AppDb } from './handle'
+import { type AppDb, registerTestTransaction } from './handle'
 import * as schema from './schema'
 
 const MIGRATIONS = join(__dirname, '../../drizzle')
@@ -14,7 +14,7 @@ const MIGRATIONS = join(__dirname, '../../drizzle')
  * no phone. The same migration files the app ships are applied, so the tests run on the real schema.
  * Rows are returned as value arrays, which is what Drizzle's proxy driver expects.
  */
-export function openTestDb(): { db: AppDb; close: () => void } {
+export function openTestDb(): { db: AppDb; close: () => void; execute: (sql: string) => void } {
   const sqlite = new DatabaseSync(':memory:')
   for (const name of readdirSync(MIGRATIONS)
     .filter((f) => f.endsWith('.sql'))
@@ -39,5 +39,22 @@ export function openTestDb(): { db: AppDb; close: () => void } {
     },
     { schema },
   )
-  return { db: db as unknown as AppDb, close: () => sqlite.close() }
+  const appDb = db as unknown as AppDb
+  registerTestTransaction(appDb, async (fn) => {
+    sqlite.exec('BEGIN IMMEDIATE')
+    try {
+      await fn()
+      sqlite.exec('COMMIT')
+    } catch (error) {
+      sqlite.exec('ROLLBACK')
+      throw error
+    }
+  })
+  return {
+    db: appDb,
+    close: () => sqlite.close(),
+    execute: (sql) => {
+      sqlite.exec(sql)
+    },
+  }
 }

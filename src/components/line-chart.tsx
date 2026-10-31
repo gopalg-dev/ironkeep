@@ -1,121 +1,148 @@
 import { useState } from 'react'
-import { Pressable } from 'react-native'
+import { Pressable, useWindowDimensions } from 'react-native'
 import Svg from 'react-native-svg'
 import { useResolveClassNames } from 'uniwind'
-
-import { axisTicks } from '@/components/chart-scale'
 import { TokenCircle, TokenLine, TokenPath, TokenText } from '@/components/svg-tokens'
-import { shortDate } from '@/lib/format'
+import { CAPTION, NUMBER } from '@/components/typography'
+import { Text } from '@/components/ui/text'
+import { axisDate, axisLabelWidth, axisNumber, chartDay, chartPosition, timeAxis, valueAxis } from '@/lib/chart-scale'
+import { longDate } from '@/lib/format'
+import { cn } from '@/lib/utils'
 
 export interface ChartPoint {
-  /** ISO date, used for the axis labels. */
   date: string
   value: number
 }
-
 interface LineChartProps {
   points: ChartPoint[]
-  /** The chart's height class, from the spacing scale (the boards: h-40 for a lift and bodyweight, h-35 for the tape). */
   heightClassName?: string
-  /** The line's colour, as an `accent-` class: the day's plate colour for a lift, ink for the body. */
   accentClassName?: string
-  /** Writes a value: beside the picked point and down the scale. */
   format?: (value: number) => string
   accessibilityLabel?: string
+  onPick?: (point: ChartPoint) => void
+  /** Selected calendar window; sparse observations must not shrink it. */
+  timeDomain?: [number, number]
+  minimumStep?: number
+  unit?: string
 }
-
 const num = (v: unknown, fallback: number): number => (typeof v === 'number' ? v : fallback)
 
-/**
- * One line over time (canvas: the Stats charts), drawn with react-native-svg as the web's Recharts
- * draws it: a value scale down the left with a dashed gridline per round tick, the line in its
- * colour, a dot with its value on the latest point, the first and last dates under it. A tap moves
- * the dot and its value to the nearest point. No Skia, no Reanimated.
- */
+/** Linear date/value scales, round grid ticks and a selection that never changes either domain. */
 export function LineChart({
   points,
   heightClassName = 'h-40',
   accentClassName = 'accent-primary',
-  format = (v) => String(v),
+  format = String,
   accessibilityLabel,
+  onPick,
+  timeDomain,
+  minimumStep = 0,
+  unit = '',
 }: LineChartProps) {
   const [width, setWidth] = useState(0)
-  const [picked, setPicked] = useState<number | null>(null)
-  // Sizes from the scale: the chart's height, the scale's column, the side padding, the room above for the value and below for the dates.
+  const [picked, setPicked] = useState<ChartPoint | null>(null)
+  const { fontScale } = useWindowDimensions()
   const box = useResolveClassNames(heightClassName)
-  const scale = useResolveClassNames('w-10')
-  const pad = useResolveClassNames('p-2')
-  const top = useResolveClassNames('pt-5')
-  const axis = useResolveClassNames('pb-4')
   const label = useResolveClassNames('text-xs')
-  const height = num(box.height, 160)
-  const axisW = num(scale.width, 40)
-  const padX = num(pad.padding, 8)
-  const padTop = num(top.paddingTop, 20)
-  const axisH = num(axis.paddingBottom, 16)
-  const fontSize = num(label.fontSize, 12)
-
-  const at = picked ?? points.length - 1
-  const plotH = height - padTop - axisH
-  const plotW = width - axisW - padX
-  const values = points.map((p) => p.value)
-  const ticks = axisTicks(Math.min(...values), Math.max(...values))
-  const lo = ticks[0] ?? 0
-  const hi = ticks[ticks.length - 1] ?? 1
-  const stepX = points.length > 1 ? plotW / (points.length - 1) : 0
-  // One point alone sits in the middle of the plot.
-  const x = (i: number) => (points.length > 1 ? axisW + i * stepX : axisW + plotW / 2)
-  const y = (v: number) => padTop + (1 - (v - lo) / (hi - lo || 1)) * plotH
-  const d = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${x(i).toFixed(1)} ${y(p.value).toFixed(1)}`).join(' ')
-  const current = points[at]
-  const first = points[0]
-  const last = points[points.length - 1]
-  const valueX = points.length === 1 ? x(at) : at === points.length - 1 ? x(at) - padX : at === 0 ? x(at) + padX : x(at)
-  const valueAnchor = points.length === 1 ? 'middle' : at === points.length - 1 ? 'end' : at === 0 ? 'start' : 'middle'
-
-  const pick = (locationX: number) => {
-    if (stepX === 0) return
-    const i = Math.max(0, Math.min(points.length - 1, Math.round((locationX - axisW) / stepX)))
-    setPicked(i)
+  const height = num(box.height, 160) * Math.max(1, fontScale)
+  const fontSize = num(label.fontSize, 12) * fontScale
+  const rows = points
+    .filter((p) => Number.isFinite(p.value) && Number.isFinite(chartDay(p.date)))
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .filter((p) => !timeDomain || (chartDay(p.date) >= timeDomain[0] && chartDay(p.date) <= timeDomain[1]))
+  const yAxis = valueAxis(
+    rows.map((p) => p.value),
+    minimumStep,
+    false,
+    fontScale > 1.3 ? 3 : 5,
+  )
+  const labels = yAxis.ticks.map((t) => axisNumber(t, yAxis.step))
+  const axisW = axisLabelWidth(yAxis, fontSize)
+  const right = Math.max(axisW, width - 12)
+  const bottom = height - fontSize - 12
+  const top = fontSize / 2 + 6
+  const xAxis = timeAxis(
+    rows.map((p) => chartDay(p.date)),
+    timeDomain?.[0],
+    timeDomain?.[1],
+    Math.max(2, Math.floor((right - axisW) / (fontSize * 7)) + 1),
+  )
+  const x = (p: ChartPoint) => chartPosition(chartDay(p.date), xAxis.domain, [axisW, right])
+  const y = (v: number) => chartPosition(v, yAxis.domain, [bottom, top])
+  const index = picked ? rows.findIndex((p) => p.date === picked.date && p.value === picked.value) : -1
+  const at = index < 0 ? rows.length - 1 : index
+  const current = rows[at]
+  const currentLabel = current ? `${longDate(current.date)} · ${format(current.value)}${unit ? ` ${unit}` : ''}` : ''
+  const path = rows.map((p, i) => `${i ? 'L' : 'M'}${x(p)} ${y(p.value)}`).join(' ')
+  const select = (point: ChartPoint | undefined, activate = false) => {
+    if (!point) return
+    setPicked(point)
+    if (activate) onPick?.(point)
   }
-
   return (
     <Pressable
       accessibilityRole="adjustable"
       accessibilityLabel={accessibilityLabel}
+      accessibilityValue={{ text: current ? `${longDate(current.date)}, ${format(current.value)} ${unit}` : 'No data' }}
+      accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }, { name: 'activate' }]}
+      onAccessibilityAction={({ nativeEvent }) => {
+        if (nativeEvent.actionName === 'activate') select(current, true)
+        else
+          select(rows[Math.max(0, Math.min(rows.length - 1, at + (nativeEvent.actionName === 'increment' ? 1 : -1)))])
+      }}
       onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
-      onPress={(e) => pick(e.nativeEvent.locationX)}
-      className={heightClassName}
+      onPress={(e) => {
+        const location = e.nativeEvent.locationX
+        select(
+          rows.reduce<ChartPoint | undefined>(
+            (best, p) => (!best || Math.abs(x(p) - location) < Math.abs(x(best) - location) ? p : best),
+            undefined,
+          ),
+          true,
+        )
+      }}
+      className="min-w-0"
     >
-      {width > 0 && points.length > 0 ? (
+      <Text className={cn(CAPTION, NUMBER, 'mb-2')}>{currentLabel || 'No data in this range'}</Text>
+      {width > axisW && rows.length > 0 ? (
         <Svg width={width} height={height}>
-          {ticks.map((t) => (
+          {yAxis.ticks.map((t) => (
             <TokenLine
               key={t}
               x1={axisW}
-              x2={width}
+              x2={right}
               y1={y(t)}
               y2={y(t)}
               strokeWidth={1}
-              strokeDasharray="3 3"
               strokeClassName="accent-border"
             />
           ))}
-          {ticks.map((t) => (
+          {yAxis.ticks.map((t, i) => (
             <TokenText
               key={t}
-              x={axisW - padX / 2}
+              x={axisW - 8}
               y={y(t) + fontSize * 0.35}
               fontSize={fontSize}
-              fontWeight="500"
               textAnchor="end"
               fillClassName="accent-muted-foreground"
             >
-              {format(t)}
+              {labels[i]}
+            </TokenText>
+          ))}
+          {xAxis.ticks.map((t) => (
+            <TokenText
+              key={t}
+              x={chartPosition(t, xAxis.domain, [axisW, right])}
+              y={height - 2}
+              fontSize={fontSize}
+              textAnchor={t === xAxis.domain[0] ? 'start' : t === xAxis.domain[1] ? 'end' : 'middle'}
+              fillClassName="accent-muted-foreground"
+            >
+              {axisDate(t, xAxis.domain)}
             </TokenText>
           ))}
           <TokenPath
-            d={d}
+            d={path}
             fill="none"
             strokeWidth={2.5}
             strokeLinejoin="round"
@@ -124,42 +151,17 @@ export function LineChart({
           />
           {current ? (
             <>
-              <TokenCircle cx={x(at)} cy={y(current.value)} r={5} fillClassName={accentClassName} />
-              <TokenText
-                x={valueX}
-                y={Math.max(fontSize, y(current.value) - padX - 2)}
-                fontSize={fontSize}
-                fontWeight="700"
-                textAnchor={valueAnchor}
-                fillClassName="accent-foreground"
-              >
-                {format(current.value)}
-              </TokenText>
+              <TokenLine
+                x1={x(current)}
+                x2={x(current)}
+                y1={top}
+                y2={bottom}
+                strokeWidth={1}
+                strokeDasharray="3 3"
+                strokeClassName="accent-muted-foreground"
+              />
+              <TokenCircle cx={x(current)} cy={y(current.value)} r={5} fillClassName={accentClassName} />
             </>
-          ) : null}
-          {first ? (
-            <TokenText
-              x={points.length > 1 ? axisW : x(0)}
-              y={height - 2}
-              fontSize={fontSize}
-              fontWeight="500"
-              textAnchor={points.length > 1 ? 'start' : 'middle'}
-              fillClassName="accent-muted-foreground"
-            >
-              {shortDate(first.date)}
-            </TokenText>
-          ) : null}
-          {last && points.length > 1 ? (
-            <TokenText
-              x={width - padX}
-              y={height - 2}
-              fontSize={fontSize}
-              fontWeight="500"
-              textAnchor="end"
-              fillClassName="accent-muted-foreground"
-            >
-              {shortDate(last.date)}
-            </TokenText>
           ) : null}
         </Svg>
       ) : null}

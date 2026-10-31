@@ -3,16 +3,20 @@ import { useRouter } from 'expo-router'
 import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react-native'
 import { useState } from 'react'
 import { Pressable, View } from 'react-native'
-
+import Svg from 'react-native-svg'
 import { dayColourClass, dayInkClass, familyColourClass } from '@/components/day-icon'
 import { IconButton } from '@/components/icon-button'
 import { Stat } from '@/components/stat-tile'
+import { TokenLine, TokenRect } from '@/components/svg-tokens'
 import { BIG_NUMBER, CAPTION, H2, HERO_FONT_CAP, NUMBER, SECONDARY } from '@/components/typography'
+import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { Text } from '@/components/ui/text'
 import type { StatsData } from '@/db/repo'
-import { monthYear } from '@/lib/format'
-import { effortThisWeek } from '@/lib/logic/effort'
+import * as repo from '@/db/repo'
+import { axisNumber, valueAxis } from '@/lib/chart-scale'
+import { monthYear, shortDate } from '@/lib/format'
+import { DELOAD_NOTE, deloadHint, effortThisWeek } from '@/lib/logic/effort'
 import {
   type CalendarDay,
   dayKey,
@@ -46,11 +50,14 @@ const WEEKDAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
  * totals; a month of sessions as a calendar (a day opens its session, or logs one); the week's hard
  * sets by muscle with the body map behind them.
  */
-export function SessionsPanel({ data }: { data: StatsData }) {
+export function SessionsPanel({ data, onChanged }: { data: StatsData; onChanged: () => Promise<void> }) {
   const router = useRouter()
   const now = new Date()
   const { plan, workouts, settings } = data
   const [offset, setOffset] = useState(0)
+  const [week, setWeek] = useState<string | null>(null)
+  const weekAt = week ? new Date(`${week}T12:00:00`) : now
+  const ramped = plan.days.reduce((n, d) => n + d.exercises.filter((e) => e.ramp).length, 0)
   const [picked, setPicked] = useState<Muscle | null>(null)
   const [dayOpen, setDayOpen] = useState<string | null>(null)
   const pick = (m: Muscle) => setPicked((cur) => (cur === m ? null : m))
@@ -72,11 +79,18 @@ export function SessionsPanel({ data }: { data: StatsData }) {
     })
   }
   const weeks = monthCalendar(workouts, now, month, settings.joinedAt)
-  const done = sessionsInWeek(workouts, now)
+  const done = sessionsInWeek(workouts, weekAt)
   const planned = plannedPerWeek(plan, settings)
-  const totals = weekTotals(workouts, now)
-  const line = thisWeekLine(weeklyStreak(workouts, now), effortThisWeek(workouts, now))
-  const rows = hardSetRows(volumeByMuscleInWeek(workouts, now), plannedVolumeByMuscle(plan, settings.trainingAge))
+  const totals = weekTotals(workouts, weekAt)
+  const line = thisWeekLine(weeklyStreak(workouts, now), effortThisWeek(workouts, weekAt))
+  const rows = hardSetRows(volumeByMuscleInWeek(workouts, weekAt), plannedVolumeByMuscle(plan, settings.trainingAge))
+  const volumeAxis = valueAxis(
+    rows.flatMap((r) => [r.done, r.planned]),
+    1,
+    true,
+    3,
+  )
+  const volumeMaximum = volumeAxis.domain[1]
   const todayKey = dayKey(now)
 
   const daySessions = dayOpen ? sessionsOnDay(workouts, dayOpen) : []
@@ -88,6 +102,7 @@ export function SessionsPanel({ data }: { data: StatsData }) {
   /** A single session opens directly; multiple sessions offer a choice, as on the web. */
   const openDay = (day: CalendarDay) => {
     if (day.future || day.before) return
+    setWeek(day.date)
     const sessions = sessionsOnDay(workouts, day.date)
     const only = sessions[0]
     if (sessions.length > 1) setDayOpen(day.date)
@@ -99,7 +114,12 @@ export function SessionsPanel({ data }: { data: StatsData }) {
     <View>
       <DaySessionsDialog date={dayOpen} sessions={daySessions} onClose={() => setDayOpen(null)} onPick={openSession} />
       <View className="mt-4 rounded-xl bg-card px-4 pt-5 pb-4">
-        <Text className={SECONDARY}>This week</Text>
+        <Text className={SECONDARY}>{week ? `Week of ${shortDate(weekAt.toISOString())}` : 'This week'}</Text>
+        {week ? (
+          <Button variant="ghost" onPress={() => setWeek(null)}>
+            <Text>Back to this week</Text>
+          </Button>
+        ) : null}
         <View className="flex-row items-baseline">
           <Text maxFontSizeMultiplier={HERO_FONT_CAP} className={BIG_NUMBER}>
             {done}
@@ -116,6 +136,16 @@ export function SessionsPanel({ data }: { data: StatsData }) {
         </View>
       </View>
 
+      {deloadHint(workouts, now) ? (
+        <View className="mt-3 gap-3 rounded-xl bg-card p-4">
+          <Text className={SECONDARY}>{DELOAD_NOTE}</Text>
+          {ramped > 0 ? (
+            <Button variant="secondary" onPress={() => void repo.resetRamp().then(onChanged)}>
+              <Text>{`Drop the extra sets on ${ramped} lifts`}</Text>
+            </Button>
+          ) : null}
+        </View>
+      ) : null}
       <View className="mt-6 flex-row items-center justify-between gap-3">
         <Pressable
           accessibilityRole="button"
@@ -172,13 +202,24 @@ export function SessionsPanel({ data }: { data: StatsData }) {
 
       <View className="mt-8 flex-row items-center justify-between gap-3">
         <Text accessibilityRole="header" className={H2}>
-          Hard sets this week
+          {week ? `Hard sets, week of ${shortDate(weekAt.toISOString())}` : 'Hard sets this week'}
         </Text>
         <Text className={cn(SECONDARY, NUMBER)}>{hardSetsTotal(rows)}</Text>
       </View>
       <BodyMap rows={rows} picked={picked} onPick={pick} className="mt-3" />
       {rows.length > 0 ? (
         <View className="mt-2 gap-1.5 rounded-xl bg-card px-2 py-2">
+          <View className="flex-row items-center gap-3 px-2">
+            <View className="w-30" />
+            <View className="flex-1 flex-row justify-between">
+              {volumeAxis.ticks.map((tick) => (
+                <Text key={tick} className={CAPTION}>
+                  {axisNumber(tick, volumeAxis.step)}
+                </Text>
+              ))}
+            </View>
+            <View className="w-11" />
+          </View>
           {rows.map((r) => {
             const on = picked === r.muscle
             return (
@@ -200,16 +241,31 @@ export function SessionsPanel({ data }: { data: StatsData }) {
                     {r.label}
                   </Text>
                 </View>
-                <View
-                  accessibilityRole="progressbar"
-                  accessibilityValue={{ min: 0, max: r.planned || r.done, now: r.done }}
-                  // The track swaps to the card's colour on a lit row, which is the track's own colour.
-                  className={cn('h-2.5 flex-1 overflow-hidden rounded-full', on ? 'bg-card' : 'bg-secondary')}
-                >
-                  <View
-                    className={cn('h-full rounded-full', familyColourClass(MUSCLE_FAMILY[r.muscle]))}
-                    style={{ width: `${Math.min(100, r.planned > 0 ? (r.done / r.planned) * 100 : 100)}%` }}
-                  />
+                <View className="flex-1" accessible accessibilityLabel={`${r.done} sets; plan ${r.planned} sets`}>
+                  <Svg width="100%" height={18}>
+                    <TokenRect
+                      y={5}
+                      width={`${(r.planned / volumeMaximum) * 100}%`}
+                      height={8}
+                      rx={3}
+                      fillClassName="accent-border"
+                    />
+                    <TokenRect
+                      y={5}
+                      width={`${(r.done / volumeMaximum) * 100}%`}
+                      height={8}
+                      rx={3}
+                      fillClassName="accent-primary"
+                    />
+                    <TokenLine
+                      x1={`${(r.planned / volumeMaximum) * 100}%`}
+                      x2={`${(r.planned / volumeMaximum) * 100}%`}
+                      y1={2}
+                      y2={16}
+                      strokeWidth={2}
+                      strokeClassName="accent-muted-foreground"
+                    />
+                  </Svg>
                 </View>
                 <Text className={cn(CAPTION, NUMBER, 'w-11 text-right')}>{`${r.done} / ${r.planned}`}</Text>
               </Pressable>

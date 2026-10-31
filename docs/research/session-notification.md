@@ -51,6 +51,19 @@ in Zen's local component state, so claiming to restore it after process death wo
 
 ## Persistence, lifecycle and size
 
+2026-10-26: Settings > Phone contains a **Workout notifications** switch. Permission is requested
+only when the user enables it, never automatically on session start. Existing Android grants remain
+usable. The switch combines the stored preference with Android's app permission and channel state;
+denial leaves it off. A blocked request offers the corresponding Android notification settings page,
+and returning to the app refreshes the state. Turning it off cancels the card and prevents native
+refreshes from recreating it, including when React is absent. Widgets remain independent.
+
+The `workout-notifications` preference uses the existing `prefs` table, so no migration or backup
+format change is needed. Like other preferences it can be restored, but it never grants an Android
+permission. Missing keys retain existing behaviour; malformed values fail closed. The native switch
+uses token-derived colours and an accessible label. This follows Android's guidance to request
+[notification permission from a user action](https://developer.android.com/develop/ui/compose/notifications/notification-permission).
+
 `modules/session-notification` reads the existing `files/SQLite/ironkeep.db`; it never creates a
 database or runs migrations. Native SQLite access runs exclusively in the `:session_controls`
 process. The app sends explicit refresh broadcasts; a non-exported receiver handles user taps with

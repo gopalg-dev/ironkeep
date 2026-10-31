@@ -1,5 +1,6 @@
 import { eq } from 'drizzle-orm'
 
+import { backupSchema, parseBackup } from '@/lib/backup'
 import type { BodyweightLog, MeasurementLog, PlanDay, Settings, Workout } from '@/lib/types'
 import { getDb, withTransaction } from './handle'
 import { bodyweights, measurements, plans, prefs, settings, workouts } from './schema'
@@ -85,13 +86,12 @@ export async function exportBackup(now = new Date()): Promise<Backup> {
 
 /** Whether a parsed file is a backup of this app. */
 export function isBackup(value: unknown): value is Backup {
-  if (!value || typeof value !== 'object') return false
-  const v = value as Record<string, unknown>
-  return v.app === BACKUP_APP && typeof v.version === 'number' && Array.isArray(v.workouts) && Array.isArray(v.plans)
+  return backupSchema.safeParse(value).success
 }
 
 /** Replaces everything with the backup, in one transaction: all of it lands, or none of it. */
-export async function restoreBackup(b: Backup): Promise<void> {
+export async function restoreBackup(input: unknown): Promise<void> {
+  const b = parseBackup(JSON.stringify(input))
   const db = await getDb()
   await withTransaction(async () => {
     await db.delete(settings)
@@ -100,7 +100,7 @@ export async function restoreBackup(b: Backup): Promise<void> {
     await db.delete(bodyweights)
     await db.delete(measurements)
     await db.delete(prefs)
-    await db.insert(settings).values({ id: SETTINGS_ROW, value: b.settings as Settings })
+    await db.insert(settings).values({ id: SETTINGS_ROW, value: b.settings })
     for (const p of b.plans) await db.insert(plans).values({ split: p.split, days: p.days, updatedAt: p.updatedAt })
     for (const w of b.workouts) {
       await db.insert(workouts).values({

@@ -297,6 +297,28 @@ function ZenBody({ workout, settings }: { workout: Workout; settings: Settings }
           />
         </>
       )}
+      <View className="mt-3 flex-row flex-wrap gap-2">
+        <Button variant="secondary" onPress={() => sets.addSet(entry.exerciseId)}>
+          <Text>Add a set</Text>
+        </Button>
+        {entry.sets.length > 1 && !entry.sets[entry.sets.length - 1]?.done ? (
+          <Button variant="secondary" onPress={() => sets.removeSet(entry.exerciseId)}>
+            <Text>Remove last set</Text>
+          </Button>
+        ) : null}
+        {entry.rampOffer ? (
+          <Button
+            variant="secondary"
+            onPress={async () => {
+              await flush()
+              const updated = await repo.acceptRamp(workout.id, entry.exerciseId)
+              sets.setEntries((current) => current.map((e) => (e.exerciseId === updated.exerciseId ? updated : e)))
+            }}
+          >
+            <Text>+1 set to plan</Text>
+          </Button>
+        ) : null}
+      </View>
       {entry.hint ? <Text className={cn(CAPTION, NUMBER, 'mt-3 text-center')}>{entry.hint}</Text> : null}
     </Screen>
   )

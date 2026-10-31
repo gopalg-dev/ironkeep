@@ -1,9 +1,5 @@
+import { type LiftPerformance, performanceChange } from './lift-performance'
 import type { WeeklyPoint } from './stats'
-
-/**
- * What a lift is doing lately, from its best set each week. Read against the same four-week window
- * as the stall alert on Today, so the two never disagree about a lift.
- */
 export const TRENDS = ['climbing', 'stuck', 'slipping', 'idle', 'new'] as const
 export type Trend = (typeof TRENDS)[number]
 
@@ -15,36 +11,66 @@ export const TREND_LABEL: Record<Trend, string> = {
   new: 'New',
 }
 
-/** Weeks the trend looks back over. */
-export const TREND_WEEKS = 4
 /** Days without a session before a lift is idle. */
 export const IDLE_DAYS = 14
-/** Weeks of history before a lift can be read at all. */
-const MIN_WEEKS = 3
-/** A best set this far under the earlier best is slipping, not noise. */
-const SLIP = 0.95
+/** Product noise threshold, not a clinical or research-defined diagnosis. */
+export const SLIP_CHANGE = -0.05
 
-function daysAgo(iso: string, now: Date): number {
-  return Math.floor((now.getTime() - new Date(iso).getTime()) / 86_400_000)
+function sessions(weeks: WeeklyPoint[], now: Date): LiftPerformance[] {
+  return weeks
+    .flatMap(
+      (p): LiftPerformance[] =>
+        // Aggregate-only callers can supply a score; production points retain every session.
+        p.performances ?? [{ date: p.date, loadType: 'time', sets: [{ done: true, seconds: p.score }] }],
+    )
+    .filter((p) => Number.isFinite(Date.parse(p.date)) && Date.parse(p.date) <= now.getTime() && p.sets.length > 0)
+    .sort((a, b) => Date.parse(a.date) - Date.parse(b.date))
 }
 
-/**
- * Idle: no session in two weeks. New: under three weeks of history. Then the best of the last four
- * weeks against the best before them: above is climbing, five percent under is slipping, anything
- * else is stuck. With no history before the window, the latest week stands against the weeks before it.
- */
-export function liftTrend(weeks: WeeklyPoint[], now: Date): Trend {
-  if (weeks.length === 0) return 'new'
-  const last = weeks[weeks.length - 1]
-  if (daysAgo(last.date, now) > IDLE_DAYS) return 'idle'
-  if (weeks.length < MIN_WEEKS) return 'new'
-  const since = now.getTime() - TREND_WEEKS * 7 * 86_400_000
-  const older = weeks.filter((p) => new Date(p.date).getTime() < since)
-  const recent = weeks.filter((p) => new Date(p.date).getTime() >= since)
-  const best = (ps: WeeklyPoint[]) => Math.max(...ps.map((p) => p.score))
-  const [now_, before] =
-    older.length > 0 && recent.length > 0 ? [best(recent), best(older)] : [last.score, best(weeks.slice(0, -1))]
-  if (now_ > before) return 'climbing'
-  if (now_ < before * SLIP) return 'slipping'
+function trendOf(history: LiftPerformance[], now: Date): Trend {
+  const last = history.at(-1)
+  if (!last) return 'new'
+  if (now.getTime() - Date.parse(last.date) > IDLE_DAYS * 86_400_000) return 'idle'
+  const previous = history.at(-2)
+  if (!previous) return 'new'
+  const change = performanceChange(previous, last)
+  if (change === undefined) return 'new'
+  if (change > 0) return 'climbing'
+  if (change <= SLIP_CHANGE + 1e-9) return 'slipping'
   return 'stuck'
+}
+
+/** Latest completed session against the previous one, separate from all-time best-set records. */
+export function liftTrend(weeks: WeeklyPoint[], now: Date): Trend {
+  return trendOf(sessions(weeks, now), now)
+}
+
+/** Consecutive calendar weeks with the current trend; missing weeks break the run. */
+export function liftTrendDuration(weeks: WeeklyPoint[], now: Date): number {
+  const history = sessions(weeks, now)
+  const current = trendOf(history, now)
+  const last = history.at(-1)
+  if (!last) return 1
+  if (current === 'idle') {
+    return Math.max(1, Math.ceil((now.getTime() - Date.parse(last.date) - IDLE_DAYS * 86_400_000) / (7 * 86_400_000)))
+  }
+  const monday = (date: string) => {
+    const d = new Date(date)
+    d.setHours(0, 0, 0, 0)
+    d.setDate(d.getDate() - ((d.getDay() + 6) % 7))
+    return d
+  }
+  let count = 0
+  let expected: Date | undefined
+  for (let i = history.length - 1; i >= 0; i--) {
+    const p = history[i]
+    const week = monday(p.date)
+    if (expected && week.getTime() > expected.getTime()) continue
+    if (expected && week.getTime() !== expected.getTime()) break
+    if (trendOf(history.slice(0, i + 1), new Date(p.date)) !== current) break
+    count++
+    expected = new Date(week)
+    expected.setDate(expected.getDate() - 7)
+  }
+  return Math.max(count, 1)
 }

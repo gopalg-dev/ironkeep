@@ -1,11 +1,12 @@
 import { Plus } from 'lucide-react-native'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { View } from 'react-native'
 
 import { BTN_SM2, BTN_SM2_TEXT } from '@/components/button-styles'
 import { instantOf } from '@/components/day-field'
 import { EmptyState } from '@/components/empty-state'
 import { LineChart } from '@/components/line-chart'
+import { MeasurementDialog } from '@/components/measurement-dialog'
 import { Segmented } from '@/components/segmented'
 import { BIG_NUMBER, CAPTION, HERO_FONT_CAP, MID_NUMBER, NUMBER, SECONDARY } from '@/components/typography'
 import { Button } from '@/components/ui/button'
@@ -15,8 +16,11 @@ import type { StatsData } from '@/db/repo'
 import * as repo from '@/db/repo'
 import { LogWeightDialog } from '@/features/today/log-weight-dialog'
 import { announce } from '@/lib/announce'
+import { CHART_DAY, chartDay } from '@/lib/chart-scale'
+import { signed } from '@/lib/format'
 import { bodyweightTrend } from '@/lib/logic/stats'
 import { fmtWeight } from '@/lib/logic/units'
+import type { MeasurementLog } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { LogTapeDialog } from './log-tape-dialog'
 import {
@@ -46,11 +50,24 @@ const TAPE_ACCENT: Record<Tape, string> = {
  * or all; the tape's latest arm, chest and waist, when it is next due, and one tape's line. Log on
  * each card.
  */
-export function BodyPanel({ data, onChanged }: { data: StatsData; onChanged: () => Promise<void> }) {
+export function BodyPanel({
+  data,
+  onChanged,
+  openTape = false,
+}: {
+  data: StatsData
+  onChanged: () => Promise<void>
+  openTape?: boolean
+}) {
   const now = new Date()
   const { settings, bodyweights, measurements } = data
   const units = settings.units
   const [panel, setPanel] = useState<Panel | null>(null)
+  const [pickedTape, setPickedTape] = useState<MeasurementLog | null>(null)
+  const [tapeRange, setTapeRange] = useState('365')
+  useEffect(() => {
+    if (openTape) setPanel('tape')
+  }, [openTape])
   const [range, setRange] = useState<Range>('12')
   const [tape, setTape] = useState<Tape>('arm')
   const trend = bodyweightTrend(bodyweights, now)
@@ -59,7 +76,12 @@ export function BodyPanel({ data, onChanged }: { data: StatsData; onChanged: () 
   const latest = latestTapes(measurements)
   const last = measurements[measurements.length - 1]
   const tapeWords = tapeLine(last, now)
-  const tapeSeries = tapePoints(measurements, tape)
+  const tapeSeries = tapePoints(
+    measurements.filter(
+      (m) => tapeRange === 'all' || new Date(m.date).getTime() >= now.getTime() - Number(tapeRange) * 86400000,
+    ),
+    tape,
+  )
   const unit = lengthUnit(units)
   const close = () => setPanel(null)
 
@@ -97,6 +119,10 @@ export function BodyPanel({ data, onChanged }: { data: StatsData; onChanged: () 
             <View className="mt-3">
               <LineChart
                 points={points}
+                unit={units}
+                timeDomain={
+                  range === 'all' ? undefined : [chartDay(now) - Number(range) * 7 * CHART_DAY, chartDay(now)]
+                }
                 heightClassName="h-40"
                 accentClassName="accent-chart-1"
                 format={fmtWeight}
@@ -131,6 +157,11 @@ export function BodyPanel({ data, onChanged }: { data: StatsData; onChanged: () 
                     ) : null}
                   </View>
                   <Text className={CAPTION}>{TAPE_LABEL[t]}</Text>
+                  {last?.[t] !== undefined && measurements[measurements.length - 2]?.[t] !== undefined ? (
+                    <Text
+                      className={CAPTION}
+                    >{`${signed(last[t] - (measurements[measurements.length - 2]?.[t] ?? 0), 1)} vs last`}</Text>
+                  ) : null}
                 </View>
               ))}
             </View>
@@ -143,10 +174,26 @@ export function BodyPanel({ data, onChanged }: { data: StatsData; onChanged: () 
               onChange={setTape}
               accessibilityLabel="Measurement"
             />
+            <Segmented
+              className="mt-3"
+              options={[
+                { value: '182', label: '6 months' },
+                { value: '365', label: '1 year' },
+                { value: 'all', label: 'All' },
+              ]}
+              value={tapeRange}
+              onChange={setTapeRange}
+              accessibilityLabel="Tape chart range"
+            />
             {tapeSeries.length > 0 ? (
               <View className="mt-3">
                 <LineChart
                   points={tapeSeries}
+                  unit={unit}
+                  timeDomain={
+                    tapeRange === 'all' ? undefined : [chartDay(now) - Number(tapeRange) * CHART_DAY, chartDay(now)]
+                  }
+                  onPick={(point) => setPickedTape(measurements.find((m) => m.date === point.date) ?? null)}
                   heightClassName="h-35"
                   accentClassName={TAPE_ACCENT[tape]}
                   format={fmtWeight}
@@ -160,6 +207,7 @@ export function BodyPanel({ data, onChanged }: { data: StatsData; onChanged: () 
         )}
       </View>
 
+      <MeasurementDialog log={pickedTape} onClose={() => setPickedTape(null)} onChanged={onChanged} unit={unit} />
       <LogWeightDialog
         open={panel === 'weigh'}
         onClose={close}

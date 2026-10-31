@@ -77,12 +77,12 @@ describe('finish summary', () => {
 })
 
 describe('alerts', () => {
-  it('flags a lift trained three times in four weeks without beating its older best', () => {
+  it('flags a lift trained three times in four weeks without a performance improvement', () => {
     const ws = [
       session('old', 40, [bench(62.5, 8)]),
       session('1', 20, [bench(60, 8)]),
       session('2', 13, [bench(60, 8)]),
-      session('3', 6, [bench(62.5, 8)]),
+      session('3', 6, [bench(60, 8)]),
     ]
     expect(stallAlerts(ws, now)).toEqual([
       {
@@ -96,6 +96,8 @@ describe('alerts', () => {
     ])
     // Beating the older best, or too few sessions, is not a stall; a lift with no older history cannot stall.
     expect(stallAlerts([...ws.slice(0, 3), session('3', 6, [bench(65, 8)])], now)).toEqual([])
+    // Recovery still counts even below or equal to an old PR.
+    expect(stallAlerts([...ws.slice(0, 3), session('3', 6, [bench(62.5, 8)])], now)).toEqual([])
     expect(stallAlerts(ws.slice(0, 3), now)).toEqual([])
     expect(stallAlerts(ws.slice(1), now)).toEqual([])
     // Already stuck a week ago (three sessions in that window too): said then, quiet now.

@@ -1,4 +1,5 @@
 import type { Exercise, Muscle, TrainingAge, Workout, WorkoutEntry } from '../types'
+import { groupedWorkouts, liftIdentity } from './lift-identity'
 import { dayKey, type FinishedWorkout, finished, startOfWeek, weeklyStrength } from './stats'
 import { liftTrend } from './trend'
 
@@ -58,6 +59,9 @@ export function rampOffer(
   if (recent.length < RAMP_MIN_SESSIONS) return false
   if (!recent.every(({ w, entry }) => w.effort !== undefined && w.effort <= RAMP_EFFORT_MAX && completedInRange(entry)))
     return false
-  const trend = liftTrend(weeklyStrength(workouts, ex.id), now)
+  const history = weeklyStrength(groupedWorkouts(workouts), liftIdentity(ex))
+  const trend = liftTrend(history, now)
+  // A flat pair is Holding in the overview, not yet an established plateau for set eligibility.
+  if (history.length < 3 && trend !== 'slipping') return true
   return trend !== 'stuck' && trend !== 'slipping'
 }
